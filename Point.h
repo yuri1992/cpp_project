@@ -30,7 +30,10 @@ public:
 		Point next = *this;
 		next.move(direction);
 		return next;
-	}	
+	}
+	bool isSame(const Point& p) const {
+		return x == p.x && y == p.y;
+	}
 };
 
 #endif

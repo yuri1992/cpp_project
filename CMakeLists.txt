@@ -3,5 +3,6 @@ project(cpp_project)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp main.cpp)
-add_executable(cpp_project ${SOURCE_FILES})
+set(SOURCE_FILES main.cpp BoardMission.cpp BoardMission.h)
+file(GLOB files "*.h" "*.cpp")
+add_executable(cpp_project ${files} ${SOURCE_FILES})

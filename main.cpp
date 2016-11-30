@@ -1,7 +1,13 @@
+#include <windows.h>
 #include <iostream>
-#include <stdio.h>
+using namespace std;
+
+#include "TheSnakesGame.h"
+#include "_board.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-    return 0;
+	TheSnakesGame game;
+	game.setBoard(board_example);
+	game.init();
+	game.run();
 }

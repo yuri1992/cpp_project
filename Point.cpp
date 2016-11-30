@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "Point.h"
 
 void Point::move() {

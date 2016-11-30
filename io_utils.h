@@ -16,7 +16,8 @@ void clear_screen();
 	#ifndef WINDOWS	
 		int _getch(void);
 		int _kbhit(void);
-		void Sleep(unsigned long);		
+		void Sleep(unsigned long);
+		void _itoa_s(unsigned int, char s[], unsigned int, int);
 	#else
 		#include <stdlib.h>
 		#include <conio.h>
