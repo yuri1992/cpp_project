@@ -6,8 +6,6 @@ using namespace std;
 #include "_board.h"
 
 int main() {
-	TheSnakesGame game;
-	game.setBoard(board_example);
-	game.init();
+	TheSnakesGame game = TheSnakesGame(board_example);
 	game.run();
 }
