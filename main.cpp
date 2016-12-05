@@ -2,10 +2,10 @@
 #include <iostream>
 using namespace std;
 
-#include "TheSnakesGame.h"
+#include "TheGame.h"
 #include "_board.h"
 
 int main() {
-	TheSnakesGame game = TheSnakesGame(board_example);
+	TheGame game = TheGame(board_example);
 	game.run();
 }

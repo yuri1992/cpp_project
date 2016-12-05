@@ -99,18 +99,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BoardManager.cpp" />
-    <ClCompile Include="BoardMission.cpp" />
     <ClCompile Include="Gotoxy.cpp" />
     <ClCompile Include="io_utils.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MissionBase.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Snake.cpp" />
-    <ClCompile Include="TheSnakesGame.cpp" />
+    <ClCompile Include="TheGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoardManager.h" />
-    <ClInclude Include="BoardMission.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="Gotoxy.h" />
@@ -118,7 +116,7 @@
     <ClInclude Include="MissionBase.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Snake.h" />
-    <ClInclude Include="TheSnakesGame.h" />
+    <ClInclude Include="TheGame.h" />
     <ClInclude Include="_board.h" />
   </ItemGroup>
   <ItemGroup>

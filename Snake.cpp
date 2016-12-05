@@ -1,5 +1,5 @@
 #include "Snake.h"
-#include "TheSnakesGame.h"
+#include "TheGame.h"
 void Snake::setPosition(int y, int x)
 {
 	for (int i = 0; i < SIZE; i++)

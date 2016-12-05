@@ -3,8 +3,7 @@
 
 #include <cstring>
 #include "Point.h"
-
-class TheSnakesGame;
+#include "TheGame.h"
 
 class Snake
 {
@@ -22,9 +21,10 @@ class Snake
 	char arrowKeys[4];
 	Color color;
 	char bodyFill;
-	TheSnakesGame* theGame;
+	TheGame* theGame;
 public:
-	Snake(int direction, Color color, char bodyFill, TheSnakesGame* theGame, const char* keys)
+	Snake(Color color, char bodyFill, TheGame* theGame, const char* keys,
+	      int direction = DIRECTION_UP)
 	{
 		setDirection(direction);
 		setColor(color);
@@ -37,9 +37,9 @@ public:
 
 	// getters and setters
 
-	int getDirection() const { return direction; }
+	int getDirection(char key) const { return direction; }
 
-	void setDirection(int direction) { this->direction = direction; }
+	void setDirection(char direction) { this->direction = direction; }
 
 	Color getColor() const { return color; }
 
@@ -49,7 +49,7 @@ public:
 
 	void setBodyFill(char body_fill) { bodyFill = body_fill; }
 
-	void setGame(TheSnakesGame* _theGame) { theGame = _theGame;}
+	void setGame(TheGame* _theGame) { theGame = _theGame; }
 
 	void setPosition(int y, int x);
 
