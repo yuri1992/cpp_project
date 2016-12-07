@@ -1,35 +1,41 @@
 #include "TheGame.h"
-
+#include "BoardManager.h"
+#include "Point.h"
+#include "Snake.h"
 
 TheGame::TheGame(const char* board[ROWS])
 {
-	snakes = new Snake*[2];
-	snakes[0] = new Snake(YELLOW, '@',  this, "wxad");
-	snakes[1] = new Snake(LIGHTBLUE, '#', this, "wxad");
+	// initialize Board
+	boardManager = new BoardManager(board);
 
-	setBoardManager(board);
+	// initialize Two Snakes on screen
+	Point ptStart1 = Point(10, 9);
+	Point ptStart2 = Point(70, 9);
+	snakes = new Snake*[2];
+	snakes[0] = new Snake(YELLOW, '@', boardManager, "imjl", ptStart1, DIRECTION_RIGHT);
+	snakes[1] = new Snake(LIGHTBLUE, '#', boardManager, "wxad", ptStart2, DIRECTION_LEFT);
 }
 
 void TheGame::init()
 {
-	snakes[0]->setGame(this);
-	snakes[1]->setGame(this);
+	boardManager->printBoard();
+	snakes[0]->printSnake();
+	snakes[1]->printSnake();
 }
 
 void TheGame::run()
 {
+	init();
 	char key = 0;
-	int dir;
 	do
 	{
 		if (_kbhit())
 		{
 			key = _getch();
-			if ((dir = snakes[0]->getDirection(key)) != -1)
-				snakes[0]->setDirection(dir);
-			else if ((dir = snakes[1]->getDirection(key)) != -1)
-				snakes[1]->setDirection(dir);
+			snakes[0]->handleKey(key);
+			snakes[1]->handleKey(key);
 		}
+
 		snakes[0]->move();
 		snakes[1]->move();
 		Sleep(400);

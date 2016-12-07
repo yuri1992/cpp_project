@@ -3,55 +3,32 @@
 
 #include <cstring>
 #include "Point.h"
-#include "TheGame.h"
+#include "SnakeBody.h"
+#include "BoardManager.h"
 
 class Snake
 {
 	enum
 	{
-		SIZE = 5,
-		DIRECTION_UP = 1,
-		DIRECTION_RIGHT = 2,
-		DIRECTION_DOWN = 3,
-		DIRECTION_LEFT = 4
+		KEYS_SIZE = 4
 	};
-
-	Point body[SIZE];
-	int direction = DIRECTION_UP;
-	char arrowKeys[4];
-	Color color;
-	char bodyFill;
-	TheGame* theGame;
+	BoardManager *theBoard;
+	SnakeBody *body;
+	char arrowKeys[KEYS_SIZE];	
 public:
-	Snake(Color color, char bodyFill, TheGame* theGame, const char* keys,
-	      int direction = DIRECTION_UP)
-	{
-		setDirection(direction);
-		setColor(color);
-		setBodyFill(bodyFill);
-		setGame(theGame);
-		setArrowKeys(keys);
-	}
+	Snake(Color color, char bodyChar, BoardManager* theBoard,
+		const char* keys, Point startPoint);
+	Snake(Color color, char bodyChar, BoardManager* theBoard, const char* keys, Point startPoint, Direction dir);
+	void printSnake();
+	void handleKey(int dir);
 
 	void move();
 
+	int getKeyDirection(char key);
+	
 	// getters and setters
 
-	int getDirection(char key) const { return direction; }
-
-	void setDirection(char direction) { this->direction = direction; }
-
-	Color getColor() const { return color; }
-
-	void setColor(Color color) { this->color = color; }
-
-	char getBodyFill() const { return bodyFill; }
-
-	void setBodyFill(char body_fill) { bodyFill = body_fill; }
-
-	void setGame(TheGame* _theGame) { theGame = _theGame; }
-
-	void setPosition(int y, int x);
+	void setBoardManager(BoardManager* _theBoard) { theBoard = _theBoard; }
 
 	void setArrowKeys(const char* keys)
 	{
@@ -62,7 +39,7 @@ public:
 	}
 
 private:
-	void _increseSize();
+	bool _isNextStepValid();
 };
 
 #endif

@@ -1,29 +1,63 @@
 #include "Snake.h"
 #include "TheGame.h"
-void Snake::setPosition(int y, int x)
+
+Snake::Snake(Color color, char bodyChar, BoardManager* theBoard,
+             const char* keys, Point startPoint, Direction dir = DIRECTION_UP)
 {
-	for (int i = 0; i < SIZE; i++)
-		body[i].set(x, y);
+	setBoardManager(theBoard);
+	setArrowKeys(keys);
+	body = new SnakeBody(dir, bodyChar, color, startPoint);
 }
+
+void Snake::printSnake()
+{
+	Point* ptrSnakeBody = body->getBody();
+	char ch = body->getBodyChar();
+	for (int i = 0; i < body->getCurrentSize(); i ++)
+	{
+		theBoard->setCell(ptrSnakeBody[i], ch);
+		setTextColor(body->getColor());
+		theBoard->printCell(ptrSnakeBody[i]);
+	}
+}
+
+void Snake::handleKey(int key)
+{
+	int keyDirection = this->getKeyDirection(key);
+
+	if (keyDirection != -1)
+	{
+		body->setDirection(keyDirection);
+	}
+
+	// Todo : handle others keys that can be pressed (fire)
+}
+
 void Snake::move()
 {
-	body[SIZE - 1].draw(' ');
-	for (int i = SIZE - 1; i > 0; --i)
-		body[i] = body[i - 1];
-
-	if (theGame->isWall(body[0].next(direction)))
-		direction = 4;
-
-	body[0].move(direction);
-	setTextColor(color);
-	body[0].draw('@');
+	if (_isNextStepValid())
+	{
+		body->move();
+		printSnake();
+	}
 }
-int Snake::getDirection(char key)
+
+int Snake::getKeyDirection(char key)
 {
-	for (int i = 0; i < SIZE - 1; i++)
+	for (int i = 0; i < KEYS_SIZE; i++)
 	{
 		if (key == arrowKeys[i])
 			return i;
 	}
 	return -1;
+}
+
+bool Snake::_isNextStepValid()
+{
+	Point nextPoint = body->getNextPoint();
+
+	if (theBoard->isWall(nextPoint))
+		return false;
+
+	return true;
 }

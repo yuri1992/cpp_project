@@ -5,6 +5,7 @@
 #include "Snake.h"
 #include "BoardManager.h"
 #include "MissionBase.h"
+#include "Point.h"
 
 
 class TheGame
@@ -15,15 +16,15 @@ class TheGame
 	};
 
 	Snake **snakes;
-	BoardManager boardManager;
+	BoardManager *boardManager;
 	MissionBase mission;
+
 public:
 	TheGame(const char* board[ROWS]);
 	void init();
-	bool isSolveMission(const Point& p) { return mission.isSolved(); }
 	void run();
-
-	void setBoardManager(const char* board[ROWS]){ boardManager.setBoard(board);};
+	bool isSolveMission(const Point& p) { return mission.isSolved(); }
+	void setBoardManager(const char* board[ROWS]){ boardManager->setBoard(board);};
 };
 
 #endif
