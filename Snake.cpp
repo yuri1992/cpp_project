@@ -59,5 +59,9 @@ bool Snake::_isNextStepValid()
 	if (theBoard->isWall(nextPoint))
 		return false;
 
+	// Todo: should be handled cases when there already a snake in the @nextPoint
+	// should check with @boardManager if the cell is free
+
+
 	return true;
 }

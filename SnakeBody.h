@@ -40,6 +40,7 @@ public:
 	Point getNextPoint(int dir);
 	void setPosition(int y, int x);
 	void move();
+	void increaseSnakeBody();
 
 	// getters and setters
 	int getDirection() const

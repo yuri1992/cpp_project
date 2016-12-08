@@ -26,6 +26,7 @@ void TheGame::init()
 void TheGame::run()
 {
 	init();
+	// Todo: Should be added handling of other keys press like (ESC, Menu buttons)
 	char key = 0;
 	do
 	{
@@ -41,4 +42,19 @@ void TheGame::run()
 		Sleep(400);
 	}
 	while (key != ESC);
+}
+
+void TheGame::showQuickMenu()
+{
+	// Todo: implement quick menu print
+	// 1. erase all screen or print in the top first line.
+
+}
+
+void TheGame::showFullMenu()
+{
+	// Todo: implement quick menu print
+	// 1. erase all screen
+	// 2. gotoxy middle screen
+	// 3. print menu.
 }
