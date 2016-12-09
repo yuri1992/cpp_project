@@ -16,8 +16,7 @@ void Snake::printSnake()
 	for (int i = 0; i < body->getCurrentSize(); i ++)
 	{
 		theBoard->setCell(ptrSnakeBody[i], ch);
-		setTextColor(body->getColor());
-		theBoard->printCell(ptrSnakeBody[i]);
+		theBoard->printCell(ptrSnakeBody[i], body->getColor());
 	}
 }
 
@@ -33,6 +32,11 @@ void Snake::handleKey(int key)
 	// Todo : handle others keys that can be pressed (fire)
 }
 
+Point Snake::getNextStep()
+{
+	return body->getNextPoint();
+}
+
 void Snake::move()
 {
 	if (_isNextStepValid())
@@ -40,6 +44,17 @@ void Snake::move()
 		body->move();
 		printSnake();
 	}
+}
+
+void Snake::wonStage()
+{
+	body->increaseSnakeBody();
+	points++;
+}
+
+bool Snake::isWinGame()
+{
+	return points == 12;
 }
 
 int Snake::getKeyDirection(char key)
@@ -58,10 +73,6 @@ bool Snake::_isNextStepValid()
 
 	if (theBoard->isWall(nextPoint))
 		return false;
-
-	// Todo: should be handled cases when there already a snake in the @nextPoint
-	// should check with @boardManager if the cell is free
-
 
 	return true;
 }

@@ -12,24 +12,26 @@ class Snake
 	{
 		KEYS_SIZE = 4
 	};
-	BoardManager *theBoard;
-	SnakeBody *body;
-	char arrowKeys[KEYS_SIZE];	
+
+	BoardManager* theBoard;
+	SnakeBody* body;
+	char arrowKeys[KEYS_SIZE];
+	int points = 12;
 public:
 	Snake(Color color, char bodyChar, BoardManager* theBoard,
-		const char* keys, Point startPoint);
+	      const char* keys, Point startPoint);
 	Snake(Color color, char bodyChar, BoardManager* theBoard, const char* keys, Point startPoint, Direction dir);
 	void printSnake();
 	void handleKey(int dir);
-
+	Point getNextStep();
+	int getKeyDirection(char key);
 	void move();
 
-	int getKeyDirection(char key);
-	
+	void wonStage();
+	bool isWinGame();
+
 	// getters and setters
-
 	void setBoardManager(BoardManager* _theBoard) { theBoard = _theBoard; }
-
 	void setArrowKeys(const char* keys)
 	{
 		arrowKeys[0] = keys[0];

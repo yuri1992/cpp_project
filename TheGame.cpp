@@ -127,10 +127,59 @@ void TheGame::_handleGameKeyPress()
 			snakes[1]->handleKey(key);
 		}
 
-		snakes[0]->move();
-		snakes[1]->move();
-		Sleep(400);
+		if (!isStageSolved())
+		{
+			snakes[0]->move();
+			snakes[1]->move();
+			Sleep(400);
+			if (step++ % 2 == 0)
+			{
+				boardManager->setNextNumber(mission.generateNextNumber());
+			}
+		}
 	}
+}
+
+bool TheGame::isStageSolved()
+{
+	/*
+	 * return True when stage is completed!! not solved currently
+	 */
+	Point pt;
+	int n, i;
+
+	for (i = 0; i < 2; i++)
+	{
+		pt = snakes[i]->getNextStep();
+		n = boardManager->getCellNumber(pt);
+
+		if (n >= 0)
+		{
+			if (mission.isSolved(n))
+			{
+				snakes[i]->wonStage();
+				if (snakes[i]->isWinGame())
+				{
+					// TODO : promot a win game message
+					_newGame();
+				}
+				else
+				{
+					// TODO : promot a lose game message
+					_nextGame();
+				}
+				return true;
+			}
+			else
+			{
+				// TODO : promot a lose game message
+				_nextGame();
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 void TheGame::showInformation()

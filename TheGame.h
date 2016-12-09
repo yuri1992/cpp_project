@@ -34,6 +34,7 @@ class TheGame
 		SHOW_INFORMATION = 5,
 	};
 
+	int step = 0;
 	Game status = STARTED;
 	Snake** snakes;
 	BoardManager* boardManager;
@@ -47,9 +48,13 @@ public:
 	void run();
 	void showQuickMenu();
 	void showFullMenu();
-	bool isSolveMission(const Point& p) { return mission.isSolved(); }
+	void showInformation();
+	
+	bool isStageSolved();
+
 
 	void setBoardManager(const char* board[ROWS]) { boardManager->setBoard(board); };
+	
 
 private:
 	void _exit() { exit(0); }
@@ -65,7 +70,6 @@ private:
 	void _newGame();
 	void _handleMenuKeyPress();
 	void _handleGameKeyPress();
-	void showInformation();
 };
 
 #endif

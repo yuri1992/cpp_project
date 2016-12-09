@@ -1,10 +1,7 @@
 #include "BoardManager.h"
 #include "io_utils.h"
 #include <iostream>
-
-void BoardManager::handleObjectCreationFromBoard(int row, int col)
-{
-}
+#include <string>
 
 BoardManager::BoardManager(const char* boardToCopy[ROWS])
 {
@@ -22,36 +19,85 @@ void BoardManager::printBoard()
 	}
 }
 
-void BoardManager::printCell(int row, int col)
+void BoardManager::printCell(int row, int col, Color color)
 {
+	setTextColor(color);
 	gotoxy(col, row);
 	std::cout << board[row][col];
 	std::cout.flush();
 }
 
-void BoardManager::printCell(Point pt)
+void BoardManager::printCell(const Point& pt, Color color)
 {
-	int row = pt.getY();
-	int col = pt.getX();
-
-	gotoxy(col, row);
-	std::cout << board[row][col];
-	std::cout.flush();
+	printCell(pt.getY(), pt.getX(), color);
 }
 
-void BoardManager::setCell(int row, int col, char ch)
+int getDigitsNumber(int number)
 {
-	board[row][col] = ch;
+	int res = 0;
+	while (number > 0)
+	{
+		res++;
+		number /= 10;
+	}
+	return res;
 }
 
-void BoardManager::setCell(Point pt, char ch)
+bool BoardManager::isValidNumberCell(int row, int col, int number)
 {
-	board[pt.getY()][pt.getX()] = ch;
+	if (board[row][col] != ' ')
+		return false;
+
+	int digitsNumber = getDigitsNumber(number);
+
+	if (col + digitsNumber > COLS)
+		return false;
+
+	for (int i = 0; i < digitsNumber; i++)
+	{
+		if ((board[row][col + i] != ' ' || // cell itself is empty
+			board[row + 1][col + i] != ' ' || // the upper cell is empty
+			board[row - 1][col + i] != ' '))
+		{
+			return false;
+		}
+	}
+
+	// checking the most left cell if empty or end or board
+	if (col - 1 > 0)
+		if (board[row][col - 1] != ' ') 
+			return false;
+
+	// checking the most right cell if empty or end or board
+	if (col + digitsNumber < COLS)
+		if (board[row][col + digitsNumber] != ' ') 
+			return false;
+
+	return true;
 }
 
-void BoardManager::removeCell(int row, int col)
+void BoardManager::setNextNumber(int number)
 {
-	board[row][col] = ' ';
+	bool isNumberSet = false;
+	int randRow, randCol;
+	while (!isNumberSet)
+	{
+		randRow = rand() % ROWS;
+		randCol = rand() % COLS;
+		if (isValidNumberCell(randRow, randCol, number))
+		{
+			setCell(randRow, randCol, '1');
+			printCell(randRow, randCol);
+			break;
+		}
+	}
+}
+
+int BoardManager::getCellNumber(const Point& pt)
+{
+	// TODO Itay; as we talked you should be able to return the number in @pt
+	// Maybe you should use Dict(key value) storage for easier fetch.
+	return -1;
 }
 
 void BoardManager::setBoard(const char* boardToCopy[ROWS])
@@ -62,7 +108,6 @@ void BoardManager::setBoard(const char* boardToCopy[ROWS])
 		{
 			originalBoard[i][j] = boardToCopy[i][j];
 			board[i][j] = originalBoard[i][j];
-			handleObjectCreationFromBoard(i, j);
 		}
 		originalBoard[i][COLS] = '\0';
 		board[i][COLS] = '\0';
@@ -71,6 +116,5 @@ void BoardManager::setBoard(const char* boardToCopy[ROWS])
 
 BoardManager::~BoardManager()
 {
+	// Todo we should implement desctrouctor logic
 }
-
-

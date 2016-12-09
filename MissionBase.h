@@ -1,6 +1,4 @@
 #pragma once
-
-
 class MissionBase
 {
 	enum
@@ -12,7 +10,7 @@ class MissionBase
 public:
 	MissionBase();
 	~MissionBase();
-	bool isFinished();
-	bool isSolved();
-	void generateNextNumber();
+
+	bool isSolved(int number);
+	int generateNextNumber();
 };
