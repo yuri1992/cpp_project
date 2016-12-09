@@ -2,6 +2,7 @@
 #include "BoardManager.h"
 #include "Point.h"
 #include "Snake.h"
+#include "io_utils.h"
 
 TheGame::TheGame(const char* board[ROWS]) {
 	// initialize Board
@@ -171,8 +172,7 @@ bool TheGame::isStageSolved()
 }
 
 void TheGame::showInformation() {
-	status = SHOW_INFORMATION;
-	system("CLS");
+	clearScreen();
 	cout <<
 		"                                                                                " << endl <<
 		"  Each player gets a snake to control and earn points.                          " << endl <<
@@ -189,23 +189,10 @@ void TheGame::showInformation() {
 		"		                                                                         " << endl <<
 		"                                                                                " << endl <<
 		"      Press (9) to go back to menu.                                             " << endl;
-	// Todo ITAY: implement Information game screen
-	// 1. erase all screen or print in the top first line.
-	// I do not understood the insrcution for the quick menu, try to figure out what Amir mean.
-	//cout << "Information " << endl;
 }
 
 void TheGame::showQuickMenu() {
-	// Todo ITAY: implement quick menu print
-	// 1. erase all screen or print in the top first line.
-	// I do not understood the insrcution for the quick menu, try to figure out what Amir mean.
-	//------->x
-	//|
-	//|
-	//y
-	// (80,25)
-	system("CLS");
-	status = SHOW_QUICK_MENU;
+	clearScreen();
 	gotoxy(0, 4); cout << "--------------------------------------------------------------------------------";
 	gotoxy(35, 11); cout << "Snake Game";
 	gotoxy(32, 12); cout << "-----------------";

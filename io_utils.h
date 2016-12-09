@@ -11,7 +11,7 @@
 void gotoxy(int x, int y);
 void setTextColor(Color);
 void hideCursor();
-void clear_screen();
+void clearScreen();
 
 	#ifndef WINDOWS	
 		int _getch(void);
