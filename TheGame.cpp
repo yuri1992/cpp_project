@@ -22,12 +22,12 @@ void TheGame::init() {
 }
 
 void TheGame::printScreen() {
-	if (status == Game::STARTED || status == Game::SHOW_QUICK_MENU) {
+	if (status == Game::STARTED || status == Game::SHOW_QUICK_MENU)
 		showQuickMenu();
-	}
-	else if (status == Game::PAUSE || status == Game::SHOW_FULL_MENU) {
+	else if (status == Game::PAUSE || status == Game::SHOW_FULL_MENU)
 		showFullMenu();
-	}
+	else if (status == Game::SHOW_INFORMATION)
+		showInformation();
 }
 
 void TheGame::run() {
@@ -93,7 +93,7 @@ void TheGame::_handleMenuKeyPress() {
 		else if (status == Game::SHOW_INFORMATION) {
 			switch (key) {
 			case NUM_9:
-				showQuickMenu();
+				_showQuickMenu();
 			default:break;
 			}
 		}
@@ -170,7 +170,7 @@ bool TheGame::isStageSolved()
 	return false;
 }
 
-void TheGame::_showInformation() {
+void TheGame::showInformation() {
 	status = SHOW_INFORMATION;
 	system("CLS");
 	cout <<

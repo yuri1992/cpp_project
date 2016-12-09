@@ -46,9 +46,9 @@ public:
 
 	void printScreen();
 	void run();
+	void showInformation();
 	void showQuickMenu();
 	void showFullMenu();
-	void showInformation();
 	bool isStageSolved();
 
 	void setBoardManager(const char* board[ROWS]) { boardManager->setBoard(board); };
@@ -58,8 +58,9 @@ private:
 	void _exit() { exit(0); }
 
 	void _pause() { status = Game::PAUSE; printScreen(); }
-	void _showInformation();
 	void _showFullMenu() { status = Game::SHOW_FULL_MENU; printScreen(); }
+	void _showInformation() { status = Game::SHOW_INFORMATION; printScreen(); }
+	void _showQuickMenu() { status = Game::SHOW_QUICK_MENU; printScreen(); }
 
 	void _start();
 	void _continue();
