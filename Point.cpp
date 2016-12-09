@@ -21,7 +21,7 @@ void Point::move(int dir)
 	{
 	case 0: // UP
 		--y;
-		if (y < 0)
+		if (y < 4)
 		{
 			y = ROWS - 1;
 		}
@@ -30,7 +30,7 @@ void Point::move(int dir)
 		++y;
 		if (y > 24)
 		{
-			y = 0;
+			y = 4;
 		}
 		break;
 	case 2: // LEFT

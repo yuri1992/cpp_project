@@ -47,6 +47,7 @@ public:
 	void run();
 	void showQuickMenu();
 	void showFullMenu();
+	void showInformation();
 	bool isSolveMission(const Point& p) { return mission.isSolved(); }
 
 	void setBoardManager(const char* board[ROWS]) { boardManager->setBoard(board); };
@@ -55,7 +56,8 @@ private:
 	void _exit() { exit(0); }
 
 	void _pause() { status = Game::PAUSE; printScreen(); }
-	void _showInformation() { status = Game::SHOW_INFORMATION;  printScreen(); }
+	//void _showInformation() { status = Game::SHOW_INFORMATION;  printScreen(); }
+	void _showInformation();
 	void _showFullMenu() { status = Game::SHOW_FULL_MENU; printScreen(); }
 
 	void _start();
@@ -65,7 +67,7 @@ private:
 	void _newGame();
 	void _handleMenuKeyPress();
 	void _handleGameKeyPress();
-	void showInformation();
+	//void showInformation();
 };
 
 #endif
