@@ -14,10 +14,6 @@ Point::Point()
 	y = 1;
 }
 
-Point Point::fromPoint(Point pt)
-{
-	return Point(pt.getX(), pt.getY());
-}
 
 void Point::move(int dir)
 {

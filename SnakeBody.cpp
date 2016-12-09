@@ -37,7 +37,7 @@ void SnakeBody::setBody(Point start)
 	this->body = new Point[currentSize];
 	for (int i = 0; i < currentSize; i++)
 	{
-		this->body[i] = Point::fromPoint(start);
+		this->body[i] = Point(start);
 		start.setY(start.getY() + 1);
 	}
 }

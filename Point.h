@@ -18,8 +18,6 @@ public:
 		setY(y);
 	}
 
-	static Point fromPoint(Point pt);
-
 	int getX() const
 	{
 		return x;
