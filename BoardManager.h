@@ -3,7 +3,7 @@
 
 #include "Point.h"
 #include <map>
-
+#include "MissionBase.h"
 using namespace std;
 
 enum
@@ -14,6 +14,7 @@ enum
 
 class BoardManager
 {
+	MissionBase mission;
 	std::map<Point, int> pointToNumber;
 	char originalBoard[ROWS][COLS + 1]; // this is the original board that we got (we need COLS+1 because we handle it as null terminated char*)
 	char board[ROWS][COLS + 1]; // this is the actual board we play on, i.e. changes on board are done here
@@ -22,9 +23,11 @@ public:
 	~BoardManager();
 
 	void printBoard();
+	void printBoardWithoutSnakePath();
 
 	void printCell(int row, int col, Color color = Color::LIGHTGREY);
 	void printCell(const Point& pt, Color color = Color::LIGHTGREY);
+	void printCellWithoutSnake(int row, int col, Color color = Color::LIGHTGREY);
 
 	bool isWall(const Point& p) { return board[p.getY()][p.getX()] == '+'; }
 	bool isFreeCell(const Point& pt);

@@ -23,10 +23,10 @@ void TheGame::init() {
 }
 
 void TheGame::printScreen() {
-	if (status == Game::STARTED || status == Game::SHOW_QUICK_MENU)
-		showQuickMenu();
-	else if (status == Game::PAUSE || status == Game::SHOW_FULL_MENU)
-		showFullMenu();
+	if (status == Game::STARTED || status == Game::SHOW_MAIN_MENU)
+		showMainMenu();
+	else if (status == Game::PAUSE || status == Game::SHOW_PAUSE_MENU)
+		showPauseMenu();
 	else if (status == Game::SHOW_INFORMATION)
 		showInformation();
 }
@@ -37,9 +37,9 @@ void TheGame::run() {
 
 	do {
 		if (status == Game::STARTED ||
-			status == Game::SHOW_QUICK_MENU ||
+			status == Game::SHOW_MAIN_MENU ||
 			status == Game::PAUSE ||
-			status == Game::SHOW_FULL_MENU ||
+			status == Game::SHOW_PAUSE_MENU ||
 			status == Game::SHOW_INFORMATION) {
 			_handleMenuKeyPress();
 		}
@@ -64,12 +64,10 @@ void TheGame::_handleGameKeyPress() {
 			snakes[1]->handleKey(key);
 		}
 
-		if (!isStageSolved())
-		{
+		if (!isStageSolved()) {
 			snakes[0]->move();
 			snakes[1]->move();
-			if (step++ % 5 == 0)
-			{
+			if (step++ % 5 == 0) {
 				boardManager->setNextNumber(mission.generateNextNumber());
 			}
 			Sleep(400);
@@ -80,40 +78,34 @@ void TheGame::_handleGameKeyPress() {
 	}
 }
 
-bool TheGame::isStageSolved()
-{
+bool TheGame::isStageSolved() {
 	/*
 	 * return True when stage is completed!! not solved currently
 	 */
 	Point pt;
 	int n, i;
 
-	for (i = 0; i < 2; i++)
-	{
+	for (i = 0; i < 2; i++) {
 		pt = snakes[i]->getNextStep();
 		n = boardManager->getCellNumber(pt);
 
-		if (n >= 0)
-		{
-			if (mission.isSolved(n))
-			{
+		if (n >= 0) {
+			if (mission.isSolved(n)) {
 				snakes[i]->wonStage();
-				if (snakes[i]->isWinGame())
-				{
+				if (snakes[i]->isWinGame()) {
 					// TODO : promot a win game message
-					_newGame();
+					//_newGame();
+					//TODO GO TO MAIN MENU AFTER WIN
 				}
-				else
-				{
+				else {
 					// TODO : promot a won stage message
-					_nextGame();
+					_nextMission();
 				}
 				return true;
 			}
-			else
-			{
+			else {
 				// TODO : promot a lose game message
-				_nextGame();
+				_nextMission();
 				return true;
 			}
 		}
@@ -126,8 +118,8 @@ void TheGame::_handleMenuKeyPress() {
 	if (_kbhit()) {
 		char key = 0;
 		key = _getch();
-		if (status == Game::STARTED || status == Game::SHOW_QUICK_MENU) {
-			// handling Quick Menu keys press
+		if (status == Game::STARTED || status == Game::SHOW_MAIN_MENU) {
+			// handling Main Menu keys press
 			switch (key) {
 			case NUM_1:
 				_showInformation();
@@ -141,23 +133,25 @@ void TheGame::_handleMenuKeyPress() {
 			default: break;
 			}
 		}
-		else if (status == Game::PAUSE || status == Game::SHOW_FULL_MENU) {
+		else if (status == Game::PAUSE || status == Game::SHOW_PAUSE_MENU) {
 			// handling Full Menu keys press
 			switch (key) {
 			case NUM_1:
 				_exit();
 				break;
 			case NUM_2:
-				_showFullMenu();
+				_showMainMenu();
 				break;
 			case NUM_3:
 				_continue();
 				break;
+				// (4)Restart Mission: delete all numbers + put snakes on starting position 
+				//+ reset clock (from forum)  + [[ same snake size(i think- waiting for answer in forum)]]
 			case NUM_4:
-				_restartGame();
+				_restartMission();
 				break;
 			case NUM_5:
-				_nextGame();
+				_nextMission();
 				break;
 			case NUM_6:
 				_newGame();
@@ -168,7 +162,7 @@ void TheGame::_handleMenuKeyPress() {
 		else if (status == Game::SHOW_INFORMATION) {
 			switch (key) {
 			case NUM_9:
-				_showQuickMenu();
+				_showMainMenu();
 			default:break;
 			}
 		}
@@ -195,7 +189,7 @@ void TheGame::showInformation() {
 		"      Press (9) to go back to menu.                                             " << endl;
 }
 
-void TheGame::showQuickMenu() {
+void TheGame::showMainMenu() {
 	clearScreen();
 	gotoxy(0, 4); cout << "--------------------------------------------------------------------------------";
 	gotoxy(35, 11); cout << "Snake Game";
@@ -206,9 +200,9 @@ void TheGame::showQuickMenu() {
 	//gotoxy()
 }
 
-void TheGame::showFullMenu() {
+void TheGame::showPauseMenu() {
 
-	// (4)Restart Mission: delete all numbers + put snakes on starting position + reset clock (from forum)
+
 
 
 	clearScreen();
@@ -239,20 +233,25 @@ void TheGame::_start() {
 }
 
 void TheGame::_continue() {
-	// TODO ITAY : we should print once again the board
 	status = Game::RUNNING;
-	//boardManager->printBoard();
+	clearScreen();
+	boardManager->printBoardWithoutSnakePath();
 }
 
-void TheGame::_restartGame() {
+void TheGame::_restartMission() {
+	clearScreen();
 	// TODO ITAY : we should be able to restart the game to same position of the initial mission
 	status = Game::RUNNING;
 }
 
-void TheGame::_nextGame() {
-	// TODO ITAY: we should be able to break the current mission and start new mission.
+void TheGame::_nextMission() {
+	clearScreen();
+	mission.nextMission();
 	status = Game::RUNNING;
 }
+
+
+
 
 void TheGame::_newGame() {
 	// TODO ITAY: we should be able restart all the game to initial point.

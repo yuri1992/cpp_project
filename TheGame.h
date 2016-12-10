@@ -29,8 +29,8 @@ class TheGame
 		PAUSE = 0,
 		RUNNING = 1,
 		STARTED = 2,
-		SHOW_QUICK_MENU = 3,
-		SHOW_FULL_MENU = 4,
+		SHOW_MAIN_MENU = 3,
+		SHOW_PAUSE_MENU = 4,
 		SHOW_INFORMATION = 5,
 	};
 
@@ -43,25 +43,29 @@ class TheGame
 public:
 	TheGame(const char* board[ROWS]);
 	void init();
+
 	void printScreen();
 	void run();
 	static void showInformation();
-	static void showQuickMenu();
-	static void showFullMenu();
+	static void showMainMenu();
+	static void showPauseMenu();
 	bool isStageSolved();
+
 	void setBoardManager(const char* board[ROWS]) { boardManager->setBoard(board); };
 	
 
 private:
 	void _exit() { exit(0); }
+
 	void _pause() { status = Game::PAUSE; printScreen(); }
-	void _showFullMenu() { status = Game::SHOW_FULL_MENU; printScreen(); }
+	void _showPauseMenu() { status = Game::SHOW_PAUSE_MENU; printScreen(); }
 	void _showInformation() { status = Game::SHOW_INFORMATION; printScreen(); }
-	void _showQuickMenu() { status = Game::SHOW_QUICK_MENU; printScreen(); }
+	void _showMainMenu() { status = Game::SHOW_MAIN_MENU; printScreen(); }
+
 	void _start();
 	void _continue();
-	void _restartGame();
-	void _nextGame();
+	void _restartMission();
+	void _nextMission();
 	void _newGame();
 	void _handleMenuKeyPress();
 	void _handleGameKeyPress();

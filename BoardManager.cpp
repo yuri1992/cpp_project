@@ -17,6 +17,21 @@ void BoardManager::printBoard() {
 	}
 }
 
+
+//the function printBoard - printed the history of the snakes (full path they walked)
+//so when continuing i run this function. (TEMP SOLUTION)
+void BoardManager::printBoardWithoutSnakePath() {
+	for (int i = 0; i < ROWS; i++) {
+		for (int j = 0; j < COLS; j++) {
+			//that runs this fun that just prints empty whenever it sees a snake
+			printCellWithoutSnake(i, j);
+		}
+	}
+}
+
+
+
+
 void BoardManager::printCell(int row, int col, Color color) {
 	setTextColor(color);
 	gotoxy(col, row);
@@ -27,6 +42,17 @@ void BoardManager::printCell(int row, int col, Color color) {
 void BoardManager::printCell(const Point& pt, Color color) {
 	printCell(pt.getY(), pt.getX(), color);
 }
+
+
+
+void BoardManager::printCellWithoutSnake(int row, int col, Color color) {
+	if (board[row][col] == '@' || board[row][col] == '#') return;
+	setTextColor(color);
+	gotoxy(col, row);
+	std::cout << board[row][col];
+	std::cout.flush();
+}
+
 
 int getDigitsNumber(int number) {
 	int res = 0;
@@ -111,6 +137,7 @@ void BoardManager::setBoard(const char* boardToCopy[ROWS]) {
 }
 
 void BoardManager::printScoreBoard(string currentQuestion, int snake1Score, int snake2Score) {
+	setTextColor(LIGHTGREY);
 	gotoxy(0, 0);
 	cout <<
 		//	      10        20        30        40        50        60        70       79
