@@ -68,6 +68,8 @@ private:
 	void _nextStage();
 	void _restartStage();
 	void _newGame();
+	void printScoreBoard();
+	void printMessageOnBoard(string message);
 	void _handleMenuKeyPress();
 	void _handleGameKeyPress();
 };

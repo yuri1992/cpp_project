@@ -175,34 +175,6 @@ void BoardManager::prepareNextStage()
 	
 }
 
-void BoardManager::printScoreBoard(string currentQuestion, int snake1Score, int snake2Score) {
-	setTextColor(LIGHTGREY);
-	gotoxy(0, 0);
-	cout <<
-		//	      10        20        30        40        50        60        70       79
-		//1234567890123456789012345678901234567890123456789012345678901234567890123456789
-		"Mission:                                                                        " << endl <<
-		"                                                                                " << endl <<
-		"  Snake 1 Score: 8                                            Snake 2 Score: 7  " << endl <<
-		"--------------------------------------------------------------------------------" << endl;
-	gotoxy(9, 0);
-	cout << currentQuestion;
-	gotoxy(17, 2);
-	cout << snake1Score << " ";
-	gotoxy(77, 2);
-	cout << snake2Score << " ";
-	cout << flush;
-}
-
-void BoardManager::printMessageOnBoard(string message) {
-	gotoxy(21, 1);
-	cout << message;
-	Sleep(2000);  // a short wait until the game continues
-	gotoxy(21, 1);
-	cout << "                                                        ";
-
-}
-
 BoardManager::~BoardManager() {
 	// Todo we should implement desctrouctor logic
 }

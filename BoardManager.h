@@ -45,9 +45,6 @@ public:
 	void setBoard(const char* boardToCopy[ROWS]);
 	void deleteNumberfromBoard(int number);
 	void prepareNextStage();
-
-	void printScoreBoard(string currentQuestion, int snake1Score, int snake2Score);
-	void printMessageOnBoard(string message);
 };
 
 #endif

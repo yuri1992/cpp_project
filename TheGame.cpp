@@ -3,6 +3,8 @@
 #include "Point.h"
 #include "Snake.h"
 #include "io_utils.h"
+#include <string>
+#include <iostream>
 
 TheGame::TheGame(const char* board[ROWS])
 {
@@ -17,9 +19,11 @@ TheGame::TheGame(const char* board[ROWS])
 
 void TheGame::init()
 {
+	mission.nextMission();
 	boardManager->printBoard();
 	snakes[0]->printSnake();
 	snakes[1]->printSnake();
+	printScoreBoard();
 }
 
 void TheGame::printScreen()
@@ -83,10 +87,16 @@ void TheGame::_handleGameKeyPress()
 			}
 			Sleep(400);
 		}
+		else
+		{
 
-		// Todo we should talk about why boardManager should print it,
-		// I thought that TheGame Should handle it.
-		boardManager->printScoreBoard(mission.getMissionText(), snakes[0]->getPoints(), snakes[1]->getPoints());
+			if (snakes[0]->isWinGame())
+				_newGame(); // TODO : promot a win game message					
+			else if (snakes[1]->isWinGame())
+				_newGame(); // TODO : promot a win game message					
+			else
+				_nextStage(); // TODO : promot a won stage message
+		}
 	}
 }
 
@@ -108,32 +118,19 @@ bool TheGame::isStageSolved()
 			if (mission.isSolved(n))
 			{
 				snakes[i]->wonStage();
-				if (snakes[i]->isWinGame())
-					_newGame(); // TODO : promot a win game message					
-				else
-					_nextStage(); // TODO : promot a won stage message
-				return true;
 			}
 			else
 			{
 				if (i == 1)
 				{
 					snakes[0]->wonStage();
-					if (snakes[0]->isWinGame())
-						_newGame(); // TODO : promot a win game message					
-					else
-						_nextStage(); // TODO : promot a won stage message
 				}
 				else
 				{
 					snakes[1]->wonStage();
-					if (snakes[1]->isWinGame())
-						_newGame(); // TODO : promot a win game message					
-					else
-						_nextStage(); // TODO : promot a won stage message
 				}
-				return true;
 			}
+			return true;
 		}
 	}
 
@@ -203,6 +200,71 @@ void TheGame::_handleMenuKeyPress()
 	}
 }
 
+void TheGame::_start()
+{
+	status = Game::RUNNING;
+	init();
+}
+
+void TheGame::_continue()
+{
+	status = Game::RUNNING;
+	clearScreen();
+	boardManager->printBoard();
+	//boardManager->printBoardWithoutSnakePath();
+}
+
+void TheGame::_restartStage()
+{
+	clearScreen();
+	// TODO ITAY : we should be able to restart the game to same position of the initial mission
+	status = Game::RUNNING;
+}
+
+void TheGame::_nextStage()
+{
+	status = Game::RUNNING;
+	boardManager->prepareNextStage();
+	mission.nextMission();
+	snakes[0]->goToStartPoint(Point(10, 9));
+	snakes[1]->goToStartPoint(Point(70, 9));
+	printScoreBoard();
+	Sleep(1000);
+}
+
+
+void TheGame::_newGame()
+{
+	// TODO ITAY: we should be able restart all the game to initial point.
+	status = Game::RUNNING;
+}
+
+void TheGame::printScoreBoard()
+{
+	setTextColor(LIGHTGREY);
+	gotoxy(0, 0);
+	cout <<
+		"  Mission:                                                                      " << endl <<
+		"  Snake 1 Score: 8                                            Snake 2 Score: 7  " << 
+		"--------------------------------------------------------------------------------";
+	gotoxy(11, 0);
+	cout << mission.getMissionText();
+	gotoxy(17, 2);
+	cout << snakes[0]->getPoints() << " ";
+	gotoxy(77, 2);
+	cout << snakes[1]->getPoints() << " ";
+	cout << flush;
+}
+
+void TheGame::printMessageOnBoard(string message)
+{
+	gotoxy(21, 1);
+	cout << message;
+	Sleep(2000); // a short wait until the game continues
+	gotoxy(21, 1);
+	cout << "                                                        ";
+}
+
 void TheGame::showInformation()
 {
 	clearScreen();
@@ -227,7 +289,7 @@ void TheGame::showInformation()
 void TheGame::showMainMenu()
 {
 	clearScreen();
-	gotoxy(0, 4);
+	gotoxy(0, 3);
 	cout << "--------------------------------------------------------------------------------";
 	gotoxy(35, 11);
 	cout << "Snake Game";
@@ -255,48 +317,5 @@ void TheGame::showPauseMenu()
 		"                               (4) Restart mission                              " << endl <<
 		"                               (5) Start new mission                            " << endl <<
 		"                               (6) Restart game.                                " << endl <<
-		"                                                                                " << endl <<
-		"                                                                                " << endl <<
-		"                                                                                " << endl <<
-		"		                                                                         " << endl <<
-		"                                                                                " << endl <<
 		"                                                                                " << endl;
-}
-
-
-void TheGame::_start()
-{
-	status = Game::RUNNING;
-	init();
-}
-
-void TheGame::_continue()
-{
-	status = Game::RUNNING;
-	clearScreen();
-	boardManager->printBoardWithoutSnakePath();
-}
-
-void TheGame::_restartStage()
-{
-	clearScreen();
-	// TODO ITAY : we should be able to restart the game to same position of the initial mission
-	status = Game::RUNNING;
-}
-
-void TheGame::_nextStage()
-{
-	status = Game::RUNNING;
-	boardManager->prepareNextStage();
-	mission.nextMission();
-	snakes[0]->goToStartPoint(Point(10, 9));
-	snakes[1]->goToStartPoint(Point(70, 9));
-	Sleep(1000);
-}
-
-
-void TheGame::_newGame()
-{
-	// TODO ITAY: we should be able restart all the game to initial point.
-	status = Game::RUNNING;
 }

@@ -19,8 +19,7 @@ class MissionBase
 		POW_2_OF_13=5   //1 number: collect 13^2 = 169 (last num)..
 	};
 
-	int Numbers[SIZE];
-	bool isPrime(int number);
+	static bool isPrime(int number);
 	int currentMission;
 	string currentMissionText;
 
@@ -28,7 +27,7 @@ public:
 	MissionBase();
 	~MissionBase();
 	
-	string getMissionText();
+	string getMissionText() const;
 	bool isSolved(int number);
 	int generateNextNumber();
 	int nextMission();

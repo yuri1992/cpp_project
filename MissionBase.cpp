@@ -4,13 +4,12 @@ using namespace std;
 
 MissionBase::MissionBase()
 {
+	nextMission();
 }
-
 
 MissionBase::~MissionBase()
 {
 }
-
 
 bool MissionBase::isPrime(int number)
 {
@@ -24,7 +23,8 @@ bool MissionBase::isPrime(int number)
 	return true;
 }
 
-string MissionBase::getMissionText() {
+string MissionBase::getMissionText() const
+{
 	return currentMissionText;
 }
 
