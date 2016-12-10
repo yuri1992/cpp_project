@@ -66,6 +66,42 @@ public:
 	{
 		return x == p.x && y == p.y;
 	}
+
+
+	friend bool operator==(const Point& lhs, const Point& rhs)
+	{
+		return lhs.x == rhs.x
+			&& lhs.y == rhs.y;
+	}
+
+	friend bool operator!=(const Point& lhs, const Point& rhs)
+	{
+		return !(lhs == rhs);
+	}
+
+	friend bool operator<(const Point& lhs, const Point& rhs)
+	{
+		if (lhs.x < rhs.x)
+			return true;
+		if (rhs.x < lhs.x)
+			return false;
+		return lhs.y < rhs.y;
+	}
+
+	friend bool operator<=(const Point& lhs, const Point& rhs)
+	{
+		return !(rhs < lhs);
+	}
+
+	friend bool operator>(const Point& lhs, const Point& rhs)
+	{
+		return rhs < lhs;
+	}
+
+	friend bool operator>=(const Point& lhs, const Point& rhs)
+	{
+		return !(lhs < rhs);
+	}
 };
 
 #endif
