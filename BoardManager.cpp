@@ -109,9 +109,9 @@ void BoardManager::setNextNumber(int number)
 
 int BoardManager::getCellNumber(const Point& pt)
 {
-	if (pointToNumber.count(pt))
+	if (pointToNumber.find(pt) != pointToNumber.end())
 	{
-		return pointToNumber[pt];	
+		return pointToNumber.at(pt);	
 	}
 	return -1;
 	

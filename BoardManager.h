@@ -6,14 +6,6 @@
 
 using namespace std;
 
-struct PointCompare
-{
-	bool operator() (const Point& lhs, const Point& rhs) const
-	{
-		return lhs.getY() < rhs.getY() && lhs.getX() < rhs.getX();
-	}
-};
-
 enum
 {
 	ROWS = 24,
@@ -22,7 +14,7 @@ enum
 
 class BoardManager
 {
-	std::map<Point, int, PointCompare> pointToNumber;
+	std::map<Point, int> pointToNumber;
 	char originalBoard[ROWS][COLS + 1]; // this is the original board that we got (we need COLS+1 because we handle it as null terminated char*)
 	char board[ROWS][COLS + 1]; // this is the actual board we play on, i.e. changes on board are done here
 public:
