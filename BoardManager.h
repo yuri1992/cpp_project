@@ -3,7 +3,6 @@
 
 #include "Point.h"
 #include <map>
-
 using namespace std;
 
 enum
@@ -23,9 +22,11 @@ public:
 	~BoardManager();
 
 	void printBoard();
+	void printBoardWithoutSnakePath();
 
 	void printCell(int row, int col, Color color = Color::LIGHTGREY);
 	void printCell(const Point& pt, Color color = Color::LIGHTGREY);
+	void printCellWithoutSnake(int row, int col, Color color = Color::LIGHTGREY);
 
 	bool isWall(const Point& p) { return board[p.getY()][p.getX()] == '+'; }
 	bool isFreeCell(const Point& pt);
@@ -44,6 +45,9 @@ public:
 	void setBoard(const char* boardToCopy[ROWS]);
 	void deleteNumberfromBoard(int number);
 	void prepareNextStage();
+
+	void printScoreBoard(string currentQuestion, int snake1Score, int snake2Score);
+	void printMessageOnBoard(string message);
 };
 
 #endif

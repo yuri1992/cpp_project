@@ -4,7 +4,8 @@
 #include "Snake.h"
 #include "io_utils.h"
 
-TheGame::TheGame(const char* board[ROWS]) {
+TheGame::TheGame(const char* board[ROWS])
+{
 	// initialize Board
 	boardManager = new BoardManager(board);
 
@@ -14,51 +15,60 @@ TheGame::TheGame(const char* board[ROWS]) {
 	snakes[1] = new Snake(LIGHTBLUE, '#', boardManager, "wxad", Point(70, 9), DIRECTION_LEFT);
 }
 
-void TheGame::init() {
+void TheGame::init()
+{
 	boardManager->printBoard();
 	snakes[0]->printSnake();
 	snakes[1]->printSnake();
 }
 
-void TheGame::printScreen() {
-	if (status == Game::STARTED || status == Game::SHOW_QUICK_MENU)
-		showQuickMenu();
-	else if (status == Game::PAUSE || status == Game::SHOW_FULL_MENU)
-		showFullMenu();
+void TheGame::printScreen()
+{
+	if (status == Game::STARTED || status == Game::SHOW_MAIN_MENU)
+		showMainMenu();
+	else if (status == Game::PAUSE || status == Game::SHOW_PAUSE_MENU)
+		showPauseMenu();
 	else if (status == Game::SHOW_INFORMATION)
 		showInformation();
 }
 
-void TheGame::run() {
-
+void TheGame::run()
+{
 	printScreen();
 
-	do {
+	do
+	{
 		if (status == Game::STARTED ||
-			status == Game::SHOW_QUICK_MENU ||
+			status == Game::SHOW_MAIN_MENU ||
 			status == Game::PAUSE ||
-			status == Game::SHOW_FULL_MENU ||
-			status == Game::SHOW_INFORMATION) {
+			status == Game::SHOW_PAUSE_MENU ||
+			status == Game::SHOW_INFORMATION)
+		{
 			_handleMenuKeyPress();
 		}
-		else {
+		else
+		{
 			_handleGameKeyPress();
 		}
-	} while (true);
+	}
+	while (true);
 }
 
 
-void TheGame::_handleGameKeyPress() {
-	if (status == Game::RUNNING) {
+void TheGame::_handleGameKeyPress()
+{
+	if (status == Game::RUNNING)
+	{
 		char key = 0;
-		if (_kbhit()) {
+		if (_kbhit())
+		{
 			key = _getch();
 
-			if (key == ESC) {
+			if (key == ESC)
+			{
 				_pause();
 				return;
 			}
-
 			snakes[0]->handleKey(key);
 			snakes[1]->handleKey(key);
 		}
@@ -73,6 +83,10 @@ void TheGame::_handleGameKeyPress() {
 			}
 			Sleep(400);
 		}
+
+		// Todo we should talk about why boardManager should print it,
+		// I thought that TheGame Should handle it.
+		boardManager->printScoreBoard(mission.getMissionText(), snakes[0]->getPoints(), snakes[1]->getPoints());
 	}
 }
 
@@ -94,7 +108,6 @@ bool TheGame::isStageSolved()
 			if (mission.isSolved(n))
 			{
 				snakes[i]->wonStage();
-
 				if (snakes[i]->isWinGame())
 					_newGame(); // TODO : promot a win game message					
 				else
@@ -103,7 +116,8 @@ bool TheGame::isStageSolved()
 			}
 			else
 			{
-				if (i == 1) {
+				if (i == 1)
+				{
 					snakes[0]->wonStage();
 					if (snakes[0]->isWinGame())
 						_newGame(); // TODO : promot a win game message					
@@ -126,13 +140,17 @@ bool TheGame::isStageSolved()
 	return false;
 }
 
-void TheGame::_handleMenuKeyPress() {
-	if (_kbhit()) {
+void TheGame::_handleMenuKeyPress()
+{
+	if (_kbhit())
+	{
 		char key = 0;
 		key = _getch();
-		if (status == Game::STARTED || status == Game::SHOW_QUICK_MENU) {
-			// handling Quick Menu keys press
-			switch (key) {
+		if (status == Game::STARTED || status == Game::SHOW_MAIN_MENU)
+		{
+			// handling Main Menu keys press
+			switch (key)
+			{
 			case NUM_1:
 				_showInformation();
 				break;
@@ -145,20 +163,24 @@ void TheGame::_handleMenuKeyPress() {
 			default: break;
 			}
 		}
-		else if (status == Game::PAUSE || status == Game::SHOW_FULL_MENU) {
+		else if (status == Game::PAUSE || status == Game::SHOW_PAUSE_MENU)
+		{
 			// handling Full Menu keys press
-			switch (key) {
+			switch (key)
+			{
 			case NUM_1:
 				_exit();
 				break;
 			case NUM_2:
-				_showFullMenu();
+				_showMainMenu();
 				break;
 			case NUM_3:
 				_continue();
 				break;
+				// (4)Restart Mission: delete all numbers + put snakes on starting position 
+				//+ reset clock (from forum)  + [[ same snake size(i think- waiting for answer in forum)]]
 			case NUM_4:
-				_restartGame();
+				_restartStage();
 				break;
 			case NUM_5:
 				_nextStage();
@@ -169,17 +191,20 @@ void TheGame::_handleMenuKeyPress() {
 			default: break;
 			}
 		}
-		else if (status == Game::SHOW_INFORMATION) {
-			switch (key) {
+		else if (status == Game::SHOW_INFORMATION)
+		{
+			switch (key)
+			{
 			case NUM_9:
-				_showQuickMenu();
-			default:break;
+				_showMainMenu();
+			default: break;
 			}
 		}
 	}
 }
 
-void TheGame::showInformation() {
+void TheGame::showInformation()
+{
 	clearScreen();
 	cout <<
 		"                                                                                " << endl <<
@@ -199,51 +224,79 @@ void TheGame::showInformation() {
 		"      Press (9) to go back to menu.                                             " << endl;
 }
 
-void TheGame::showQuickMenu() {
+void TheGame::showMainMenu()
+{
 	clearScreen();
-	gotoxy(0, 4); cout << "--------------------------------------------------------------------------------";
-	gotoxy(35, 11); cout << "Snake Game";
-	gotoxy(32, 12); cout << "-----------------";
-	gotoxy(32, 14); cout << "(1) Instructions.";
-	gotoxy(32, 15); cout << "(2) Play game!";
-	gotoxy(32, 16); cout << "(9) Exit.";
+	gotoxy(0, 4);
+	cout << "--------------------------------------------------------------------------------";
+	gotoxy(35, 11);
+	cout << "Snake Game";
+	gotoxy(32, 12);
+	cout << "-----------------";
+	gotoxy(32, 14);
+	cout << "(1) Instructions.";
+	gotoxy(32, 15);
+	cout << "(2) Play game!";
+	gotoxy(32, 16);
+	cout << "(9) Exit.";
 	//gotoxy()
 }
 
-void TheGame::showFullMenu() {
-
-	// Todo ITAY: implement quick menu print
-	// 1. erase all screen
-	// 2. gotoxy middle screen
-	// 3. print menu.
-	cout << "Full " << endl;
+void TheGame::showPauseMenu()
+{
+	clearScreen();
+	cout <<
+		"                                                                                " << endl <<
+		"                                  Game Paused                                   " << endl <<
+		"                               ----------------                                 " << endl <<
+		"                               (1) Exit game.                                   " << endl <<
+		"                               (2) Main menu.                                   " << endl <<
+		"                               (3) Resume game.                                 " << endl <<
+		"                               (4) Restart mission                              " << endl <<
+		"                               (5) Start new mission                            " << endl <<
+		"                               (6) Restart game.                                " << endl <<
+		"                                                                                " << endl <<
+		"                                                                                " << endl <<
+		"                                                                                " << endl <<
+		"		                                                                         " << endl <<
+		"                                                                                " << endl <<
+		"                                                                                " << endl;
 }
 
-void TheGame::_start() {
+
+void TheGame::_start()
+{
 	status = Game::RUNNING;
 	init();
 }
 
-void TheGame::_continue() {
-	// TODO ITAY : we should print once again the board
+void TheGame::_continue()
+{
 	status = Game::RUNNING;
+	clearScreen();
+	boardManager->printBoardWithoutSnakePath();
 }
 
-void TheGame::_restartGame() {
+void TheGame::_restartStage()
+{
+	clearScreen();
 	// TODO ITAY : we should be able to restart the game to same position of the initial mission
 	status = Game::RUNNING;
 }
 
-void TheGame::_nextStage() {
+void TheGame::_nextStage()
+{
 	status = Game::RUNNING;
 	boardManager->prepareNextStage();
-	mission.NextMission();
+	mission.nextMission();
 	snakes[0]->goToStartPoint(Point(10, 9));
 	snakes[1]->goToStartPoint(Point(70, 9));
 	Sleep(1000);
 }
 
-void TheGame::_newGame() {
+
+void TheGame::_newGame()
+{
 	// TODO ITAY: we should be able restart all the game to initial point.
 	status = Game::RUNNING;
 }

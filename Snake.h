@@ -16,7 +16,7 @@ class Snake
 	BoardManager* theBoard;
 	SnakeBody* body;
 	char arrowKeys[KEYS_SIZE];
-	int points = 1;
+	int points = 0;
 public:
 	Snake(Color color, char bodyChar, BoardManager* theBoard, const char* keys, Point startPoint, Direction dir);
 	void printSnake();
@@ -31,6 +31,7 @@ public:
 
 	// getters and setters
 	void setBoardManager(BoardManager* _theBoard) { theBoard = _theBoard; }
+
 	void setArrowKeys(const char* keys)
 	{
 		arrowKeys[0] = keys[0];
@@ -39,6 +40,8 @@ public:
 		arrowKeys[3] = keys[3];
 	}
 
+	void setPoints(int point) { points = point; }
+	int getPoints() { return points; }
 private:
 	bool _isNextStepValid();
 };

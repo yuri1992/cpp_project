@@ -27,8 +27,9 @@ class MissionBase
 public:
 	MissionBase();
 	~MissionBase();
-
+	
+	string getMissionText();
 	bool isSolved(int number);
 	int generateNextNumber();
-	int NextMission();
+	int nextMission();
 };
