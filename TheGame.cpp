@@ -9,11 +9,9 @@ TheGame::TheGame(const char* board[ROWS]) {
 	boardManager = new BoardManager(board);
 
 	// initialize Two Snakes on screen
-	Point ptStart1 = Point(10, 9);
-	Point ptStart2 = Point(70, 9);
 	snakes = new Snake*[2];
-	snakes[0] = new Snake(YELLOW, '@', boardManager, "imjl", ptStart1, DIRECTION_RIGHT);
-	snakes[1] = new Snake(LIGHTBLUE, '#', boardManager, "wxad", ptStart2, DIRECTION_LEFT);
+	snakes[0] = new Snake(YELLOW, '@', boardManager, "imjl", Point(10, 9), DIRECTION_RIGHT);
+	snakes[1] = new Snake(LIGHTBLUE, '#', boardManager, "wxad", Point(70, 9), DIRECTION_LEFT);
 }
 
 void TheGame::init() {
@@ -96,22 +94,30 @@ bool TheGame::isStageSolved()
 			if (mission.isSolved(n))
 			{
 				snakes[i]->wonStage();
+
 				if (snakes[i]->isWinGame())
-				{
-					// TODO : promot a win game message
-					_newGame();
-				}
+					_newGame(); // TODO : promot a win game message					
 				else
-				{
-					// TODO : promot a won stage message
-					_nextGame();
-				}
+					_nextStage(); // TODO : promot a won stage message
 				return true;
 			}
 			else
 			{
-				// TODO : promot a lose game message
-				_nextGame();
+				if (i == 1) {
+					snakes[0]->wonStage();
+					if (snakes[0]->isWinGame())
+						_newGame(); // TODO : promot a win game message					
+					else
+						_nextStage(); // TODO : promot a won stage message
+				}
+				else
+				{
+					snakes[1]->wonStage();
+					if (snakes[1]->isWinGame())
+						_newGame(); // TODO : promot a win game message					
+					else
+						_nextStage(); // TODO : promot a won stage message
+				}
 				return true;
 			}
 		}
@@ -155,7 +161,7 @@ void TheGame::_handleMenuKeyPress() {
 				_restartGame();
 				break;
 			case NUM_5:
-				_nextGame();
+				_nextStage();
 				break;
 			case NUM_6:
 				_newGame();
@@ -228,9 +234,13 @@ void TheGame::_restartGame() {
 	status = Game::RUNNING;
 }
 
-void TheGame::_nextGame() {
-	// TODO ITAY: we should be able to break the current mission and start new mission.
+void TheGame::_nextStage() {
 	status = Game::RUNNING;
+	boardManager->prepareNextStage();
+	mission.NextMission();
+	snakes[0]->goToStartPoint(Point(10, 9));
+	snakes[1]->goToStartPoint(Point(70, 9));
+	Sleep(1000);
 }
 
 void TheGame::_newGame() {

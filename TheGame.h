@@ -65,7 +65,7 @@ private:
 	void _start();
 	void _continue();
 	void _restartGame();
-	void _nextGame();
+	void _nextStage();
 	void _newGame();
 	void _handleMenuKeyPress();
 	void _handleGameKeyPress();

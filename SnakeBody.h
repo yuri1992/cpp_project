@@ -39,6 +39,7 @@ public:
 	Point getNextPoint();
 	Point getNextPoint(int dir);
 	void setPosition(int y, int x);
+	void setPosition(const Point& pt);
 	void move();
 	void increaseSnakeBody();
 
@@ -95,5 +96,7 @@ public:
 	{
 		this->body = body;
 	}
+
+	void clean();
 };
 #endif

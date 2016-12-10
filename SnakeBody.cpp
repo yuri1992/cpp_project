@@ -16,6 +16,11 @@ void SnakeBody::setPosition(int y, int x)
 		this->body[i].set(x, y);
 }
 
+void SnakeBody::setPosition(const Point &pt)
+{
+	setPosition(pt.getY(), pt.getX());
+}
+
 void SnakeBody::move()
 {
 	this->body[currentSize - 1].draw(' ');
@@ -46,4 +51,10 @@ void SnakeBody::setBody(Point start)
 		this->body[i] = Point(start);
 		start.setY(start.getY() + 1);
 	}
+}
+
+void SnakeBody::clean()
+{
+	for (int i = 0; i < currentSize; i++)
+		this->body[i].draw(' ');
 }

@@ -82,7 +82,9 @@ void BoardManager::printNumberFromPoint(int randRow, int randCol, int number)
 {
 	int digitsNumber = getDigitsNumber(number);
 	int tempNum = number;
-	for (int i = digitsNumber; i > 0; i--)
+	numberToPoint[number] = Point(randCol, randRow);
+
+	for (int i = digitsNumber - 1; i >= 0; i--)
 	{
 		board[randRow][randCol + i] = '0' + tempNum % 10;
 		pointToNumber[Point(randCol + i, randRow)] = number;
@@ -129,6 +131,43 @@ void BoardManager::setBoard(const char* boardToCopy[ROWS])
 		originalBoard[i][COLS] = '\0';
 		board[i][COLS] = '\0';
 	}
+}
+
+
+void BoardManager::deleteNumberfromBoard(int number)
+{
+	if (numberToPoint.find(number) != numberToPoint.end())
+	{	
+		Point pt = numberToPoint.at(number);
+		int digits = getDigitsNumber(number);
+		for (int i = 0; i < digits; i++)
+		{
+			Point tmpPt = Point(pt.getX() + i, pt.getY());
+			pointToNumber.erase(tmpPt);
+			removeCell(tmpPt);
+			printCell(tmpPt);
+		}
+
+		// lets delete the number
+		numberToPoint.erase(number);
+	}
+}
+
+void BoardManager::prepareNextStage()
+{
+	int numbersOnBoard = numberToPoint.size();
+	while (numberToPoint.size() > 0 && numbersOnBoard / 2 <= numberToPoint.size())
+	{
+		for (auto const& x : numberToPoint)
+		{
+			if (rand() % 2 ==0)
+			{
+				deleteNumberfromBoard(x.first);
+				break;
+			}
+		}
+	}
+	
 }
 
 BoardManager::~BoardManager()

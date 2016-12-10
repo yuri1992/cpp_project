@@ -67,6 +67,12 @@ int Snake::getKeyDirection(char key)
 	return -1;
 }
 
+void Snake::goToStartPoint(const Point& pt)
+{
+	body->clean();
+	body->setPosition(pt);
+}
+
 bool Snake::_isNextStepValid()
 {
 	Point nextPoint = body->getNextPoint();
