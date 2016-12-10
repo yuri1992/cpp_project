@@ -3,7 +3,6 @@
 
 #include "Point.h"
 #include <map>
-#include "MissionBase.h"
 using namespace std;
 
 enum
@@ -14,7 +13,6 @@ enum
 
 class BoardManager
 {
-	MissionBase mission;
 	std::map<Point, int> pointToNumber;
 	char originalBoard[ROWS][COLS + 1]; // this is the original board that we got (we need COLS+1 because we handle it as null terminated char*)
 	char board[ROWS][COLS + 1]; // this is the actual board we play on, i.e. changes on board are done here

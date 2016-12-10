@@ -245,7 +245,7 @@ void TheGame::_restartMission() {
 }
 
 void TheGame::_nextMission() {
-	clearScreen();
+	//clearScreen();
 	mission.nextMission();
 	status = Game::RUNNING;
 }
