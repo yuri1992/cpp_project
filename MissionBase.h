@@ -1,4 +1,6 @@
 #pragma once
+#include "io_utils.h"
+
 using namespace std;
 class MissionBase
 {

@@ -1,38 +1,38 @@
 #include "MissionBase.h"
-#include "io_utils.h"
 
+using namespace std;
 
-
-
-
-
-
-
-MissionBase::MissionBase() {
+MissionBase::MissionBase()
+{
 }
 
 
-MissionBase::~MissionBase() {
+MissionBase::~MissionBase()
+{
 }
 
 
-bool MissionBase::isPrime(int number) {
+bool MissionBase::isPrime(int number)
+{
 	if (number < 2) return false;
 	if (number == 2) return true;
 	if (number % 2 == 0) return false;
-	for (int i = 3; (i*i) <= number; i += 2) {
+	for (int i = 3; (i * i) <= number; i += 2)
+	{
 		if (number % i == 0) return false;
 	}
 	return true;
 }
 
-bool MissionBase::isSolved(int number) {
+bool MissionBase::isSolved(int number)
+{
 	double sqrtOfNum;
 	int tempCurrentMission = 0;
 	bool answer = false;
 
 
-	switch (currentMission) {
+	switch (currentMission)
+	{
 	case MissionStatus::PRIME_NUM:
 		answer = isPrime(number);
 		break;
@@ -53,19 +53,14 @@ bool MissionBase::isSolved(int number) {
 		answer = (number == 169);
 		break;
 	default:
-		answer = false;
-		cout << "SHOULDNT REACh HERE" << endl;
+		return false;
 	}
 	return answer;
-
-
-	//return false;
 }
 
 
-
-
-int MissionBase::generateNextNumber() {
+int MissionBase::generateNextNumber()
+{
 	//0 to 2 for range of numbers
 	/*
 	0: 0-25
@@ -77,7 +72,8 @@ int MissionBase::generateNextNumber() {
 
 
 	//% for the number range and +x for the starting number X
-	switch (numberRange) {
+	switch (numberRange)
+	{
 	case 0:
 		ans = rand() % 25;
 		break;
@@ -93,9 +89,11 @@ int MissionBase::generateNextNumber() {
 	return ans;
 }
 
-int MissionBase::NextMission() {
+int MissionBase::NextMission()
+{
 	currentMission = rand() % 6;
-	switch (currentMission) {
+	switch (currentMission)
+	{
 	case MissionStatus::PRIME_NUM:
 		currentMissionText = "Collect a prime number";
 		break;
@@ -120,5 +118,3 @@ int MissionBase::NextMission() {
 
 	return currentMission;
 }
-
-
