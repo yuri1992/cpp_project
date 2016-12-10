@@ -46,9 +46,9 @@ public:
 
 	void printScreen();
 	void run();
-	void showInformation();
-	void showQuickMenu();
-	void showFullMenu();
+	static void showInformation();
+	static void showQuickMenu();
+	static void showFullMenu();
 	bool isStageSolved();
 
 	void setBoardManager(const char* board[ROWS]) { boardManager->setBoard(board); };

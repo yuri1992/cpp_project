@@ -2,6 +2,17 @@
 #define _BOARD_MANAGER_H_
 
 #include "Point.h"
+#include <map>
+
+using namespace std;
+
+struct PointCompare
+{
+	bool operator() (const Point& lhs, const Point& rhs) const
+	{
+		return lhs.getY() < rhs.getY() && lhs.getX() < rhs.getX();
+	}
+};
 
 enum
 {
@@ -11,6 +22,7 @@ enum
 
 class BoardManager
 {
+	std::map<Point, int, PointCompare> pointToNumber;
 	char originalBoard[ROWS][COLS + 1]; // this is the original board that we got (we need COLS+1 because we handle it as null terminated char*)
 	char board[ROWS][COLS + 1]; // this is the actual board we play on, i.e. changes on board are done here
 public:
@@ -27,6 +39,7 @@ public:
 	bool isFreeCell(int row, int col);
 
 	bool isValidNumberCell(int row, int col, int number);
+	void printNumberFromPoint(int rand_row, int rand_col, int number);
 	void setNextNumber(int number);
 	int getCellNumber(const Point& pt);
 

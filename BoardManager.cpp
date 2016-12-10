@@ -2,6 +2,8 @@
 #include "io_utils.h"
 #include <iostream>
 #include <string>
+#include <map>
+
 
 BoardManager::BoardManager(const char* boardToCopy[ROWS])
 {
@@ -76,18 +78,30 @@ bool BoardManager::isValidNumberCell(int row, int col, int number)
 	return true;
 }
 
+void BoardManager::printNumberFromPoint(int randRow, int randCol, int number)
+{
+	int digitsNumber = getDigitsNumber(number);
+	int tempNum = number;
+	for (int i = digitsNumber; i > 0; i--)
+	{
+		board[randRow][randCol + i] = '0' + tempNum % 10;
+		pointToNumber[Point(randCol + i, randRow)] = number;
+		printCell(randRow, randCol + i);
+		tempNum /= 10;
+	}
+}
+
 void BoardManager::setNextNumber(int number)
 {
 	bool isNumberSet = false;
 	int randRow, randCol;
 	while (!isNumberSet)
 	{
-		randRow = rand() % ROWS;
+		randRow = (rand() % (ROWS - 4)) + 4;
 		randCol = rand() % COLS;
 		if (isValidNumberCell(randRow, randCol, number))
 		{
-			setCell(randRow, randCol, '1');
-			printCell(randRow, randCol);
+			printNumberFromPoint(randRow, randCol, number);
 			break;
 		}
 	}
@@ -95,9 +109,12 @@ void BoardManager::setNextNumber(int number)
 
 int BoardManager::getCellNumber(const Point& pt)
 {
-	// TODO Itay; as we talked you should be able to return the number in @pt
-	// Maybe you should use Dict(key value) storage for easier fetch.
+	if (pointToNumber.count(pt))
+	{
+		return pointToNumber[pt];	
+	}
 	return -1;
+	
 }
 
 void BoardManager::setBoard(const char* boardToCopy[ROWS])

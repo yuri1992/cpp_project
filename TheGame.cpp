@@ -32,7 +32,9 @@ void TheGame::printScreen() {
 }
 
 void TheGame::run() {
+
 	printScreen();
+
 	do {
 		if (status == Game::STARTED ||
 			status == Game::SHOW_QUICK_MENU ||
@@ -47,6 +49,76 @@ void TheGame::run() {
 	} while (true);
 }
 
+
+void TheGame::_handleGameKeyPress() {
+	if (status == Game::RUNNING) {
+		char key = 0;
+		if (_kbhit()) {
+			key = _getch();
+
+			if (key == ESC) {
+				_pause();
+				return;
+			}
+
+			snakes[0]->handleKey(key);
+			snakes[1]->handleKey(key);
+		}
+
+		if (!isStageSolved())
+		{
+			snakes[0]->move();
+			snakes[1]->move();
+			if (step++ % 5 == 0)
+			{
+				boardManager->setNextNumber(mission.generateNextNumber());
+			}
+			Sleep(400);
+		}
+	}
+}
+
+bool TheGame::isStageSolved()
+{
+	/*
+	 * return True when stage is completed!! not solved currently
+	 */
+	Point pt;
+	int n, i;
+
+	for (i = 0; i < 2; i++)
+	{
+		pt = snakes[i]->getNextStep();
+		n = boardManager->getCellNumber(pt);
+
+		if (n >= 0)
+		{
+			if (mission.isSolved(n))
+			{
+				snakes[i]->wonStage();
+				if (snakes[i]->isWinGame())
+				{
+					// TODO : promot a win game message
+					_newGame();
+				}
+				else
+				{
+					// TODO : promot a won stage message
+					_nextGame();
+				}
+				return true;
+			}
+			else
+			{
+				// TODO : promot a lose game message
+				_nextGame();
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
 
 void TheGame::_handleMenuKeyPress() {
 	if (_kbhit()) {
@@ -99,76 +171,6 @@ void TheGame::_handleMenuKeyPress() {
 			}
 		}
 	}
-}
-
-void TheGame::_handleGameKeyPress() {
-	if (status == Game::RUNNING) {
-		char key = 0;
-		if (_kbhit()) {
-			key = _getch();
-
-			if (key == ESC) {
-				_pause();
-				return;
-			}
-
-			snakes[0]->handleKey(key);
-			snakes[1]->handleKey(key);
-		}
-
-		if (!isStageSolved())
-		{
-			snakes[0]->move();
-			snakes[1]->move();
-			Sleep(400);
-			if (step++ % 2 == 0)
-			{
-				boardManager->setNextNumber(mission.generateNextNumber());
-			}
-		}
-	}
-}
-
-bool TheGame::isStageSolved()
-{
-	/*
-	 * return True when stage is completed!! not solved currently
-	 */
-	Point pt;
-	int n, i;
-
-	for (i = 0; i < 2; i++)
-	{
-		pt = snakes[i]->getNextStep();
-		n = boardManager->getCellNumber(pt);
-
-		if (n >= 0)
-		{
-			if (mission.isSolved(n))
-			{
-				snakes[i]->wonStage();
-				if (snakes[i]->isWinGame())
-				{
-					// TODO : promot a win game message
-					_newGame();
-				}
-				else
-				{
-					// TODO : promot a lose game message
-					_nextGame();
-				}
-				return true;
-			}
-			else
-			{
-				// TODO : promot a lose game message
-				_nextGame();
-				return true;
-			}
-		}
-	}
-
-	return false;
 }
 
 void TheGame::showInformation() {

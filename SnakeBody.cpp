@@ -27,9 +27,15 @@ void SnakeBody::move()
 
 void SnakeBody::increaseSnakeBody()
 {
-	// TODO : implement function that will increase the snake body size
-	// body should have one more node at the tail of the sanke.
-	// you should allocate new memory and relase the old snake memory.
+	int currentSize = getCurrentSize();
+	Point *nBody = new Point[currentSize + 1];
+
+	for (int i = 0; i < currentSize; i++)
+	{
+		nBody[i] = body[i];
+	}
+
+	setCurrentSize(currentSize + 1);
 }
 
 void SnakeBody::setBody(Point start)
