@@ -1,6 +1,13 @@
 #include "MissionBase.h"
 #include "io_utils.h"
 
+
+
+
+
+
+
+
 MissionBase::MissionBase() {
 }
 
@@ -8,9 +15,56 @@ MissionBase::MissionBase() {
 MissionBase::~MissionBase() {
 }
 
-bool MissionBase::isSolved(int number) {
-	return false;
+
+bool MissionBase::isPrime(int number) {
+	if (number < 2) return false;
+	if (number == 2) return true;
+	if (number % 2 == 0) return false;
+	for (int i = 3; (i*i) <= number; i += 2) {
+		if (number % i == 0) return false;
+	}
+	return true;
 }
+
+bool MissionBase::isSolved(int number) {
+	double sqrtOfNum;
+	int tempCurrentMission = 0;
+	bool answer = false;
+
+
+	switch (tempCurrentMission) {
+	case MissionStatus::PRIME_NUM:
+		answer = isPrime(number);
+		break;
+	case MissionStatus::DIVIDED_BY_4:
+		answer = (number % 4 == 0);
+		break;
+	case MissionStatus::MULTI_OF_7: //SAME AS DIVIDED BY
+		answer = (number % 7 == 0);
+		break;
+	case MissionStatus::NATURAL_SQRT:
+		sqrtOfNum = sqrt(number);
+		answer = (floor(sqrtOfNum) == sqrtOfNum);
+		break;
+	case MissionStatus::DIV_BY_7_REMAIN_3:
+		answer = (number % 7 == 3);
+		break;
+	case MissionStatus::POW_2_OF_13:
+		answer = (number == 169);
+		break;
+	default:
+		answer = false;
+		cout << "SHOULDNT REACh HERE" << endl;
+	}
+	return answer;
+
+
+	//return false;
+}
+
+
+
+
 
 int MissionBase::generateNextNumber() {
 	//0 to 2 for range of numbers
@@ -25,20 +79,19 @@ int MissionBase::generateNextNumber() {
 
 	//% for the number range and +x for the starting number X
 	switch (numberRange) {
-	case 0: 
+	case 0:
 		ans = rand() % 25;
 		break;
 	case 1:
 		ans = rand() % 56 + 26;
 		break;
-	case 2: 
+	case 2:
 		ans = rand() % 87 + 82;
 		break;
-	default: ans = 0; 
+	default: ans = 0;
 	}
 
 	return ans;
-
-	// TODO Itay [DONE]; Please implemnt the required logic for generating next nubmer
-	// it should only generate number by the required logic without any additional requirements
 }
+
+
