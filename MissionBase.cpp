@@ -32,7 +32,7 @@ bool MissionBase::isSolved(int number) {
 	bool answer = false;
 
 
-	switch (tempCurrentMission) {
+	switch (currentMission) {
 	case MissionStatus::PRIME_NUM:
 		answer = isPrime(number);
 		break;
@@ -65,7 +65,6 @@ bool MissionBase::isSolved(int number) {
 
 
 
-
 int MissionBase::generateNextNumber() {
 	//0 to 2 for range of numbers
 	/*
@@ -92,6 +91,34 @@ int MissionBase::generateNextNumber() {
 	}
 
 	return ans;
+}
+
+int MissionBase::NextMission() {
+	currentMission = rand() % 6;
+	switch (currentMission) {
+	case MissionStatus::PRIME_NUM:
+		currentMissionText = "Collect a prime number";
+		break;
+	case MissionStatus::DIVIDED_BY_4:
+		currentMissionText = "Collect a number that divides by 4";
+		break;
+	case MissionStatus::MULTI_OF_7: //SAME AS DIVIDED BY
+		currentMissionText = "Collect a number that divides by 7";
+		break;
+	case MissionStatus::NATURAL_SQRT:
+		currentMissionText = "Collect a number that has a natural square root";
+		break;
+	case MissionStatus::DIV_BY_7_REMAIN_3:
+		currentMissionText = "Collect a number that divided by 7 has remainder of 3";
+		break;
+	case MissionStatus::POW_2_OF_13:
+		currentMissionText = "collect the number 13^2";
+		break;
+	default:
+		currentMissionText = "....";
+	}
+
+	return currentMission;
 }
 
 

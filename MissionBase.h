@@ -19,7 +19,8 @@ class MissionBase
 
 	int Numbers[SIZE];
 	bool isPrime(int number);
-
+	int currentMission;
+	string currentMissionText;
 
 public:
 	MissionBase();
@@ -27,4 +28,5 @@ public:
 
 	bool isSolved(int number);
 	int generateNextNumber();
+	int NextMission();
 };
