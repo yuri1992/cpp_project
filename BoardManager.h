@@ -41,6 +41,9 @@ public:
 	void removeCell(const Point& p) { removeCell(p.getY(), p.getX()); }
 
 	void setBoard(const char* boardToCopy[ROWS]);
+	
+	void printScoreBoard(string currentQuestion, int snake1Score, int snake2Score);
+	void printMessageOnBoard(string message);
 };
 
 #endif

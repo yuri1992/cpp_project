@@ -24,6 +24,10 @@ bool MissionBase::isPrime(int number)
 	return true;
 }
 
+string MissionBase::getMissionText() {
+	return currentMissionText;
+}
+
 bool MissionBase::isSolved(int number)
 {
 	double sqrtOfNum;
@@ -89,7 +93,7 @@ int MissionBase::generateNextNumber()
 	return ans;
 }
 
-int MissionBase::NextMission()
+int MissionBase::nextMission()
 {
 	currentMission = rand() % 6;
 	switch (currentMission)

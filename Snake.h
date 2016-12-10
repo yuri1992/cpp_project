@@ -16,14 +16,21 @@ class Snake
 	BoardManager* theBoard;
 	SnakeBody* body;
 	char arrowKeys[KEYS_SIZE];
-	int points = 12;
+	int points = 0;
 public:
-	Snake(Color color, char bodyChar, BoardManager* theBoard,
-	      const char* keys, Point startPoint);
+	Snake(Color color, char bodyChar, BoardManager* theBoard,const char* keys, Point startPoint);
 	Snake(Color color, char bodyChar, BoardManager* theBoard, const char* keys, Point startPoint, Direction dir);
 	void printSnake();
 	void handleKey(int dir);
 	Point getNextStep();
+	void setPoints(int point) {
+		points = point;
+	}
+
+	int getPoints() {
+
+		return points;
+	}
 	int getKeyDirection(char key);
 	void move();
 

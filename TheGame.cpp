@@ -60,7 +60,6 @@ void TheGame::_handleGameKeyPress() {
 				_pause();
 				return;
 			}
-
 			snakes[0]->handleKey(key);
 			snakes[1]->handleKey(key);
 		}
@@ -75,6 +74,9 @@ void TheGame::_handleGameKeyPress() {
 			}
 			Sleep(400);
 		}
+
+
+		boardManager->printScoreBoard(mission.getMissionText(), snakes[0]->getPoints(), snakes[1]->getPoints());
 	}
 }
 
@@ -206,12 +208,30 @@ void TheGame::showQuickMenu() {
 
 void TheGame::showFullMenu() {
 
-	// Todo ITAY: implement quick menu print
-	// 1. erase all screen
-	// 2. gotoxy middle screen
-	// 3. print menu.
-	cout << "Full " << endl;
+	// (4)Restart Mission: delete all numbers + put snakes on starting position + reset clock (from forum)
+
+
+	clearScreen();
+	cout <<
+		"                                                                                " << endl <<
+		"                                  Game Paused                                   " << endl <<
+		"                               ----------------                                 " << endl <<
+		"                               (1) Exit game.                                   " << endl <<
+		"                               (2) Main menu.                                   " << endl <<
+		"                               (3) Resume game.                                 " << endl <<
+		"                               (4) Restart mission                              " << endl <<
+		"                               (5) Start new mission                            " << endl <<
+		"                               (6) Restart game.                                " << endl <<
+		"                                                                                " << endl <<
+		"                                                                                " << endl <<
+		"                                                                                " << endl <<
+		"		                                                                         " << endl <<
+		"                                                                                " << endl <<
+		"                                                                                " << endl;
 }
+
+
+
 
 void TheGame::_start() {
 	status = Game::RUNNING;
@@ -221,6 +241,7 @@ void TheGame::_start() {
 void TheGame::_continue() {
 	// TODO ITAY : we should print once again the board
 	status = Game::RUNNING;
+	//boardManager->printBoard();
 }
 
 void TheGame::_restartGame() {
