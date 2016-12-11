@@ -139,7 +139,7 @@ void BoardManager::setBoard(const char* boardToCopy[ROWS]) {
 	}
 }
 
-void BoardManager::deleteNumberfromBoard(int number)
+void BoardManager::removeNumberfromBoard(int number)
 {
 	if (numberToPoint.find(number) != numberToPoint.end())
 	{	
@@ -167,7 +167,7 @@ void BoardManager::prepareNextStage()
 		{
 			if (rand() % 2 ==0)
 			{
-				deleteNumberfromBoard(x.first);
+				removeNumberfromBoard(x.first);
 				break;
 			}
 		}

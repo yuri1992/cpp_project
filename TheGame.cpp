@@ -77,26 +77,22 @@ void TheGame::_handleGameKeyPress()
 			snakes[1]->handleKey(key);
 		}
 
-		if (!isStageSolved())
+		if (isStageSolved())
 		{
-			snakes[0]->move();
-			snakes[1]->move();
-			if (step++ % 5 == 0)
-			{
-				boardManager->setNextNumber(mission.generateNextNumber());
-			}
-			Sleep(400);
-		}
-		else
-		{
-
 			if (snakes[0]->isWinGame())
-				_newGame(); // TODO : promot a win game message					
+				_newGame(); // TODO Itay : promot a win game message					
 			else if (snakes[1]->isWinGame())
-				_newGame(); // TODO : promot a win game message					
+				_newGame(); // TODO Itay : promot a win game message					
 			else
-				_nextStage(); // TODO : promot a won stage message
+				_nextStage(); // TODO Itay: promot a won stage message
 		}
+
+		if (step++ % 5 == 0)
+			boardManager->setNextNumber(mission.generateNextNumber());
+
+		snakes[0]->move();
+		snakes[1]->move();
+		Sleep(400);
 	}
 }
 
@@ -117,6 +113,7 @@ bool TheGame::isStageSolved()
 		{
 			if (mission.isSolved(n))
 			{
+				boardManager->removeNumberfromBoard(n);
 				snakes[i]->wonStage();
 			}
 			else
@@ -211,7 +208,6 @@ void TheGame::_continue()
 	status = Game::RUNNING;
 	clearScreen();
 	boardManager->printBoard();
-	//boardManager->printBoardWithoutSnakePath();
 }
 
 void TheGame::_restartStage()
@@ -226,8 +222,6 @@ void TheGame::_nextStage()
 	status = Game::RUNNING;
 	boardManager->prepareNextStage();
 	mission.nextMission();
-	snakes[0]->goToStartPoint(Point(10, 9));
-	snakes[1]->goToStartPoint(Point(70, 9));
 	printScoreBoard();
 	Sleep(1000);
 }

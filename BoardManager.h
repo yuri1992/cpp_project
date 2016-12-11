@@ -43,7 +43,7 @@ public:
 	void removeCell(const Point& p) { removeCell(p.getY(), p.getX()); }
 
 	void setBoard(const char* boardToCopy[ROWS]);
-	void deleteNumberfromBoard(int number);
+	void removeNumberfromBoard(int number);
 	void prepareNextStage();
 };
 
