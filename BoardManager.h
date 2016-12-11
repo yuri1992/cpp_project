@@ -3,6 +3,7 @@
 
 #include "Point.h"
 #include <map>
+#include "MissionBase.h"
 using namespace std;
 
 enum
@@ -13,12 +14,14 @@ enum
 
 class BoardManager
 {
+	MissionBase* mission;
 	std::map<Point, int> pointToNumber;
 	std::map<int, Point> numberToPoint;
 	char originalBoard[ROWS][COLS + 1]; // this is the original board that we got (we need COLS+1 because we handle it as null terminated char*)
 	char board[ROWS][COLS + 1]; // this is the actual board we play on, i.e. changes on board are done here
 public:
-	BoardManager(const char* boardToCopy[ROWS]);
+	void setMission(MissionBase* _mission) { mission = _mission; }
+	BoardManager(const char* boardToCopy[ROWS], MissionBase *mission);
 	~BoardManager();
 
 	void printBoard();
@@ -29,11 +32,10 @@ public:
 	void printCellWithoutSnake(int row, int col, Color color = Color::LIGHTGREY);
 
 	bool isWall(const Point& p) { return board[p.getY()][p.getX()] == '+'; }
-	bool isFreeCell(const Point& pt);
-	bool isFreeCell(int row, int col);
 
 	bool isValidNumberCell(int row, int col, int number);
-	void printNumberFromPoint(int rand_row, int rand_col, int number);
+	void printNumberFromPoint(int rand_row, int rand_col, int number, Color color = Color::LIGHTGREY);
+	void printNumberFromPoint(const Point& pt, int number, Color color = Color::LIGHTGREY);
 	void setNextNumber(int number);
 	int getCellNumber(const Point& pt);
 
@@ -45,6 +47,10 @@ public:
 	void setBoard(const char* boardToCopy[ROWS]);
 	void removeNumberfromBoard(int number);
 	void prepareNextStage();
+	void blinkPoint(int number, const Point& pt);
+	bool findSolveOnBoard();
+
+	int getNumberOfNumbers();
 };
 
 #endif

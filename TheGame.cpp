@@ -9,7 +9,7 @@
 TheGame::TheGame(const char* board[ROWS])
 {
 	// initialize Board
-	boardManager = new BoardManager(board);
+	boardManager = new BoardManager(board, &mission);
 
 	// initialize Two Snakes on screen
 	snakes = new Snake*[2];
@@ -85,6 +85,17 @@ void TheGame::_handleGameKeyPress()
 				_newGame(); // TODO Itay : promot a win game message					
 			else
 				_nextStage(); // TODO Itay: promot a won stage message
+		}
+
+
+		if (boardManager->getNumberOfNumbers() == 10)
+		{
+			// Threr are 60 numbers of borad we should 
+			if (!boardManager->findSolveOnBoard())
+				printMessageOnBoard("Sorry, we do not have solution on page");
+			else
+				printMessageOnBoard("Nice try, We are continue to next Stage");
+			_nextStage();
 		}
 
 		if (step++ % 5 == 0)
@@ -237,13 +248,11 @@ void TheGame::printScoreBoard()
 {
 	setTextColor(LIGHTGREY);
 	gotoxy(0, 0);
-	cout << "  Mission:                                                                      ";
-	gotoxy(0, 1);
-	cout << "                                                                                ";
-	gotoxy(0, 2);
-	cout << "  Snake 1 Score: 8                                            Snake 2 Score: 7  ";
-	gotoxy(0, 3);
-	cout << "--------------------------------------------------------------------------------";
+	cout <<
+		"  Mission:                                                                      " << endl <<
+		"                                                                                " << endl <<
+		"  Snake 1 Score: 8                                            Snake 2 Score: 7  " << endl <<
+		"--------------------------------------------------------------------------------";
 	gotoxy(11, 0);
 	cout << mission.getMissionText();
 	gotoxy(17, 2);
