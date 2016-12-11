@@ -237,11 +237,13 @@ void TheGame::printScoreBoard()
 {
 	setTextColor(LIGHTGREY);
 	gotoxy(0, 0);
-	cout <<
-		"  Mission:                                                                      " << endl <<
-		"                                                                                " << endl <<
-		"  Snake 1 Score: 8                                            Snake 2 Score: 7  " << endl <<
-		"--------------------------------------------------------------------------------";
+	cout << "  Mission:                                                                      ";
+	gotoxy(0, 1);
+	cout << "                                                                                ";
+	gotoxy(0, 2);
+	cout << "  Snake 1 Score: 8                                            Snake 2 Score: 7  ";
+	gotoxy(0, 3);
+	cout << "--------------------------------------------------------------------------------";
 	gotoxy(11, 0);
 	cout << mission.getMissionText();
 	gotoxy(17, 2);
