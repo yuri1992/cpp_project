@@ -80,11 +80,22 @@ void TheGame::_handleGameKeyPress()
 		if (isStageSolved())
 		{
 			if (snakes[0]->isWinGame())
-				_newGame(); // TODO Itay : promot a win game message					
+			{
+				//checks if snake got 12
+				printMessageOnBoard("Snake 1 Won The game!!");
+				_newGame();
+			}
 			else if (snakes[1]->isWinGame())
-				_newGame(); // TODO Itay : promot a win game message					
+			{
+				printMessageOnBoard("Snake 2 Won The game!!");
+				_newGame();
+			}
+									
 			else
-				_nextStage(); // TODO Itay: promot a won stage message
+			{
+				_nextStage(); // the won stage print is in isStageSolved
+			}
+				
 		}
 
 
@@ -126,15 +137,29 @@ bool TheGame::isStageSolved()
 			{
 				boardManager->removeNumberfromBoard(n);
 				snakes[i]->wonStage();
+				if (i == 0)
+				{
+					setTextColor(YELLOW);
+					printMessageOnBoard("Snake 1 (yellow) is RIGHT! +1 point");
+				}
+				else if (i == 1)
+				{
+					setTextColor(LIGHTBLUE);
+					printMessageOnBoard("Snake 2 (blue) is RIGHT! +1 point");
+				}
 			}
 			else
 			{
 				if (i == 1)
 				{
+					setTextColor(LIGHTBLUE);
+					printMessageOnBoard("Snake 2 is WRONG: +1 point for snake 1");
 					snakes[0]->wonStage();
 				}
 				else
 				{
+					setTextColor(YELLOW);
+					printMessageOnBoard("Snake 1 is WRONG: +1 point for snake 2");
 					snakes[1]->wonStage();
 				}
 			}
