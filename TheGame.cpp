@@ -239,6 +239,7 @@ void TheGame::printScoreBoard()
 	gotoxy(0, 0);
 	cout <<
 		"  Mission:                                                                      " << endl <<
+		"                                                                                " << endl <<
 		"  Snake 1 Score: 8                                            Snake 2 Score: 7  " << endl <<
 		"--------------------------------------------------------------------------------";
 	gotoxy(11, 0);
