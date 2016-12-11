@@ -63,8 +63,8 @@ private:
 	void _showMainMenu() { status = Game::SHOW_MAIN_MENU; printScreen(); }
 
 	void _start();
-	void _continue();
-	void _restartGame();
+	void _resumeGame();
+	//void _restartGame();
 	void _nextStage();
 	void _restartStage();
 	void _newGame();

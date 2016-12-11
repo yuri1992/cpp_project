@@ -29,12 +29,17 @@ void Snake::handleKey(int key)
 		body->setDirection(keyDirection);
 	}
 
-	// Todo : handle others keys that can be pressed (fire)
+	// TODO :[NOT NOW] handle others keys that can be pressed (fire) 
 }
 
 Point Snake::getNextStep()
 {
 	return body->getNextPoint();
+}
+
+void Snake::setSnakeSize(int size)
+{
+	body->setCurrentSize(size);
 }
 
 void Snake::move()
@@ -65,6 +70,11 @@ int Snake::getKeyDirection(char key)
 			return i;
 	}
 	return -1;
+}
+
+void Snake::setSnakeDirection(int direction)
+{
+	body->setDirection(direction);
 }
 
 void Snake::goToStartPoint(const Point& pt)

@@ -17,12 +17,14 @@ TheGame::TheGame(const char* board[ROWS])
 	snakes[1] = new Snake(LIGHTBLUE, '#', boardManager, "wxad", Point(70, 9), DIRECTION_LEFT);
 }
 
+//THIS FUNCTION IS NOT CALLED ANYMORE.
 void TheGame::init()
 {
 	mission.nextMission();
-	boardManager->printBoard();
+	boardManager->printBoardWithoutSnakePath();
 	snakes[0]->printSnake();
 	snakes[1]->printSnake();
+
 	printScoreBoard();
 }
 
@@ -83,29 +85,31 @@ void TheGame::_handleGameKeyPress()
 			{
 				//checks if snake got 12
 				printMessageOnBoard("Snake 1 Won The game!!");
-				_newGame();
+				status = Game::SHOW_MAIN_MENU;
+				//_newGame();
 			}
 			else if (snakes[1]->isWinGame())
 			{
 				printMessageOnBoard("Snake 2 Won The game!!");
-				_newGame();
+				status = Game::SHOW_MAIN_MENU;
+				//_newGame();
 			}
-									
+
 			else
 			{
 				_nextStage(); // the won stage print is in isStageSolved
 			}
-				
+
 		}
 
 
-		if (boardManager->getNumberOfNumbers() == 10)
+		if (boardManager->getNumberOfNumbers() == 10) //TODO change to 60 eventually
 		{
 			// Threr are 60 numbers of borad we should 
 			if (!boardManager->findSolveOnBoard())
-				printMessageOnBoard("Sorry, we do not have solution on page");
+				printMessageOnBoard("Sorry, we do not have solution on the board");
 			else
-				printMessageOnBoard("Nice try, We are continue to next Stage");
+				printMessageOnBoard("Nice try, We are to continue to next Stage");
 			_nextStage();
 		}
 
@@ -114,7 +118,7 @@ void TheGame::_handleGameKeyPress()
 
 		snakes[0]->move();
 		snakes[1]->move();
-		Sleep(400);
+		Sleep(100);
 	}
 }
 
@@ -152,13 +156,13 @@ bool TheGame::isStageSolved()
 			{
 				if (i == 1)
 				{
-					setTextColor(LIGHTBLUE);
+					setTextColor(YELLOW);
 					printMessageOnBoard("Snake 2 is WRONG: +1 point for snake 1");
 					snakes[0]->wonStage();
 				}
 				else
 				{
-					setTextColor(YELLOW);
+					setTextColor(LIGHTBLUE);
 					printMessageOnBoard("Snake 1 is WRONG: +1 point for snake 2");
 					snakes[1]->wonStage();
 				}
@@ -205,7 +209,7 @@ void TheGame::_handleMenuKeyPress()
 				_showMainMenu();
 				break;
 			case NUM_3:
-				_continue();
+				_resumeGame();
 				break;
 				// (4)Restart Mission: delete all numbers + put snakes on starting position 
 				//+ reset clock (from forum)  + [[ same snake size(i think- waiting for answer in forum)]]
@@ -236,25 +240,70 @@ void TheGame::_handleMenuKeyPress()
 void TheGame::_start()
 {
 	status = Game::RUNNING;
-	init();
+	_newGame();
 }
 
-void TheGame::_continue()
+void TheGame::_resumeGame()
 {
 	status = Game::RUNNING;
 	clearScreen();
-	boardManager->printBoard();
+	boardManager->printBoardWithoutSnakePath();
+
 }
 
 void TheGame::_restartStage()
 {
+	//TODO - get this original BOARD FROM... elsewhere :X
+	const char* blabla[ROWS] = {
+		//	         10        20        30        40        50        60        70       79
+		//	 01234567890123456789012345678901234567890123456789012345678901234567890123456789
+		"                                                                                ", // 0
+		"                                                                                ", // 1
+		"                                                                                ", // 2
+		"------------------------------------------------------------------------------- ", // 3
+		"                                                                                ", // 4
+		"                                                                                ", // 5
+		"                                                                                ", // 6
+		"                                                                                ", // 7
+		"                                                                                ", // 8
+		"                                                                                ", // 9
+		"                                                                                ", // 10
+		"                                                                                ", // 11
+		"                                                                                ", // 12
+		"                                                                                ", // 13
+		"                                                                                ", // 14
+		"                                                                                ", // 15
+		"                                                                                ", // 16
+		"                                                                                ", // 17
+		"                                                                                ", // 18
+		"                                                                                ", // 19
+		"                                                                                ", // 20
+		"                                                                                ", // 21
+		"                                                                                ", // 22
+		"                                                                                " };  // 23
+//   01234567890123456789012345678901234567890123456789012345678901234567890123456789
+
 	clearScreen();
-	// TODO ITAY : we should be able to restart the game to same position of the initial mission
+	printScoreBoard();
+	delete boardManager;
+	boardManager = new BoardManager(blabla, &mission);
+	snakes[0]->goToStartPoint(Point(10, 9));
+	snakes[1]->goToStartPoint(Point(70, 9));
+	snakes[0]->setSnakeDirection(DIRECTION_RIGHT);
+	snakes[1]->setSnakeDirection(DIRECTION_LEFT);
 	status = Game::RUNNING;
 }
 
 void TheGame::_nextStage()
 {
+	if (status == Game::PAUSE)
+	{
+		clearScreen();
+		snakes[0]->goToStartPoint(Point(10, 9));
+		snakes[1]->goToStartPoint(Point(70, 9));
+		snakes[0]->setSnakeDirection(DIRECTION_RIGHT);
+		snakes[1]->setSnakeDirection(DIRECTION_LEFT);
+	}
 	status = Game::RUNNING;
 	boardManager->prepareNextStage();
 	mission.nextMission();
@@ -265,7 +314,17 @@ void TheGame::_nextStage()
 
 void TheGame::_newGame()
 {
-	// TODO ITAY: we should be able restart all the game to initial point.
+	clearScreen();
+	snakes[0]->setPoints(0);
+	snakes[1]->setPoints(0);
+	snakes[0]->goToStartPoint(Point(10, 9));
+	snakes[1]->goToStartPoint(Point(70, 9));
+	snakes[0]->setSnakeSize(3);
+	snakes[1]->setSnakeSize(3);
+	snakes[0]->setSnakeDirection(DIRECTION_RIGHT);
+	snakes[1]->setSnakeDirection(DIRECTION_LEFT);
+	boardManager->printBoardWithoutSnakePath();
+	printScoreBoard();
 	status = Game::RUNNING;
 }
 
@@ -276,7 +335,7 @@ void TheGame::printScoreBoard()
 	cout <<
 		"  Mission:                                                                      " << endl <<
 		"                                                                                " << endl <<
-		"  Snake 1 Score: 8                                            Snake 2 Score: 7  " << endl <<
+		"  Snake 1 Score: 0                                            Snake 2 Score: 0  " << endl <<
 		"--------------------------------------------------------------------------------";
 	gotoxy(11, 0);
 	cout << mission.getMissionText();
@@ -345,8 +404,8 @@ void TheGame::showPauseMenu()
 		"                               (1) Exit game.                                   " << endl <<
 		"                               (2) Main menu.                                   " << endl <<
 		"                               (3) Resume game.                                 " << endl <<
-		"                               (4) Restart mission                              " << endl <<
-		"                               (5) Start new mission                            " << endl <<
+		"                               (4) Restart stage                                " << endl <<
+		"                               (5) Start new stage                              " << endl <<
 		"                               (6) Restart game.                                " << endl <<
 		"                                                                                " << endl;
 }

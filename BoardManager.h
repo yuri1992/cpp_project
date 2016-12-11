@@ -5,7 +5,7 @@
 #include <map>
 #include "MissionBase.h"
 using namespace std;
-
+//typedef char(&array_type)[ROWS][COLS + 1];
 enum
 {
 	ROWS = 24,
@@ -23,6 +23,7 @@ public:
 	void setMission(MissionBase* _mission) { mission = _mission; }
 	BoardManager(const char* boardToCopy[ROWS], MissionBase *mission);
 	~BoardManager();
+
 
 	void printBoard();
 	void printBoardWithoutSnakePath();
@@ -51,6 +52,13 @@ public:
 	bool findSolveOnBoard();
 
 	int getNumberOfNumbers();
+	void setNumberOfNumbersToZero();
+
+
+
+	
+	//typedef char(&array_type)[ROWS][COLS + 1];
+	//array_type getOriginalBoard(void);
 };
 
 #endif
