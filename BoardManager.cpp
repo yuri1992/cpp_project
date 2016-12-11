@@ -231,10 +231,11 @@ int BoardManager::getNumberOfNumbers()
 	return numberToPoint.size();
 }
 
-void BoardManager::setNumberOfNumbersToZero()
-{
-	//TODO YURI (need to tell it that there is zero numbers on the board, so countdown will begin fresh from 0 //for restartStage and NextStage from menu
-}
+//void BoardManager::setNumberOfNumbersToZero()
+//{
+//deprecated for now
+	//(need to tell it that there is zero numbers on the board, so countdown will begin fresh from 0 //for restartStage and NextStage from menu
+//}
 
 
 //array_type BoardManager::getOriginalBoard()

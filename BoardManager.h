@@ -52,7 +52,7 @@ public:
 	bool findSolveOnBoard();
 
 	int getNumberOfNumbers();
-	void setNumberOfNumbersToZero();
+	//void setNumberOfNumbersToZero(); //no need
 
 
 
