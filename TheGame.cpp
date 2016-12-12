@@ -15,6 +15,7 @@ TheGame::TheGame()
 	snakes = new Snake*[2];
 	snakes[0] = new Snake(YELLOW, '@', boardManager, "imjl", Point(10, 9), DIRECTION_RIGHT);
 	snakes[1] = new Snake(LIGHTBLUE, '#', boardManager, "wxad", Point(70, 9), DIRECTION_LEFT);
+	boardManager->setSnakes(snakes);
 }
 
 //THIS FUNCTION IS NOT CALLED ANYMORE.

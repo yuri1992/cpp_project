@@ -5,6 +5,7 @@
 #include <map>
 #include "MissionBase.h"
 #include "Snake.h"
+class Snake;
 using namespace std;
 //typedef char(&array_type)[ROWS][COLS + 1];
 enum
@@ -12,10 +13,10 @@ enum
 	ROWS = 24,
 	COLS = 80
 };
-class Snake;
+
 class BoardManager
 {
-	
+	Snake** snakes;
 	MissionBase* mission;
 	std::map<Point, int> pointToNumber;
 	std::map<int, Point> numberToPoint;
@@ -26,7 +27,7 @@ public:
 	void setMission(MissionBase* _mission) { mission = _mission; }
 	BoardManager(MissionBase *mission);
 	~BoardManager();
-
+	void setSnakes(Snake** theSnakes);
 	std::map<Point, int> getPointToNumber() const { return pointToNumber; }
 
 	void setPointToNumber(const std::map<Point, int>& point_to_number) { pointToNumber = point_to_number;
