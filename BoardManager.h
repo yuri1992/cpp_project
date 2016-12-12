@@ -22,24 +22,8 @@ class BoardManager
 
 	std::map<int, Point> saver; // will restore the stage from here
 public:
-	void setMission(MissionBase* _mission) { mission = _mission; }
 	BoardManager(MissionBase *mission);
 	~BoardManager();
-
-	std::map<Point, int> getPointToNumber() const { return pointToNumber; }
-
-	void setPointToNumber(const std::map<Point, int>& point_to_number) { pointToNumber = point_to_number;
-	}
-
-	std::map<int, Point> getNumberToPoint() const
-	{
-		return numberToPoint;
-	}
-
-	void setNumberToPoint(const std::map<int, Point>& number_to_point)
-	{
-		numberToPoint = number_to_point;
-	}
 
 	void saveStage();
 	void restoreStage();
@@ -56,9 +40,9 @@ public:
 	bool isValidNumberCell(int row, int col, int number);
 	void printNumberFromPoint(int rand_row, int rand_col, int number, Color color = Color::LIGHTGREY);
 	void printNumberFromPoint(const Point& pt, int number, Color color = Color::LIGHTGREY);
-	void setNextNumber(int number);
+	void setNextNumber();
 	int getCellNumber(const Point& pt);
-	void setBoard();
+	
 	void setCell(int row, int col, char ch) { board[row][col] = ch; }
 	void setCell(const Point& pt, char ch) { board[pt.getY()][pt.getX()] = ch; }
 	void removeCell(int row, int col) { board[row][col] = ' '; }
@@ -69,6 +53,14 @@ public:
 	void blinkPoint(int number, const Point& pt);
 	bool findSolveOnBoard();	
 	int getNumberOfNumbers();
+
+
+	void setBoard();
+	std::map<Point, int> getPointToNumber() const { return pointToNumber; }
+	void setPointToNumber(const std::map<Point, int>& point_to_number) { pointToNumber = point_to_number; }
+	std::map<int, Point> getNumberToPoint() const { return numberToPoint; }
+	void setNumberToPoint(const std::map<int, Point>& number_to_point) { numberToPoint = number_to_point; }
+	void setMission(MissionBase* _mission) { mission = _mission; }
 };
 
 #endif

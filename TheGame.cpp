@@ -72,18 +72,16 @@ void TheGame::_handleGameKeyPress()
 		{
 			if (snakes[0]->isWinGame())
 			{
-				//checks if snake got 12
 				printMessageOnBoard("Snake 1 Won The game!!", snakes[0]->getColor());
-				status = Game::SHOW_MAIN_MENU;
-				//_newGame();
+				_finishGame();
+				return;
 			}
 			else if (snakes[1]->isWinGame())
 			{
 				printMessageOnBoard("Snake 2 Won The game!!", snakes[1]->getColor());
-				status = Game::SHOW_MAIN_MENU;
-				//_newGame();
+				_finishGame();
+				return;
 			}
-
 			else
 			{
 				_nextStage(); // the won stage print is in isStageSolved
@@ -103,7 +101,7 @@ void TheGame::_handleGameKeyPress()
 		}
 
 		if (step++ % 5 == 0)
-			boardManager->setNextNumber(mission.generateNextNumber());
+			boardManager->setNextNumber();
 
 		snakes[0]->move();
 		snakes[1]->move();
@@ -151,6 +149,7 @@ bool TheGame::isStageSolved()
 					snakes[1]->wonStage();
 				}
 			}
+
 			boardManager->removeNumberfromBoard(n);
 			return true;
 		}

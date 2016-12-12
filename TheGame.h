@@ -43,64 +43,43 @@ class TheGame
 	TheGame* previousStage;
 public:
 	TheGame();
-	void init();
-
-	Snake** getSnakes() const
-	{
-		return snakes;
-	}
-
-	void setSnakes(Snake** snakes)
-	{
-		this->snakes = snakes;
-	}
-
-	BoardManager* getBoardManager() const
-	{
-		return boardManager;
-	}
-
-	void setBoardManager1(BoardManager* board_manager)
-	{
-		boardManager = board_manager;
-	}
-
-	MissionBase getMission() const
-	{
-		return mission;
-	}
-
-	void setMission(const MissionBase& mission)
-	{
-		this->mission = mission;
-	}
-
 	void printScreen();
 	void run();
+
 	static void showInformation();
 	static void showMainMenu();
 	static void showPauseMenu();
-	bool isStageSolved();
-	
 
+	void printScoreBoard();
+	void printMessageOnBoard(string message, Color color = Color::LIGHTGREY);
+	bool isStageSolved();
+
+	// Getter and Setters
+	Snake** getSnakes() const { return snakes; }
+	void setSnakes(Snake** snakes) { this->snakes = snakes; }
+	BoardManager* getBoardManager() const { return boardManager; }
+	void setBoardManager1(BoardManager* board_manager) { boardManager = board_manager; }
+	MissionBase getMission() const { return mission; }
+	void setMission(const MissionBase& mission) { this->mission = mission; }
 private:
-	void _exit() { exit(0); }
+	
 	void _saveStage();
 	void _restoreFromSavedStage();
-	void _restartGame();
-	void _pause() { status = Game::PAUSE; printScreen(); }
+	
 	void _showPauseMenu() { status = Game::SHOW_PAUSE_MENU; printScreen(); }
 	void _showInformation() { status = Game::SHOW_INFORMATION; printScreen(); }
 	void _showMainMenu() { status = Game::SHOW_MAIN_MENU; printScreen(); }
 
 	void _start();
+	void _pause() { status = Game::PAUSE; printScreen(); }
+	void _restartGame();
 	void _resumeGame();
-	//void _restartGame();
 	void _nextStage();
 	void _restartStage();
 	void _newGame();
-	void printScoreBoard();
-	void printMessageOnBoard(string message, Color color = Color::LIGHTGREY);
+	void _finishGame() { status = Game::SHOW_MAIN_MENU;  printScreen(); }
+	void _exit() { exit(0); }
+
 	void _handleMenuKeyPress();
 	void _handleGameKeyPress();
 };

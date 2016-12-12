@@ -6,7 +6,7 @@
 #include "_board.h"
 
 
-BoardManager::BoardManager( MissionBase* mission)
+BoardManager::BoardManager(MissionBase* mission)
 {
 	setBoard();
 	setMission(mission);
@@ -140,18 +140,27 @@ void BoardManager::printNumberFromPoint(const Point& pt, int number, Color color
 	printNumberFromPoint(pt.getY(), pt.getX(), number, color);
 }
 
-void BoardManager::setNextNumber(int number)
+void BoardManager::setNextNumber()
 {
 	bool isNumberSet = false;
 	int randRow, randCol;
+	int number = mission->generateNextNumber();
+
 	while (!isNumberSet)
 	{
-		randRow = (rand() % (ROWS - 4)) + 4;
-		randCol = rand() % COLS;
-		if (isValidNumberCell(randRow, randCol, number))
+		if (numberToPoint.find(number) != numberToPoint.end())
 		{
-			printNumberFromPoint(randRow, randCol, number);
-			break;
+			number = mission->generateNextNumber();
+		}
+		else
+		{
+			randRow = (rand() % (ROWS - 4)) + 4;
+			randCol = rand() % COLS;
+			if (isValidNumberCell(randRow, randCol, number))
+			{
+				printNumberFromPoint(randRow, randCol, number);
+				break;
+			}
 		}
 	}
 }
@@ -215,11 +224,11 @@ void BoardManager::prepareNextStage()
 void BoardManager::blinkPoint(int number, const Point& pt)
 {
 	printNumberFromPoint(pt, number, Color::LIGHTRED);
-	Sleep(200);			 
+	Sleep(200);
 	printNumberFromPoint(pt, number, Color::LIGHTCYAN);
-	Sleep(200);			 
+	Sleep(200);
 	printNumberFromPoint(pt, number, Color::LIGHTGREEN);
-	Sleep(200);			 
+	Sleep(200);
 	printNumberFromPoint(pt, number);
 	Sleep(200);
 }
@@ -243,21 +252,8 @@ int BoardManager::getNumberOfNumbers()
 	return numberToPoint.size();
 }
 
-//void BoardManager::setNumberOfNumbersToZero()
-//{
-//deprecated for now
-	//(need to tell it that there is zero numbers on the board, so countdown will begin fresh from 0 //for restartStage and NextStage from menu
-//}
-
-
-//array_type BoardManager::getOriginalBoard()
-//{
-//	return originalBoard;
-//}
-
 BoardManager::~BoardManager()
 {
-
 	// Todo we should implement desctrouctor logic
 }
 

@@ -56,13 +56,13 @@ void Snake::move()
 
 void Snake::wonStage()
 {
-	body->increaseSnakeBody();
+	body->increaseSnakeBody();	
 	points++;
 }
 
 bool Snake::isWinGame()
 {
-	return points == 12;
+	return points == 4;
 }
 
 int Snake::getKeyDirection(char key)
