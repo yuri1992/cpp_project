@@ -100,7 +100,7 @@ private:
 	void _restartStage();
 	void _newGame();
 	void printScoreBoard();
-	void printMessageOnBoard(string message);
+	void printMessageOnBoard(string message, Color color = Color::LIGHTGREY);
 	void _handleMenuKeyPress();
 	void _handleGameKeyPress();
 };

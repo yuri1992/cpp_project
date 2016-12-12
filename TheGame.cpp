@@ -17,17 +17,6 @@ TheGame::TheGame()
 	snakes[1] = new Snake(LIGHTBLUE, '#', boardManager, "wxad", Point(70, 9), DIRECTION_LEFT);
 }
 
-//THIS FUNCTION IS NOT CALLED ANYMORE.
-void TheGame::init()
-{
-	mission.nextMission();
-	boardManager->printBoardWithoutSnakePath();
-	snakes[0]->printSnake();
-	snakes[1]->printSnake();
-
-	printScoreBoard();
-}
-
 void TheGame::printScreen()
 {
 	if (status == Game::STARTED || status == Game::SHOW_MAIN_MENU)
@@ -84,13 +73,13 @@ void TheGame::_handleGameKeyPress()
 			if (snakes[0]->isWinGame())
 			{
 				//checks if snake got 12
-				printMessageOnBoard("Snake 1 Won The game!!");
+				printMessageOnBoard("Snake 1 Won The game!!", snakes[0]->getColor());
 				status = Game::SHOW_MAIN_MENU;
 				//_newGame();
 			}
 			else if (snakes[1]->isWinGame())
 			{
-				printMessageOnBoard("Snake 2 Won The game!!");
+				printMessageOnBoard("Snake 2 Won The game!!", snakes[1]->getColor());
 				status = Game::SHOW_MAIN_MENU;
 				//_newGame();
 			}
@@ -142,27 +131,23 @@ bool TheGame::isStageSolved()
 				snakes[i]->wonStage();
 				if (i == 0)
 				{
-					setTextColor(YELLOW);
-					printMessageOnBoard("Snake 1 (yellow) is RIGHT! +1 point");
+					printMessageOnBoard("Snake 1 (yellow) is RIGHT! +1 point", Color::YELLOW);
 				}
 				else if (i == 1)
 				{
-					setTextColor(LIGHTBLUE);
-					printMessageOnBoard("Snake 2 (blue) is RIGHT! +1 point");
+					printMessageOnBoard("Snake 2 (blue) is RIGHT! +1 point", Color::LIGHTBLUE);
 				}
 			}
 			else
 			{
 				if (i == 1)
 				{
-					setTextColor(YELLOW);
-					printMessageOnBoard("Snake 2 is WRONG: +1 point for snake 1");
+					printMessageOnBoard("Snake 2 is WRONG: +1 point for snake 1", Color::YELLOW);
 					snakes[0]->wonStage();
 				}
 				else
 				{
-					setTextColor(LIGHTBLUE);
-					printMessageOnBoard("Snake 1 is WRONG: +1 point for snake 2");
+					printMessageOnBoard("Snake 1 is WRONG: +1 point for snake 2", Color::LIGHTBLUE);
 					snakes[1]->wonStage();
 				}
 			}
@@ -331,8 +316,9 @@ void TheGame::printScoreBoard()
 	cout << flush;
 }
 
-void TheGame::printMessageOnBoard(string message)
+void TheGame::printMessageOnBoard(string message, Color color)
 {
+	setTextColor(color);
 	gotoxy(21, 1);
 	cout << message;
 	Sleep(2000); // a short wait until the game continues

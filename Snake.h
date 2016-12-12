@@ -44,6 +44,7 @@ public:
 
 	void setPoints(int point) { points = point; }
 	int getPoints() { return points; }
+	Color getColor() { return body->getColor(); }
 private:
 	bool _isNextStepValid();
 };
