@@ -5,7 +5,7 @@
 #include <map>
 #include "MissionBase.h"
 using namespace std;
-
+//typedef char(&array_type)[ROWS][COLS + 1];
 enum
 {
 	ROWS = 24,
@@ -18,24 +18,17 @@ class BoardManager
 	MissionBase* mission;
 	std::map<Point, int> pointToNumber;
 	std::map<int, Point> numberToPoint;
-	char originalBoard[ROWS][COLS + 1]; // this is the original board that we got (we need COLS+1 because we handle it as null terminated char*)
 	char board[ROWS][COLS + 1]; // this is the actual board we play on, i.e. changes on board are done here
 
 	std::map<int, Point> saver; // will restore the stage from here
 public:
 	void setMission(MissionBase* _mission) { mission = _mission; }
-	BoardManager(const char* boardToCopy[ROWS], MissionBase *mission);
+	BoardManager(MissionBase *mission);
 	~BoardManager();
 
+	std::map<Point, int> getPointToNumber() const { return pointToNumber; }
 
-	std::map<Point, int> getPointToNumber() const
-	{
-		return pointToNumber;
-	}
-
-	void setPointToNumber(const std::map<Point, int>& point_to_number)
-	{
-		pointToNumber = point_to_number;
+	void setPointToNumber(const std::map<Point, int>& point_to_number) { pointToNumber = point_to_number;
 	}
 
 	std::map<int, Point> getNumberToPoint() const
@@ -65,13 +58,12 @@ public:
 	void printNumberFromPoint(const Point& pt, int number, Color color = Color::LIGHTGREY);
 	void setNextNumber(int number);
 	int getCellNumber(const Point& pt);
-
+	void setBoard();
 	void setCell(int row, int col, char ch) { board[row][col] = ch; }
 	void setCell(const Point& pt, char ch) { board[pt.getY()][pt.getX()] = ch; }
 	void removeCell(int row, int col) { board[row][col] = ' '; }
 	void removeCell(const Point& p) { removeCell(p.getY(), p.getX()); }
 
-	void setBoard(const char* boardToCopy[ROWS]);
 	void removeNumberfromBoard(int number);
 	void prepareNextStage();
 	void blinkPoint(int number, const Point& pt);

@@ -42,7 +42,7 @@ class TheGame
 
 	TheGame* previousStage;
 public:
-	TheGame(const char* board[ROWS]);
+	TheGame();
 	void init();
 
 	Snake** getSnakes() const
@@ -81,22 +81,21 @@ public:
 	static void showMainMenu();
 	static void showPauseMenu();
 	bool isStageSolved();
-
-	void setBoardManager(const char* board[ROWS]) { boardManager->setBoard(board); };
 	
 
 private:
 	void _exit() { exit(0); }
 	void _saveStage();
 	void _restoreFromSavedStage();
+	void _restartGame();
 	void _pause() { status = Game::PAUSE; printScreen(); }
 	void _showPauseMenu() { status = Game::SHOW_PAUSE_MENU; printScreen(); }
 	void _showInformation() { status = Game::SHOW_INFORMATION; printScreen(); }
 	void _showMainMenu() { status = Game::SHOW_MAIN_MENU; printScreen(); }
 
 	void _start();
-	void _continue();
-	void _restartGame();
+	void _resumeGame();
+	//void _restartGame();
 	void _nextStage();
 	void _restartStage();
 	void _newGame();

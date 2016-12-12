@@ -3,11 +3,12 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include "_board.h"
 
 
-BoardManager::BoardManager(const char* boardToCopy[ROWS], MissionBase* mission)
+BoardManager::BoardManager( MissionBase* mission)
 {
-	setBoard(boardToCopy);
+	setBoard();
 	setMission(mission);
 	saver = getNumberToPoint();
 }
@@ -164,16 +165,14 @@ int BoardManager::getCellNumber(const Point& pt)
 	return -1;
 }
 
-void BoardManager::setBoard(const char* boardToCopy[ROWS])
+void BoardManager::setBoard()
 {
 	for (int i = 0; i < ROWS; i++)
 	{
 		for (int j = 0; j < COLS; j++)
 		{
-			originalBoard[i][j] = boardToCopy[i][j];
-			board[i][j] = originalBoard[i][j];
+			board[i][j] = board_example[i][j];
 		}
-		originalBoard[i][COLS] = '\0';
 		board[i][COLS] = '\0';
 	}
 }
@@ -244,8 +243,21 @@ int BoardManager::getNumberOfNumbers()
 	return numberToPoint.size();
 }
 
+//void BoardManager::setNumberOfNumbersToZero()
+//{
+//deprecated for now
+	//(need to tell it that there is zero numbers on the board, so countdown will begin fresh from 0 //for restartStage and NextStage from menu
+//}
+
+
+//array_type BoardManager::getOriginalBoard()
+//{
+//	return originalBoard;
+//}
+
 BoardManager::~BoardManager()
 {
+
 	// Todo we should implement desctrouctor logic
 }
 

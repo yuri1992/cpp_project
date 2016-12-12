@@ -1,3 +1,5 @@
+#ifndef _BOARD_EXAMPLE_
+#define _BOARD_EXAMPLE_
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // _board.h
 // ---------
@@ -5,7 +7,7 @@
 // This file is a header file just for conveniency, but it CANNOT be included in multiple files.
 // (The file creates the single board that we use as a global variable).
 // You may for example include this file in main (ONLY) and use the board to init TheMathGame.
-// TODO: in ex2 _boards.h will be replaced with a better way, reading boards from files.
+// TODO:[NOT NOW] in ex2 _boards.h will be replaced with a better way, reading boards from files.
 //
 // Author: Amir Kirsh
 // First version: 2015-11-02
@@ -54,3 +56,4 @@ const char* board_example[ROWS] = {
 //   01234567890123456789012345678901234567890123456789012345678901234567890123456789
 };
 
+#endif

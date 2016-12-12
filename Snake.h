@@ -22,7 +22,9 @@ public:
 	void printSnake();
 	void handleKey(int dir);
 	Point getNextStep();
+	void setSnakeSize(int size);
 	int getKeyDirection(char key);
+	void setSnakeDirection(int direction);
 	void goToStartPoint(const Point& pt);
 	void move();
 
