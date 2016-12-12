@@ -4,6 +4,7 @@
 #include "Point.h"
 #include <map>
 #include "MissionBase.h"
+#include "Snake.h"
 using namespace std;
 //typedef char(&array_type)[ROWS][COLS + 1];
 enum
@@ -11,10 +12,10 @@ enum
 	ROWS = 24,
 	COLS = 80
 };
-
-
+class Snake;
 class BoardManager
 {
+	
 	MissionBase* mission;
 	std::map<Point, int> pointToNumber;
 	std::map<int, Point> numberToPoint;

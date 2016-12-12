@@ -144,7 +144,7 @@ void BoardManager::setNextNumber(int number)
 {
 	bool isNumberSet = false;
 	int randRow, randCol;
-	while (!isNumberSet)
+	while (!isNumberSet) //TODO is this just a while(true) ? no Ref to isNumberSet everywhere but here
 	{
 		randRow = (rand() % (ROWS - 4)) + 4;
 		randCol = rand() % COLS;
@@ -197,9 +197,14 @@ void BoardManager::removeNumberfromBoard(int number)
 }
 
 
-//TODO Solve bug, 50% do remove each number, not remove half the numbers.
+//TODO Solve bug, I THINK its going each number and 50% to remove it
+//if so tell me ill solve:
+//possible solution: get original map size -> iterate on half of the size -> rand()%originalSize -> add it to temp map -> 
+// -> remove it from existing (old map) which will shrink by size -> ..
+//if we had 60 orignal we will take 30 out randomally (I THINKKKK)
 void BoardManager::prepareNextStage()
 {
+	
 	int numbersOnBoard = numberToPoint.size();
 	while (numberToPoint.size() > 0 && numbersOnBoard / 2 <= numberToPoint.size())
 	{

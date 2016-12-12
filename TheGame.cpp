@@ -279,7 +279,9 @@ void TheGame::_resumeGame()
 {
 	status = Game::RUNNING;
 	clearScreen();
+	
 	boardManager->printBoardWithoutSnakePath();
+	printScoreBoard();
 
 }
 
@@ -288,6 +290,10 @@ void TheGame::_restartStage()
 	//clearScreen();
 	_restoreFromSavedStage();
 	printScoreBoard();	
+	snakes[0]->goToStartPoint(Point(10, 9));
+	snakes[1]->goToStartPoint(Point(70, 9));
+	snakes[0]->setSnakeDirection(DIRECTION_RIGHT);
+	snakes[1]->setSnakeDirection(DIRECTION_LEFT);
 	status = Game::RUNNING;
 }
 

@@ -5,7 +5,7 @@
 #include "Point.h"
 #include "SnakeBody.h"
 #include "BoardManager.h"
-
+class BoardManager;
 class Snake
 {
 	enum
