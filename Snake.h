@@ -40,7 +40,7 @@ public:
 	void setBoardManager(BoardManager* _theBoard) { theBoard = _theBoard; }
 	void setArrowKeys(const char* keys);
 	void setPoints(int point) { points = point; }
-	
+
 private:
 	bool _isNextStepValid();
 };

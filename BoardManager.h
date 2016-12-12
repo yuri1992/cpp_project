@@ -4,24 +4,25 @@
 #include "Point.h"
 #include <map>
 #include "MissionBase.h"
+
 using namespace std;
+
 enum
 {
 	ROWS = 24,
 	COLS = 80
 };
 
-
 class BoardManager
 {
+	///Snake** snakes;
 	MissionBase* mission;
 	std::map<Point, int> pointToNumber;
 	std::map<int, Point> numberToPoint;
 	char board[ROWS][COLS + 1]; // this is the actual board we play on, i.e. changes on board are done here
 	std::map<int, Point> saver; // will restore the stage from here
 public:
-	BoardManager(MissionBase *mission);
-	~BoardManager();
+	BoardManager(MissionBase* mission);
 
 	void saveStage();
 	void restoreStage();
@@ -48,7 +49,7 @@ public:
 	void removeNumberfromBoard(int number);
 	void prepareNextStage();
 	void blinkPoint(int number, const Point& pt);
-	bool findSolveOnBoard();	
+	bool findSolveOnBoard();
 	int getNumberOfNumbers();
 
 	// getters setters
