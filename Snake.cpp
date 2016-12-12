@@ -9,6 +9,11 @@ Snake::Snake(Color color, char bodyChar, BoardManager* theBoard,
 	body = new SnakeBody(dir, bodyChar, color, startPoint);
 }
 
+Snake::~Snake()
+{
+	delete body;
+}
+
 void Snake::printSnake()
 {
 	Point* ptrSnakeBody = body->getBody();
@@ -32,15 +37,6 @@ void Snake::handleKey(int key)
 	// TODO :[NOT NOW] handle others keys that can be pressed (fire) 
 }
 
-Point Snake::getNextStep()
-{
-	return body->getNextPoint();
-}
-
-void Snake::setSnakeSize(int size)
-{
-	body->setCurrentSize(size);
-}
 
 void Snake::move()
 {
@@ -60,9 +56,12 @@ void Snake::wonStage()
 	points++;
 }
 
-bool Snake::isWinGame()
+void Snake::setArrowKeys(const char* keys)
 {
-	return points == 4;
+	arrowKeys[0] = keys[0];
+	arrowKeys[1] = keys[1];
+	arrowKeys[2] = keys[2];
+	arrowKeys[3] = keys[3];
 }
 
 int Snake::getKeyDirection(char key)
@@ -73,11 +72,6 @@ int Snake::getKeyDirection(char key)
 			return i;
 	}
 	return -1;
-}
-
-void Snake::setSnakeDirection(int direction)
-{
-	body->setDirection(direction);
 }
 
 void Snake::goToStartPoint(const Point& pt)

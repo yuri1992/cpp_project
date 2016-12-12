@@ -13,6 +13,11 @@ BoardManager::BoardManager(MissionBase* mission)
 	saver = getNumberToPoint();
 }
 
+BoardManager::~BoardManager()
+{
+	delete mission;
+}
+
 void BoardManager::printBoard()
 {
 	for (int i = 0; i < ROWS; i++)
@@ -36,9 +41,6 @@ void BoardManager::cleanBoard()
 	}
 }
 
-
-//the function printBoard - printed the history of the snakes (full path they walked)
-//so when continuing i run this function. (TEMP SOLUTION)
 void BoardManager::printBoardWithoutSnakePath()
 {
 	for (int i = 0; i < ROWS; i++)
@@ -69,12 +71,8 @@ void BoardManager::printCell(const Point& pt, Color color)
 void BoardManager::printCellWithoutSnake(int row, int col, Color color)
 {
 	if (board[row][col] == '@' || board[row][col] == '#') return;
-	setTextColor(color);
-	gotoxy(col, row);
-	std::cout << board[row][col];
-	std::cout.flush();
+	printCell(row, col, color);
 }
-
 
 int getDigitsNumber(int number)
 {
@@ -120,7 +118,7 @@ bool BoardManager::isValidNumberCell(int row, int col, int number)
 	return true;
 }
 
-void BoardManager::printNumberFromPoint(int randRow, int randCol, int number, Color color)
+void BoardManager::printNumberByPoint(int randRow, int randCol, int number, Color color)
 {
 	int digitsNumber = getDigitsNumber(number);
 	int tempNum = number;
@@ -135,9 +133,9 @@ void BoardManager::printNumberFromPoint(int randRow, int randCol, int number, Co
 	}
 }
 
-void BoardManager::printNumberFromPoint(const Point& pt, int number, Color color)
+void BoardManager::printNumberByPoint(const Point& pt, int number, Color color)
 {
-	printNumberFromPoint(pt.getY(), pt.getX(), number, color);
+	printNumberByPoint(pt.getY(), pt.getX(), number, color);
 }
 
 void BoardManager::setNextNumber()
@@ -158,15 +156,16 @@ void BoardManager::setNextNumber()
 			randCol = rand() % COLS;
 			if (isValidNumberCell(randRow, randCol, number))
 			{
-				printNumberFromPoint(randRow, randCol, number);
+				printNumberByPoint(randRow, randCol, number);
 				break;
 			}
 		}
 	}
 }
 
-int BoardManager::getCellNumber(const Point& pt)
+int BoardManager::getNumberInCell(const Point& pt)
 {
+
 	if (pointToNumber.find(pt) != pointToNumber.end())
 	{
 		return pointToNumber.at(pt);
@@ -174,17 +173,6 @@ int BoardManager::getCellNumber(const Point& pt)
 	return -1;
 }
 
-void BoardManager::setBoard()
-{
-	for (int i = 0; i < ROWS; i++)
-	{
-		for (int j = 0; j < COLS; j++)
-		{
-			board[i][j] = board_example[i][j];
-		}
-		board[i][COLS] = '\0';
-	}
-}
 
 void BoardManager::removeNumberfromBoard(int number)
 {
@@ -207,8 +195,8 @@ void BoardManager::removeNumberfromBoard(int number)
 
 void BoardManager::prepareNextStage()
 {
-	int numbersOnBoard = numberToPoint.size();
-	while (numberToPoint.size() > 0 && numbersOnBoard / 2 <= numberToPoint.size())
+	int numberToLeaveOnBoard = numberToPoint.size() / 2;
+	while (numberToPoint.size() > 0 && numberToLeaveOnBoard < numberToPoint.size())
 	{
 		for (auto const& x : numberToPoint)
 		{
@@ -219,18 +207,6 @@ void BoardManager::prepareNextStage()
 			}
 		}
 	}
-}
-
-void BoardManager::blinkPoint(int number, const Point& pt)
-{
-	printNumberFromPoint(pt, number, Color::LIGHTRED);
-	Sleep(200);
-	printNumberFromPoint(pt, number, Color::LIGHTCYAN);
-	Sleep(200);
-	printNumberFromPoint(pt, number, Color::LIGHTGREEN);
-	Sleep(200);
-	printNumberFromPoint(pt, number);
-	Sleep(200);
 }
 
 bool BoardManager::findSolveOnBoard()
@@ -252,10 +228,7 @@ int BoardManager::getNumberOfNumbers()
 	return numberToPoint.size();
 }
 
-BoardManager::~BoardManager()
-{
-	// Todo we should implement desctrouctor logic
-}
+
 
 void BoardManager::saveStage()
 {
@@ -269,6 +242,30 @@ void BoardManager::restoreStage()
 	pointToNumber.clear();
 	for (auto const& x : saver)
 	{
-		printNumberFromPoint(x.second, x.first);
+		printNumberByPoint(x.second, x.first);
 	}
+}
+
+void BoardManager::setBoard()
+{
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			board[i][j] = board_example[i][j];
+		}
+		board[i][COLS] = '\0';
+	}
+}
+
+void BoardManager::blinkPoint(int number, const Point& pt)
+{
+	printNumberByPoint(pt, number, Color::LIGHTRED);
+	Sleep(200);
+	printNumberByPoint(pt, number, Color::LIGHTCYAN);
+	Sleep(200);
+	printNumberByPoint(pt, number, Color::LIGHTGREEN);
+	Sleep(200);
+	printNumberByPoint(pt, number);
+	Sleep(200);
 }

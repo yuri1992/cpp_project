@@ -1,5 +1,10 @@
 #include "SnakeBody.h"
 
+SnakeBody::~SnakeBody()
+{
+	delete body;
+}
+
 Point SnakeBody::getNextPoint()
 {
 	return this->body[0].next(direction);

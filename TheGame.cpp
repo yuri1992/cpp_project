@@ -1,4 +1,5 @@
 #include "TheGame.h"
+#include "GameSettings.h"
 #include "BoardManager.h"
 #include "Point.h"
 #include "Snake.h"
@@ -17,7 +18,7 @@ TheGame::TheGame()
 	snakes[1] = new Snake(LIGHTBLUE, '#', boardManager, "wxad", Point(70, 9), DIRECTION_LEFT);
 }
 
-void TheGame::printScreen()
+void TheGame::printScreen() const
 {
 	if (status == Game::STARTED || status == Game::SHOW_MAIN_MENU)
 		showMainMenu();
@@ -30,7 +31,6 @@ void TheGame::printScreen()
 void TheGame::run()
 {
 	printScreen();
-
 	do
 	{
 		if (status == Game::STARTED ||
@@ -54,7 +54,7 @@ void TheGame::_handleGameKeyPress()
 {
 	if (status == Game::RUNNING)
 	{
-		char key = 0;
+		char key;
 		if (_kbhit())
 		{
 			key = _getch();
@@ -90,9 +90,8 @@ void TheGame::_handleGameKeyPress()
 		}
 
 
-		if (boardManager->getNumberOfNumbers() == 20) //TODO change to 60 eventually
+		if (boardManager->getNumberOfNumbers() == GameSettings::MAX_NUMBER_ON_BOARD)
 		{
-			// Threr are 60 numbers of borad we should 
 			if (!boardManager->findSolveOnBoard())
 				printMessageOnBoard("Sorry, we do not have solution on the board");
 			else
@@ -100,7 +99,7 @@ void TheGame::_handleGameKeyPress()
 			_nextStage();
 		}
 
-		if (step++ % 5 == 0)
+		if (step++ % GameSettings::STEPS_FOR_NEW_NUMBER == 0)
 			boardManager->setNextNumber();
 
 		snakes[0]->move();
@@ -120,7 +119,7 @@ bool TheGame::isStageSolved()
 	for (i = 0; i < 2; i++)
 	{
 		pt = snakes[i]->getNextStep();
-		n = boardManager->getCellNumber(pt);
+		n = boardManager->getNumberInCell(pt);
 
 		if (n >= 0)
 		{
@@ -158,12 +157,12 @@ bool TheGame::isStageSolved()
 	return false;
 }
 
-void TheGame::_saveStage()
+void TheGame::_saveStage() const
 {
 	boardManager->saveStage();
 }
 
-void TheGame::_restoreFromSavedStage()
+void TheGame::_restoreFromSavedStage() const
 {
 	boardManager->restoreStage();
 }
@@ -181,7 +180,7 @@ void TheGame::_handleMenuKeyPress()
 {
 	if (_kbhit())
 	{
-		char key = 0;
+		char key;
 		key = _getch();
 		if (status == Game::STARTED || status == Game::SHOW_MAIN_MENU)
 		{
@@ -295,7 +294,7 @@ void TheGame::_newGame()
 	status = Game::RUNNING;
 }
 
-void TheGame::printScoreBoard()
+void TheGame::printScoreBoard() const
 {
 	setTextColor(LIGHTGREY);
 	gotoxy(0, 0);

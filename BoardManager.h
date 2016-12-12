@@ -5,7 +5,6 @@
 #include <map>
 #include "MissionBase.h"
 using namespace std;
-//typedef char(&array_type)[ROWS][COLS + 1];
 enum
 {
 	ROWS = 24,
@@ -19,7 +18,6 @@ class BoardManager
 	std::map<Point, int> pointToNumber;
 	std::map<int, Point> numberToPoint;
 	char board[ROWS][COLS + 1]; // this is the actual board we play on, i.e. changes on board are done here
-
 	std::map<int, Point> saver; // will restore the stage from here
 public:
 	BoardManager(MissionBase *mission);
@@ -27,26 +25,25 @@ public:
 
 	void saveStage();
 	void restoreStage();
+
 	void printBoard();
 	void cleanBoard();
 	void printBoardWithoutSnakePath();
-
 	void printCell(int row, int col, Color color = Color::LIGHTGREY);
 	void printCell(const Point& pt, Color color = Color::LIGHTGREY);
 	void printCellWithoutSnake(int row, int col, Color color = Color::LIGHTGREY);
-
-	bool isWall(const Point& p) { return board[p.getY()][p.getX()] == '+'; }
-
-	bool isValidNumberCell(int row, int col, int number);
-	void printNumberFromPoint(int rand_row, int rand_col, int number, Color color = Color::LIGHTGREY);
-	void printNumberFromPoint(const Point& pt, int number, Color color = Color::LIGHTGREY);
-	void setNextNumber();
-	int getCellNumber(const Point& pt);
-	
 	void setCell(int row, int col, char ch) { board[row][col] = ch; }
 	void setCell(const Point& pt, char ch) { board[pt.getY()][pt.getX()] = ch; }
 	void removeCell(int row, int col) { board[row][col] = ' '; }
 	void removeCell(const Point& p) { removeCell(p.getY(), p.getX()); }
+
+	bool isWall(const Point& p) { return board[p.getY()][p.getX()] == '+'; }
+
+	bool isValidNumberCell(int row, int col, int number);
+	void printNumberByPoint(int rand_row, int rand_col, int number, Color color = Color::LIGHTGREY);
+	void printNumberByPoint(const Point& pt, int number, Color color = Color::LIGHTGREY);
+	int getNumberInCell(const Point& pt);
+	void setNextNumber();
 
 	void removeNumberfromBoard(int number);
 	void prepareNextStage();
@@ -54,7 +51,7 @@ public:
 	bool findSolveOnBoard();	
 	int getNumberOfNumbers();
 
-
+	// getters setters
 	void setBoard();
 	std::map<Point, int> getPointToNumber() const { return pointToNumber; }
 	void setPointToNumber(const std::map<Point, int>& point_to_number) { pointToNumber = point_to_number; }

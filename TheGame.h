@@ -5,7 +5,6 @@
 #include "Snake.h"
 #include "BoardManager.h"
 #include "MissionBase.h"
-#include "Point.h"
 
 
 class TheGame
@@ -39,19 +38,17 @@ class TheGame
 	Snake** snakes;
 	BoardManager* boardManager;
 	MissionBase mission;
-
-	TheGame* previousStage;
 public:
 	TheGame();
-	void printScreen();
+	void printScreen() const;
 	void run();
 
 	static void showInformation();
 	static void showMainMenu();
 	static void showPauseMenu();
 
-	void printScoreBoard();
-	void printMessageOnBoard(string message, Color color = Color::LIGHTGREY);
+	void printScoreBoard() const;
+	static void printMessageOnBoard(string message, Color color = Color::LIGHTGREY);
 	bool isStageSolved();
 
 	// Getter and Setters
@@ -62,22 +59,48 @@ public:
 	MissionBase getMission() const { return mission; }
 	void setMission(const MissionBase& mission) { this->mission = mission; }
 private:
-	
-	void _saveStage();
-	void _restoreFromSavedStage();
-	
-	void _showPauseMenu() { status = Game::SHOW_PAUSE_MENU; printScreen(); }
-	void _showInformation() { status = Game::SHOW_INFORMATION; printScreen(); }
-	void _showMainMenu() { status = Game::SHOW_MAIN_MENU; printScreen(); }
+
+	void _saveStage() const;
+	void _restoreFromSavedStage() const;
+
+	void _showPauseMenu()
+	{
+		status = Game::SHOW_PAUSE_MENU;
+		printScreen();
+	}
+
+	void _showInformation()
+	{
+		status = Game::SHOW_INFORMATION;
+		printScreen();
+	}
+
+	void _showMainMenu()
+	{
+		status = Game::SHOW_MAIN_MENU;
+		printScreen();
+	}
 
 	void _start();
-	void _pause() { status = Game::PAUSE; printScreen(); }
+
+	void _pause()
+	{
+		status = Game::PAUSE;
+		printScreen();
+	}
+
 	void _restartGame();
 	void _resumeGame();
 	void _nextStage();
 	void _restartStage();
 	void _newGame();
-	void _finishGame() { status = Game::SHOW_MAIN_MENU;  printScreen(); }
+
+	void _finishGame()
+	{
+		status = Game::SHOW_MAIN_MENU;
+		printScreen();
+	}
+
 	void _exit() { exit(0); }
 
 	void _handleMenuKeyPress();

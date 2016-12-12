@@ -111,6 +111,7 @@
     <ClInclude Include="BoardManager.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="config.h" />
+    <ClInclude Include="GameSettings.h" />
     <ClInclude Include="io_utils.h" />
     <ClInclude Include="MissionBase.h" />
     <ClInclude Include="Point.h" />
