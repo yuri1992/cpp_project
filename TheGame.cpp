@@ -10,7 +10,7 @@ TheGame::TheGame(const char* board[ROWS])
 {
 	// initialize Board
 	boardManager = new BoardManager(board, &mission);
-
+		
 	// initialize Two Snakes on screen
 	snakes = new Snake*[2];
 	snakes[0] = new Snake(YELLOW, '@', boardManager, "imjl", Point(10, 9), DIRECTION_RIGHT);
@@ -19,7 +19,7 @@ TheGame::TheGame(const char* board[ROWS])
 
 void TheGame::init()
 {
-	mission.nextMission();
+	mission.nextMission();	
 	boardManager->printBoard();
 	snakes[0]->printSnake();
 	snakes[1]->printSnake();
@@ -170,6 +170,20 @@ bool TheGame::isStageSolved()
 	return false;
 }
 
+void TheGame::_saveStage()
+{
+	boardManager->saveStage();
+}
+
+void TheGame::_restoreFromSavedStage()
+{
+	boardManager->restoreStage();
+}
+
+void TheGame::_restartGame()
+{
+}
+
 void TheGame::_handleMenuKeyPress()
 {
 	if (_kbhit())
@@ -248,8 +262,9 @@ void TheGame::_continue()
 
 void TheGame::_restartStage()
 {
-	clearScreen();
-	// TODO ITAY : we should be able to restart the game to same position of the initial mission
+	//clearScreen();
+	_restoreFromSavedStage();
+	printScoreBoard();
 	status = Game::RUNNING;
 }
 
@@ -257,6 +272,7 @@ void TheGame::_nextStage()
 {
 	status = Game::RUNNING;
 	boardManager->prepareNextStage();
+	_saveStage();
 	mission.nextMission();
 	printScoreBoard();
 	Sleep(1000);

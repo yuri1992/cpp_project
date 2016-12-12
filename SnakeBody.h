@@ -14,7 +14,7 @@ enum Direction
 
 class SnakeBody
 {
-	enum { SNAKE_START_SIZE = 4 };
+	enum { SNAKE_START_SIZE = 3 };
 	int direction = DIRECTION_UP;
 	int currentSize = SNAKE_START_SIZE;
 	char bodyChar;

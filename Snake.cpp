@@ -41,6 +41,9 @@ void Snake::move()
 {
 	if (_isNextStepValid())
 	{
+		theBoard->removeCell(body->getBody()[body->getCurrentSize() - 1 ]);
+		theBoard->printCell(body->getBody()[body->getCurrentSize() - 1 ]);
+
 		body->move();
 		printSnake();
 	}

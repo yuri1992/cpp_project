@@ -40,9 +40,40 @@ class TheGame
 	BoardManager* boardManager;
 	MissionBase mission;
 
+	TheGame* previousStage;
 public:
 	TheGame(const char* board[ROWS]);
 	void init();
+
+	Snake** getSnakes() const
+	{
+		return snakes;
+	}
+
+	void setSnakes(Snake** snakes)
+	{
+		this->snakes = snakes;
+	}
+
+	BoardManager* getBoardManager() const
+	{
+		return boardManager;
+	}
+
+	void setBoardManager1(BoardManager* board_manager)
+	{
+		boardManager = board_manager;
+	}
+
+	MissionBase getMission() const
+	{
+		return mission;
+	}
+
+	void setMission(const MissionBase& mission)
+	{
+		this->mission = mission;
+	}
 
 	void printScreen();
 	void run();
@@ -56,7 +87,8 @@ public:
 
 private:
 	void _exit() { exit(0); }
-
+	void _saveStage();
+	void _restoreFromSavedStage();
 	void _pause() { status = Game::PAUSE; printScreen(); }
 	void _showPauseMenu() { status = Game::SHOW_PAUSE_MENU; printScreen(); }
 	void _showInformation() { status = Game::SHOW_INFORMATION; printScreen(); }

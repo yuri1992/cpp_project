@@ -12,6 +12,7 @@ enum
 	COLS = 80
 };
 
+
 class BoardManager
 {
 	MissionBase* mission;
@@ -19,12 +20,38 @@ class BoardManager
 	std::map<int, Point> numberToPoint;
 	char originalBoard[ROWS][COLS + 1]; // this is the original board that we got (we need COLS+1 because we handle it as null terminated char*)
 	char board[ROWS][COLS + 1]; // this is the actual board we play on, i.e. changes on board are done here
+
+	std::map<int, Point> saver; // will restore the stage from here
 public:
 	void setMission(MissionBase* _mission) { mission = _mission; }
 	BoardManager(const char* boardToCopy[ROWS], MissionBase *mission);
 	~BoardManager();
 
+
+	std::map<Point, int> getPointToNumber() const
+	{
+		return pointToNumber;
+	}
+
+	void setPointToNumber(const std::map<Point, int>& point_to_number)
+	{
+		pointToNumber = point_to_number;
+	}
+
+	std::map<int, Point> getNumberToPoint() const
+	{
+		return numberToPoint;
+	}
+
+	void setNumberToPoint(const std::map<int, Point>& number_to_point)
+	{
+		numberToPoint = number_to_point;
+	}
+
+	void saveStage();
+	void restoreStage();
 	void printBoard();
+	void cleanBoard();
 	void printBoardWithoutSnakePath();
 
 	void printCell(int row, int col, Color color = Color::LIGHTGREY);
@@ -48,8 +75,7 @@ public:
 	void removeNumberfromBoard(int number);
 	void prepareNextStage();
 	void blinkPoint(int number, const Point& pt);
-	bool findSolveOnBoard();
-
+	bool findSolveOnBoard();	
 	int getNumberOfNumbers();
 };
 

@@ -9,6 +9,7 @@ BoardManager::BoardManager(const char* boardToCopy[ROWS], MissionBase* mission)
 {
 	setBoard(boardToCopy);
 	setMission(mission);
+	saver = getNumberToPoint();
 }
 
 void BoardManager::printBoard()
@@ -17,6 +18,18 @@ void BoardManager::printBoard()
 	{
 		for (int j = 0; j < COLS; j++)
 		{
+			printCell(i, j);
+		}
+	}
+}
+
+void BoardManager::cleanBoard()
+{
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			removeCell(i, j);
 			printCell(i, j);
 		}
 	}
@@ -234,4 +247,20 @@ int BoardManager::getNumberOfNumbers()
 BoardManager::~BoardManager()
 {
 	// Todo we should implement desctrouctor logic
+}
+
+void BoardManager::saveStage()
+{
+	saver = getNumberToPoint();
+}
+
+void BoardManager::restoreStage()
+{
+	cleanBoard();
+	numberToPoint.clear();
+	pointToNumber.clear();
+	for (auto const& x : saver)
+	{
+		printNumberFromPoint(x.second, x.first);
+	}
 }
