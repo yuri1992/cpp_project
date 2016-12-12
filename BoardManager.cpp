@@ -196,6 +196,8 @@ void BoardManager::removeNumberfromBoard(int number)
 	}
 }
 
+
+//TODO Solve bug, 50% do remove each number, not remove half the numbers.
 void BoardManager::prepareNextStage()
 {
 	int numbersOnBoard = numberToPoint.size();

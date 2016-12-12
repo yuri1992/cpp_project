@@ -39,6 +39,7 @@ class TheGame
 	Snake** snakes;
 	BoardManager* boardManager;
 	MissionBase mission;
+	bool gameOver = false;
 
 	TheGame* previousStage;
 public:

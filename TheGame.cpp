@@ -41,7 +41,7 @@ void TheGame::printScreen()
 void TheGame::run()
 {
 	printScreen();
-
+	
 	do
 	{
 		if (status == Game::STARTED ||
@@ -87,12 +87,22 @@ void TheGame::_handleGameKeyPress()
 				printMessageOnBoard("Snake 1 Won The game!!");
 				status = Game::SHOW_MAIN_MENU;
 				//_newGame();
+				//boardManager->cleanBoard();
+				clearScreen();
+				_showMainMenu();
+				gameOver = true;
 			}
 			else if (snakes[1]->isWinGame())
 			{
 				printMessageOnBoard("Snake 2 Won The game!!");
 				status = Game::SHOW_MAIN_MENU;
 				//_newGame();
+				//boardManager->cleanBoard();
+				clearScreen();
+				_showMainMenu();
+				gameOver = true;
+				//exit(EXIT_SUCCESS);
+				
 			}
 
 			else
@@ -103,7 +113,7 @@ void TheGame::_handleGameKeyPress()
 		}
 
 
-		if (boardManager->getNumberOfNumbers() == 20) //TODO change to 60 eventually
+		if (boardManager->getNumberOfNumbers() == 60) //TODO change to 60 eventually
 		{
 			// Threr are 60 numbers of borad we should 
 			if (!boardManager->findSolveOnBoard())
@@ -116,9 +126,12 @@ void TheGame::_handleGameKeyPress()
 		if (step++ % 5 == 0)
 			boardManager->setNextNumber(mission.generateNextNumber());
 
+		if (!gameOver)
+		{
 		snakes[0]->move();
 		snakes[1]->move();
-		Sleep(100);
+		Sleep(200);
+		}
 	}
 }
 
@@ -134,11 +147,12 @@ bool TheGame::isStageSolved()
 	{
 		pt = snakes[i]->getNextStep();
 		n = boardManager->getCellNumber(pt);
-
+		boardManager->removeNumberfromBoard(n);
 		if (n >= 0)
 		{
 			if (mission.isSolved(n))
 			{
+				//boardManager->removeNumberfromBoard(n);
 				snakes[i]->wonStage();
 				if (i == 0)
 				{
@@ -166,7 +180,7 @@ bool TheGame::isStageSolved()
 					snakes[1]->wonStage();
 				}
 			}
-			boardManager->removeNumberfromBoard(n);
+			
 			return true;
 		}
 	}
@@ -256,6 +270,7 @@ void TheGame::_handleMenuKeyPress()
 
 void TheGame::_start()
 {
+	gameOver = false;
 	status = Game::RUNNING;
 	_newGame();
 }
@@ -343,6 +358,7 @@ void TheGame::printMessageOnBoard(string message)
 void TheGame::showInformation()
 {
 	clearScreen();
+	setTextColor(LIGHTGREY);
 	cout <<
 		"                                                                                " << endl <<
 		"  Each player gets a snake to control and earn points.                          " << endl <<
@@ -363,6 +379,7 @@ void TheGame::showInformation()
 
 void TheGame::showMainMenu()
 {
+	setTextColor(LIGHTGREY);
 	clearScreen();
 	gotoxy(0, 3);
 	cout << "--------------------------------------------------------------------------------";
@@ -382,6 +399,7 @@ void TheGame::showMainMenu()
 void TheGame::showPauseMenu()
 {
 	clearScreen();
+	setTextColor(LIGHTGREY);
 	cout <<
 		"                                                                                " << endl <<
 		"                                  Game Paused                                   " << endl <<
