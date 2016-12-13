@@ -40,6 +40,7 @@ class TheGame
 	MissionBase mission;
 public:
 	TheGame();
+	~TheGame();
 	void printScreen() const;
 	void run();
 

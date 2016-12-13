@@ -21,6 +21,12 @@ TheGame::TheGame()
 //	boardManager->setSnakes(snakes);
 }
 
+TheGame::~TheGame()
+{
+	delete boardManager;
+	delete snakes;
+}
+
 void TheGame::printScreen() const
 {
 	if (status == Game::STARTED || status == Game::SHOW_MAIN_MENU)
