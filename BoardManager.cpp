@@ -251,11 +251,16 @@ void BoardManager::saveStage()
 	saver = getNumberToPoint();
 }
 
-void BoardManager::restoreStage()
+void BoardManager::resetBoard()
 {
 	cleanBoard();
 	numberToPoint.clear();
 	pointToNumber.clear();
+}
+
+void BoardManager::restoreStage()
+{
+	resetBoard();
 	for (auto const& x : saver)
 	{
 		printNumberByPoint(x.second, x.first);

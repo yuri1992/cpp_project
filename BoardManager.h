@@ -26,6 +26,7 @@ public:
 	BoardManager(MissionBase* mission);
 
 	void saveStage();
+	void resetBoard();
 	void restoreStage();
 
 	void printBoard();

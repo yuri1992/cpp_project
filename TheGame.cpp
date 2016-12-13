@@ -300,7 +300,7 @@ void TheGame::_newGame()
 	snakes[1]->setSnakeSize(3);
 	snakes[0]->setSnakeDirection(DIRECTION_RIGHT);
 	snakes[1]->setSnakeDirection(DIRECTION_LEFT);
-	boardManager->printBoardWithoutSnakePath();
+	boardManager->resetBoard();
 	printScoreBoard();
 	status = Game::RUNNING;
 }
