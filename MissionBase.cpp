@@ -1,3 +1,4 @@
+#include <cmath>
 #include "MissionBase.h"
 
 using namespace std;

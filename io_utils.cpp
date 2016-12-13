@@ -10,6 +10,7 @@ using namespace std;
 	void Sleep(unsigned long){}
 	void setTextColor(Color color){}
 	void hideCursor(){}
+	void clearScreen(){}
 	void clear_screen(){}
 #else
 void gotoxy(int x, int y)
