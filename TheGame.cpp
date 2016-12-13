@@ -260,6 +260,7 @@ void TheGame::_restartStage()
 
 void TheGame::_nextStage()
 {
+	boardManager->resetBoard();
 	if (status == Game::PAUSE)
 	{
 		clearScreen();
