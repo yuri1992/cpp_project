@@ -114,17 +114,6 @@ bool BoardManager::isValidNumberCell(int row, int col, int number)
 		if (board[row][col + digitsNumber] != ' ')
 			return false;
 
-//	for (int i = 0; i < 2; i++)
-//	{
-//		Point snakeNestStep = snakes[i]->getNextStep();
-//		int rowDiff = std::abs(row - snakeNestStep.getY());
-//		int colDiff = std::abs(col - snakeNestStep.getX());
-//
-//		//i want it to be abit further than 1 step from the head, to still keep it more fair
-//		if (rowDiff <= 2 && colDiff <= 2) return false;
-//
-//	}
-
 	return true;
 }
 
@@ -213,11 +202,7 @@ void BoardManager::removeNumberByPoint(const Point& pt)
 
 }
 
-//TODO Solve bug, I THINK its going each number and 50% to remove it
-//if so tell me ill solve:
-//possible solution: get original map size -> iterate on half of the size -> rand()%originalSize -> add it to temp map -> 
-// -> remove it from existing (old map) which will shrink by size -> ..
-//if we had 60 orignal we will take 30 out randomally (I THINKKKK)
+
 void BoardManager::prepareNextStage()
 {
 	int numberToLeaveOnBoard = numberToPoint.size() / 2;

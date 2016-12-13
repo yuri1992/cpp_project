@@ -260,9 +260,10 @@ void TheGame::_restartStage()
 
 void TheGame::_nextStage()
 {
-	boardManager->resetBoard();
+	
 	if (status == Game::PAUSE)
 	{
+		boardManager->resetBoard();
 		clearScreen();
 		snakes[0]->goToStartPoint(Point(10, 9));
 		snakes[1]->goToStartPoint(Point(70, 9));
