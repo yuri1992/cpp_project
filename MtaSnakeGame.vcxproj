@@ -121,11 +121,9 @@
     <ClInclude Include="_board.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\..\..\..\Downloads\KnownIssues_316961101_200831014_.xlsx" />
     <None Include="ClassDiagram.cd" />
     <None Include="README.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="KOWNISSUES.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
