@@ -9,11 +9,6 @@ Snake::Snake(Color color, char bodyChar, BoardManager* theBoard,
 	body = new SnakeBody(dir, bodyChar, color, startPoint);
 }
 
-Snake::~Snake()
-{
-	delete body;
-}
-
 void Snake::printSnake()
 {
 	Point* ptrSnakeBody = body->getBody();
@@ -85,6 +80,9 @@ bool Snake::_isNextStepValid()
 	Point nextPoint = body->getNextPoint();
 
 	if (theBoard->isWall(nextPoint))
+		return false;
+
+	if (theBoard->isOccupatiedBySanke(nextPoint))
 		return false;
 
 	return true;

@@ -14,8 +14,8 @@ TheGame::TheGame()
 		
 	// initialize Two Snakes on screen
 	snakes = new Snake*[2];
-	snakes[0] = new Snake(YELLOW, '@', boardManager, "imjl", Point(10, 9), DIRECTION_RIGHT);
-	snakes[1] = new Snake(LIGHTBLUE, '#', boardManager, "wxad", Point(70, 9), DIRECTION_LEFT);
+	snakes[0] = new Snake(YELLOW, GameSettings::SANKE_ONE_BODY_FILL, boardManager, "imjl", Point(10, 9), DIRECTION_RIGHT);
+	snakes[1] = new Snake(LIGHTBLUE, GameSettings::SANKE_TWO_BODY_FILL, boardManager, "wxad", Point(70, 9), DIRECTION_LEFT);
 
 //	// Todo : Refactor this (two way binding)
 //	boardManager->setSnakes(snakes);

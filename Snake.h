@@ -19,7 +19,6 @@ class Snake
 	int points = 0;
 public:
 	Snake(Color color, char bodyChar, BoardManager* theBoard, const char* keys, Point startPoint, Direction dir);
-	~Snake();
 
 	void printSnake();
 	void handleKey(int dir);

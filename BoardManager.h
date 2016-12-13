@@ -4,6 +4,7 @@
 #include "Point.h"
 #include <map>
 #include "MissionBase.h"
+#include "GameSettings.h"
 
 using namespace std;
 
@@ -39,6 +40,7 @@ public:
 	void removeCell(const Point& p) { removeCell(p.getY(), p.getX()); }
 
 	bool isWall(const Point& p) { return board[p.getY()][p.getX()] == '+'; }
+	bool isOccupatiedBySanke(const Point& p);
 
 	bool isValidNumberCell(int row, int col, int number);
 	void printNumberByPoint(int rand_row, int rand_col, int number, Color color = Color::LIGHTGREY);

@@ -80,6 +80,11 @@ int getDigitsNumber(int number)
 	return res;
 }
 
+bool BoardManager::isOccupatiedBySanke(const Point& p)
+{
+	return board[p.getY()][p.getX()] == GameSettings::SANKE_ONE_BODY_FILL || board[p.getY()][p.getX()] == GameSettings::SANKE_TWO_BODY_FILL;
+}
+
 bool BoardManager::isValidNumberCell(int row, int col, int number)
 {
 	if (board[row][col] != ' ')
