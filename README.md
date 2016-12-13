@@ -1,7 +1,8 @@
-# cpp_project
+# MTA - Cpp - Snake Game - Ex 1
 
-OOP CPP Course project
-
+Author:
+Itay ******
+Yuri ritvin 316961101 
 
 Dear Instructor,
 When downloading the project form MAMA,
