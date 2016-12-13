@@ -124,9 +124,10 @@ bool TheGame::isStageSolved()
 	{
 		pt = snakes[i]->getNextStep();
 		n = boardManager->getNumberInCell(pt);
-		boardManager->removeNumberfromBoard(n);
+		
 		if (n >= 0)
 		{
+			boardManager->removeNumberfromBoard(n);
 			if (mission.isSolved(n))
 			{
 				//boardManager->removeNumberfromBoard(n);
@@ -145,15 +146,16 @@ bool TheGame::isStageSolved()
 				if (i == 1)
 				{
 					printMessageOnBoard("Snake 2 is WRONG: +1 point for snake 1", Color::YELLOW);
+					boardManager->removeNumberByPoint(snakes[0]->getNextStep());
 					snakes[0]->wonStage();
 				}
 				else
 				{
 					printMessageOnBoard("Snake 1 is WRONG: +1 point for snake 2", Color::LIGHTBLUE);
+					boardManager->removeNumberByPoint(snakes[1]->getNextStep());
 					snakes[1]->wonStage();
 				}
 			}
-			boardManager->removeNumberfromBoard(n);
 			return true;
 		}
 	}
@@ -161,22 +163,8 @@ bool TheGame::isStageSolved()
 	return false;
 }
 
-void TheGame::_saveStage() const
-{
-	boardManager->saveStage();
-}
-
-void TheGame::_restoreFromSavedStage() const
-{
-	boardManager->restoreStage();
-}
-
 void TheGame::_restartGame()
 {
-	clearScreen();
-	boardManager->cleanBoard();
-	delete boardManager;
-	boardManager = new BoardManager(&mission);
 	_newGame();
 	status = Game::RUNNING;
 }
@@ -261,8 +249,8 @@ void TheGame::_resumeGame()
 void TheGame::_restartStage()
 {
 	//clearScreen();
-	_restoreFromSavedStage();
-	printScoreBoard();	
+	boardManager->resetBoard();
+	printScoreBoard();
 	snakes[0]->goToStartPoint(Point(10, 9));
 	snakes[1]->goToStartPoint(Point(70, 9));
 	snakes[0]->setSnakeDirection(DIRECTION_RIGHT);
@@ -282,7 +270,6 @@ void TheGame::_nextStage()
 	}
 	status = Game::RUNNING;
 	boardManager->prepareNextStage();
-	_saveStage();
 	mission.nextMission();
 	printScoreBoard();
 	Sleep(1000);
@@ -292,6 +279,7 @@ void TheGame::_nextStage()
 void TheGame::_newGame()
 {
 	clearScreen();
+	boardManager->resetBoard();
 	snakes[0]->setPoints(0);
 	snakes[1]->setPoints(0);
 	snakes[0]->goToStartPoint(Point(10, 9));
@@ -300,7 +288,6 @@ void TheGame::_newGame()
 	snakes[1]->setSnakeSize(3);
 	snakes[0]->setSnakeDirection(DIRECTION_RIGHT);
 	snakes[1]->setSnakeDirection(DIRECTION_LEFT);
-	boardManager->resetBoard();
 	printScoreBoard();
 	status = Game::RUNNING;
 }

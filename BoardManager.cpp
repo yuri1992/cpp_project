@@ -10,7 +10,6 @@ BoardManager::BoardManager(MissionBase* mission)
 {
 	setBoard();
 	setMission(mission);
-	saver = getNumberToPoint();
 }
 
 void BoardManager::printBoard()
@@ -204,6 +203,15 @@ void BoardManager::removeNumberfromBoard(int number)
 	}
 }
 
+void BoardManager::removeNumberByPoint(const Point& pt)
+{
+	int number = getNumberInCell(pt);
+	if (number)
+	{
+		removeNumberfromBoard(number);
+	}
+
+}
 
 //TODO Solve bug, I THINK its going each number and 50% to remove it
 //if so tell me ill solve:
@@ -246,25 +254,11 @@ int BoardManager::getNumberOfNumbers()
 }
 
 
-void BoardManager::saveStage()
-{
-	saver = getNumberToPoint();
-}
-
 void BoardManager::resetBoard()
 {
 	cleanBoard();
 	numberToPoint.clear();
 	pointToNumber.clear();
-}
-
-void BoardManager::restoreStage()
-{
-	resetBoard();
-	for (auto const& x : saver)
-	{
-		printNumberByPoint(x.second, x.first);
-	}
 }
 
 void BoardManager::setBoard()

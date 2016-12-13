@@ -59,10 +59,6 @@ public:
 	MissionBase getMission() const { return mission; }
 	void setMission(const MissionBase& mission) { this->mission = mission; }
 private:
-
-	void _saveStage() const;
-	void _restoreFromSavedStage() const;
-
 	void _showPauseMenu()
 	{
 		status = Game::SHOW_PAUSE_MENU;

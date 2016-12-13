@@ -47,7 +47,11 @@ void Snake::move()
 
 void Snake::wonStage()
 {
+	theBoard->removeCell(body->getBody()[body->getCurrentSize() - 1]);
+	theBoard->printCell(body->getBody()[body->getCurrentSize() - 1]);
+
 	body->increaseSnakeBody();	
+	printSnake();
 	points++;
 }
 

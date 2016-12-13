@@ -21,13 +21,9 @@ class BoardManager
 	std::map<Point, int> pointToNumber;
 	std::map<int, Point> numberToPoint;
 	char board[ROWS][COLS + 1]; // this is the actual board we play on, i.e. changes on board are done here
-	std::map<int, Point> saver; // will restore the stage from here
 public:
 	BoardManager(MissionBase* mission);
-
-	void saveStage();
 	void resetBoard();
-	void restoreStage();
 
 	void printBoard();
 	void cleanBoard();
@@ -50,6 +46,7 @@ public:
 	void setNextNumber();
 
 	void removeNumberfromBoard(int number);
+	void removeNumberByPoint(const Point& pt);
 	void prepareNextStage();
 	void blinkPoint(int number, const Point& pt);
 	bool findSolveOnBoard();

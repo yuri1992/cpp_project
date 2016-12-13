@@ -28,7 +28,6 @@ void SnakeBody::setPosition(const Point &pt)
 
 void SnakeBody::move()
 {
-
 	for (int i = currentSize - 1; i > 0; --i)
 		this->body[i] = this->body[i - 1];
 
@@ -44,6 +43,7 @@ void SnakeBody::increaseSnakeBody()
 	{
 		nBody[i] = body[i];
 	}
+
 
 	setCurrentSize(currentSize + 1);
 	move();
