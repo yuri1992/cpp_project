@@ -126,7 +126,8 @@ void BoardManager::printNumberByPoint(int randRow, int randCol, int number, Colo
 	for (int i = digitsNumber - 1; i >= 0; i--)
 	{
 		board[randRow][randCol + i] = '0' + tempNum % 10;
-		pointToNumber[Point(randCol + i, randRow)] = number;
+		Point pt = Point(randCol + i, randRow);
+		pointToNumber[pt] = number;
 		printCell(randRow, randCol + i, color);
 		tempNum /= 10;
 	}
@@ -151,7 +152,7 @@ void BoardManager::setNextNumber()
 		}
 		else
 		{
-			randRow = (rand() % (ROWS - 4)) + 4;
+			randRow = (rand() % (ROWS - 5)) + 4;
 			randCol = rand() % COLS;
 			if (isValidNumberCell(randRow, randCol, number))
 			{

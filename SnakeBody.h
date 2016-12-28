@@ -22,7 +22,7 @@ class SnakeBody
 	int currentSize = SNAKE_START_SIZE;
 	char bodyChar;
 	Color color;
-	Point* body;
+	Point* body = nullptr;
 public:
 
 	SnakeBody()

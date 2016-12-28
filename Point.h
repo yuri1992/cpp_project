@@ -6,6 +6,7 @@
 
 using namespace std;
 
+
 class Point
 {
 	int x = 1, y = 1;

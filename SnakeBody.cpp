@@ -1,4 +1,5 @@
 #include "SnakeBody.h"
+#include <set>
 
 SnakeBody::~SnakeBody()
 {
@@ -44,13 +45,15 @@ void SnakeBody::increaseSnakeBody()
 		nBody[i] = body[i];
 	}
 
+	delete body;
+	body = nBody;
 
 	setCurrentSize(currentSize + 1);
 	move();
 }
 
 void SnakeBody::setBody(Point start)
-{
+{	
 	this->body = new Point[currentSize];
 	for (int i = 0; i < currentSize; i++)
 	{

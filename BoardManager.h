@@ -5,8 +5,26 @@
 #include <map>
 #include "MissionBase.h"
 #include "GameSettings.h"
+#include <unordered_map>
 
 using namespace std;
+
+
+namespace std {
+	template <>
+	struct hash<Point>
+	{
+		std::size_t operator()(const Point& k) const
+		{
+			using std::size_t;
+			using std::hash;
+			size_t h1 = std::hash<double>()(k.getX());
+			size_t h2 = std::hash<double>()(k.getY());
+			return (h1 ^ (h2 << 1));
+		}
+	};
+
+}
 
 enum
 {
@@ -18,8 +36,8 @@ class BoardManager
 {
 	///Snake** snakes;
 	MissionBase* mission;
-	std::map<Point, int> pointToNumber;
-	std::map<int, Point> numberToPoint;
+	std::unordered_map<Point, int> pointToNumber;
+	std::unordered_map<int, Point> numberToPoint;
 	char board[ROWS][COLS + 1]; // this is the actual board we play on, i.e. changes on board are done here
 public:
 	BoardManager(MissionBase* mission);
@@ -54,10 +72,10 @@ public:
 
 	// getters setters
 	void setBoard();
-	std::map<Point, int> getPointToNumber() const { return pointToNumber; }
-	void setPointToNumber(const std::map<Point, int>& point_to_number) { pointToNumber = point_to_number; }
-	std::map<int, Point> getNumberToPoint() const { return numberToPoint; }
-	void setNumberToPoint(const std::map<int, Point>& number_to_point) { numberToPoint = number_to_point; }
+	std::unordered_map<Point, int> getPointToNumber() const { return pointToNumber; }
+	void setPointToNumber(const std::unordered_map<Point, int>& point_to_number) { pointToNumber = point_to_number; }
+	std::unordered_map<int, Point> getNumberToPoint() const { return numberToPoint; }
+	void setNumberToPoint(const std::unordered_map<int, Point>& number_to_point) { numberToPoint = number_to_point; }
 	void setMission(MissionBase* _mission) { mission = _mission; }
 };
 
