@@ -5,6 +5,7 @@
 #include <map>
 #include "MissionBase.h"
 #include "GameSettings.h"
+#include "Screen.h"
 #include <unordered_map>
 
 using namespace std;

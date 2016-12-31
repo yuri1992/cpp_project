@@ -1,5 +1,6 @@
-#pragma once
-#include "io_utils.h"
+#ifndef _MISSION_BASE_H_
+#define _MISSION_BASE_H_
+#include <string>
 
 using namespace std;
 class MissionBase
@@ -32,3 +33,4 @@ public:
 	int generateNextNumber();
 	int nextMission();
 };
+#endif

@@ -2,7 +2,7 @@
 #define _SNAKE_BODY_H_
 
 #include "Point.h"
-
+#include "Color.h"
 enum Direction
 {
 	DIRECTION_UP = 0,

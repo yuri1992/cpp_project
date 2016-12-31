@@ -1,7 +1,7 @@
 #ifndef _THESNAKESGAME_H_
 #define _THESNAKESGAME_H_
 
-#include "io_utils.h"
+#include "Screen.h"
 #include "Snake.h"
 #include "BoardManager.h"
 #include "MissionBase.h"
@@ -43,13 +43,7 @@ public:
 	~TheGame();
 	void printScreen() const;
 	void run();
-
-	static void showInformation();
-	static void showMainMenu();
-	static void showPauseMenu();
-
-	void printScoreBoard() const;
-	static void printMessageOnBoard(string message, Color color = Color::LIGHTGREY);
+		
 	bool isStageSolved();
 
 	// Getter and Setters
@@ -88,6 +82,7 @@ private:
 
 	void _restartGame();
 	void _resumeGame();
+	void printScore() const;
 	void _nextStage();
 	void _restartStage();
 	void _newGame();

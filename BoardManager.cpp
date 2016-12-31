@@ -1,9 +1,9 @@
 #include "BoardManager.h"
-#include "io_utils.h"
 #include <iostream>
 #include <string>
 #include <map>
 #include "_board.h"
+
 
 
 BoardManager::BoardManager(MissionBase* mission)
@@ -50,8 +50,9 @@ void BoardManager::printBoardWithoutSnakePath()
 
 void BoardManager::printCell(int row, int col, Color color)
 {
-	setTextColor(color);
-	gotoxy(col, row);
+	
+	Screen::setTextColor(color);
+	Screen::setCursor(col, row);
 	std::cout << board[row][col];
 	std::cout.flush();
 }

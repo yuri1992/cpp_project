@@ -2,7 +2,7 @@
 #define _POINT_H_
 
 #include <iostream>
-#include "io_utils.h"
+#include "Screen.h"
 
 using namespace std;
 
@@ -47,7 +47,7 @@ public:
 
 	void draw(char ch)
 	{
-		gotoxy(x, y);
+		Screen::setCursor(x, y);
 		cout << ch;
 		cout.flush();
 	}

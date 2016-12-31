@@ -3,22 +3,17 @@
 #include "BoardManager.h"
 #include "Point.h"
 #include "Snake.h"
-#include "io_utils.h"
 #include <string>
-#include <iostream>
 
 TheGame::TheGame()
 {
 	// initialize Board
 	boardManager = new BoardManager(&mission);
-		
+
 	// initialize Two Snakes on screen
 	snakes = new Snake*[2];
-	snakes[0] = new Snake(YELLOW, GameSettings::SANKE_ONE_BODY_FILL, boardManager, "imjl", Point(10, 9), DIRECTION_RIGHT);
-	snakes[1] = new Snake(LIGHTBLUE, GameSettings::SANKE_TWO_BODY_FILL, boardManager, "wxad", Point(70, 9), DIRECTION_LEFT);
-
-//	// Todo : Refactor this (two way binding)
-//	boardManager->setSnakes(snakes);
+	snakes[0] = new Snake(YELLOW, GameSettings::SANKE_ONE_BODY_FILL, boardManager, "imjlz", Point(10, 9), DIRECTION_RIGHT);
+	snakes[1] = new Snake(LIGHTBLUE, GameSettings::SANKE_TWO_BODY_FILL, boardManager, "wxadn", Point(70, 9), DIRECTION_LEFT);
 }
 
 TheGame::~TheGame()
@@ -30,11 +25,18 @@ TheGame::~TheGame()
 void TheGame::printScreen() const
 {
 	if (status == Game::STARTED || status == Game::SHOW_MAIN_MENU)
-		showMainMenu();
+		Screen::showMainMenu();
 	else if (status == Game::PAUSE || status == Game::SHOW_PAUSE_MENU)
-		showPauseMenu();
+		Screen::showPauseMenu();
 	else if (status == Game::SHOW_INFORMATION)
-		showInformation();
+		Screen::showInformation();
+}
+
+void TheGame::printScore() const
+{
+	Screen::printScoreBoard(mission.getMissionText(),
+	                        snakes[0]->getPoints(),
+	                        snakes[1]->getPoints());
 }
 
 void TheGame::run()
@@ -42,17 +44,13 @@ void TheGame::run()
 	printScreen();
 	do
 	{
-		if (status == Game::STARTED ||
-			status == Game::SHOW_MAIN_MENU ||
-			status == Game::PAUSE ||
-			status == Game::SHOW_PAUSE_MENU ||
-			status == Game::SHOW_INFORMATION)
+		if (status == Game::RUNNING)
 		{
-			_handleMenuKeyPress();
+			_handleGameKeyPress();
 		}
 		else
 		{
-			_handleGameKeyPress();
+			_handleMenuKeyPress();
 		}
 	}
 	while (true);
@@ -81,13 +79,13 @@ void TheGame::_handleGameKeyPress()
 		{
 			if (snakes[0]->isWinGame())
 			{
-				printMessageOnBoard("Snake 1 Won The game!!", snakes[0]->getColor());
+				Screen::printMessageOnBoard("Snake 1 Won The game!!", snakes[0]->getColor());
 				_finishGame();
 				return;
 			}
 			else if (snakes[1]->isWinGame())
 			{
-				printMessageOnBoard("Snake 2 Won The game!!", snakes[1]->getColor());
+				Screen::printMessageOnBoard("Snake 2 Won The game!!", snakes[1]->getColor());
 				_finishGame();
 				return;
 			}
@@ -95,26 +93,24 @@ void TheGame::_handleGameKeyPress()
 			{
 				_nextStage(); // the won stage print is in isStageSolved
 			}
-
 		}
 
 		if (boardManager->getNumberOfNumbers() == GameSettings::MAX_NUMBER_ON_BOARD)
 		{
 			if (!boardManager->findSolveOnBoard())
-				printMessageOnBoard("Sorry, we do not have solution on the board");
+				Screen::printMessageOnBoard("Sorry, we do not have solution on the board");
 			else
-				printMessageOnBoard("Nice try, We are to continue to next Stage");
+				Screen::printMessageOnBoard("Nice try, We are to continue to next Stage");
 			_nextStage();
 		}
 
 		if (step++ % GameSettings::STEPS_FOR_NEW_NUMBER == 0)
 			boardManager->setNextNumber();
 
-		
+
 		snakes[0]->move();
 		snakes[1]->move();
 		Sleep(200);
-		
 	}
 }
 
@@ -130,7 +126,7 @@ bool TheGame::isStageSolved()
 	{
 		pt = snakes[i]->getNextStep();
 		n = boardManager->getNumberInCell(pt);
-		
+
 		if (n >= 0)
 		{
 			boardManager->removeNumberfromBoard(n);
@@ -140,24 +136,24 @@ bool TheGame::isStageSolved()
 				snakes[i]->wonStage();
 				if (i == 0)
 				{
-					printMessageOnBoard("Snake 1 (yellow) is RIGHT! +1 point", Color::YELLOW);
+					Screen::printMessageOnBoard("Snake 1 (yellow) is RIGHT! +1 point", Color::YELLOW);
 				}
 				else if (i == 1)
 				{
-					printMessageOnBoard("Snake 2 (blue) is RIGHT! +1 point", Color::LIGHTBLUE);
+					Screen::printMessageOnBoard("Snake 2 (blue) is RIGHT! +1 point", Color::LIGHTBLUE);
 				}
 			}
 			else
 			{
 				if (i == 1)
 				{
-					printMessageOnBoard("Snake 2 is WRONG: +1 point for snake 1", Color::YELLOW);
+					Screen::printMessageOnBoard("Snake 2 is WRONG: +1 point for snake 1", Color::YELLOW);
 					boardManager->removeNumberByPoint(snakes[0]->getNextStep());
 					snakes[0]->wonStage();
 				}
 				else
 				{
-					printMessageOnBoard("Snake 1 is WRONG: +1 point for snake 2", Color::LIGHTBLUE);
+					Screen::printMessageOnBoard("Snake 1 is WRONG: +1 point for snake 2", Color::LIGHTBLUE);
 					boardManager->removeNumberByPoint(snakes[1]->getNextStep());
 					snakes[1]->wonStage();
 				}
@@ -165,7 +161,6 @@ bool TheGame::isStageSolved()
 			return true;
 		}
 	}
-
 	return false;
 }
 
@@ -226,12 +221,8 @@ void TheGame::_handleMenuKeyPress()
 		}
 		else if (status == Game::SHOW_INFORMATION)
 		{
-			switch (key)
-			{
-			case NUM_9:
+			if (key == NUM_9)
 				_showMainMenu();
-			default: break;
-			}
 		}
 	}
 }
@@ -245,145 +236,51 @@ void TheGame::_start()
 void TheGame::_resumeGame()
 {
 	status = Game::RUNNING;
-	clearScreen();
-	
-	boardManager->printBoardWithoutSnakePath();
-	printScoreBoard();
+	Screen::clearScreen();
 
+	boardManager->printBoardWithoutSnakePath();
+	printScore();
 }
 
 void TheGame::_restartStage()
 {
-	//clearScreen();
 	boardManager->resetBoard();
-	printScoreBoard();
-	snakes[0]->goToStartPoint(Point(10, 9));
-	snakes[1]->goToStartPoint(Point(70, 9));
-	snakes[0]->setSnakeDirection(DIRECTION_RIGHT);
-	snakes[1]->setSnakeDirection(DIRECTION_LEFT);
+	snakes[0]->goToPoint(Point(10, 9), DIRECTION_RIGHT);
+	snakes[1]->goToPoint(Point(70, 9), DIRECTION_LEFT);
+
+	printScore();
 	status = Game::RUNNING;
 }
 
 void TheGame::_nextStage()
 {
-	
 	if (status == Game::PAUSE)
 	{
+		Screen::clearScreen();
 		boardManager->resetBoard();
-		clearScreen();
-		snakes[0]->goToStartPoint(Point(10, 9));
-		snakes[1]->goToStartPoint(Point(70, 9));
-		snakes[0]->setSnakeDirection(DIRECTION_RIGHT);
-		snakes[1]->setSnakeDirection(DIRECTION_LEFT);
+
+		snakes[0]->goToPoint(Point(10, 9), DIRECTION_RIGHT);
+		snakes[1]->goToPoint(Point(70, 9), DIRECTION_LEFT);
 	}
-	status = Game::RUNNING;
+
 	boardManager->prepareNextStage();
 	mission.nextMission();
-	printScoreBoard();
+
+	printScore();
+	status = Game::RUNNING;
+
 	Sleep(1000);
 }
 
 
 void TheGame::_newGame()
 {
-	clearScreen();
+	Screen::clearScreen();
 	boardManager->resetBoard();
-	snakes[0]->setPoints(0);
-	snakes[1]->setPoints(0);
-	snakes[0]->goToStartPoint(Point(10, 9));
-	snakes[1]->goToStartPoint(Point(70, 9));
-	snakes[0]->setSnakeSize(3);
-	snakes[1]->setSnakeSize(3);
-	snakes[0]->setSnakeDirection(DIRECTION_RIGHT);
-	snakes[1]->setSnakeDirection(DIRECTION_LEFT);
-	printScoreBoard();
+
+	snakes[0]->resetSnake(Point(10, 9), DIRECTION_RIGHT, 3);
+	snakes[1]->resetSnake(Point(70, 9), DIRECTION_LEFT, 3);
+
+	printScore();
 	status = Game::RUNNING;
-}
-
-void TheGame::printScoreBoard() const
-{
-	setTextColor(LIGHTGREY);
-	gotoxy(0, 0);
-	cout << "  Mission:                                                                      ";
-	gotoxy(0, 1);
-	cout << "                                                                                ";
-	gotoxy(0, 2);
-	cout << "  Snake 1 Score: 8                                            Snake 2 Score: 7  ";
-	gotoxy(0, 3);
-	cout << "--------------------------------------------------------------------------------";
-	gotoxy(11, 0);
-	cout << mission.getMissionText();
-	gotoxy(17, 2);
-	cout << snakes[0]->getPoints() << " ";
-	gotoxy(77, 2);
-	cout << snakes[1]->getPoints() << " ";
-	cout << flush;
-}
-
-void TheGame::printMessageOnBoard(string message, Color color)
-{
-	setTextColor(color);
-	gotoxy(21, 1);
-	cout << message;
-	Sleep(2000); // a short wait until the game continues
-	gotoxy(21, 1);
-	cout << "                                                        ";
-}
-
-void TheGame::showInformation()
-{
-	clearScreen();
-	setTextColor(LIGHTGREY);
-	cout <<
-		"                                                                                " << endl <<
-		"  Each player gets a snake to control and earn points.                          " << endl <<
-		"  Players need to pick up numbers based on the current task.                    " << endl <<
-		"  the snakes start at length 3, winner is the one that reaches 12 first         " << endl <<
-		"  if a player gets a correct answer he gets longer (+point)			         " << endl <<
-		"  if a player gets a wrong answer, the other player gets longer (+point)        " << endl <<
-		"                                                                                " << endl <<
-		"        Player 1 Controls                     Player 2 Controls                 " << endl <<
-		"                                                                                " << endl <<
-		"              W                                      I                          " << endl <<
-		"            A   D                                  J   L                        " << endl <<
-		"              X                                      M                          " << endl <<
-		"		                                                                         " << endl <<
-		"                                                                                " << endl <<
-		"      Press (9) to go back to menu.                                             " << endl;
-}
-
-void TheGame::showMainMenu()
-{
-	setTextColor(LIGHTGREY);
-	clearScreen();
-	gotoxy(0, 3);
-	cout << "--------------------------------------------------------------------------------";
-	gotoxy(35, 11);
-	cout << "Snake Game";
-	gotoxy(32, 12);
-	cout << "-----------------";
-	gotoxy(32, 14);
-	cout << "(1) Instructions.";
-	gotoxy(32, 15);
-	cout << "(2) Play game!";
-	gotoxy(32, 16);
-	cout << "(9) Exit.";
-	//gotoxy()
-}
-
-void TheGame::showPauseMenu()
-{
-	clearScreen();
-	setTextColor(LIGHTGREY);
-	cout <<
-		"                                                                                " << endl <<
-		"                                  Game Paused                                   " << endl <<
-		"                               ----------------                                 " << endl <<
-		"                               (1) Exit game.                                   " << endl <<
-		"                               (2) Main menu.                                   " << endl <<
-		"                               (3) Resume game.                                 " << endl <<
-		"                               (4) Restart stage                                " << endl <<
-		"                               (5) Start new stage                              " << endl <<
-		"                               (6) Restart game.                                " << endl <<
-		"                                                                                " << endl;
 }

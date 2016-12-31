@@ -5,6 +5,7 @@
 #include "SnakeBody.h"
 #include "BoardManager.h"
 #include "GameSettings.h"
+#include "Gun.h"
 
 class Snake
 {
@@ -12,7 +13,7 @@ class Snake
 	{
 		KEYS_SIZE = 4
 	};
-
+	Gun gun;
 	BoardManager* theBoard;
 	SnakeBody* body;
 	char arrowKeys[KEYS_SIZE];
@@ -22,8 +23,11 @@ public:
 
 	void printSnake();
 	void handleKey(int dir);
-	void goToStartPoint(const Point& pt);
+	void goToPoint(const Point& pt);
+	void goToPoint(const Point& pt, int direction);
+	void resetSnake(const Point& pt, int direction, int size);
 	void move();
+	void shot();
 	void wonStage();
 	bool isWinGame() const { return points == GameSettings::POINT_TO_WIN_THE_GAME; };
 
