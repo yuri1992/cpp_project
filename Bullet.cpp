@@ -12,13 +12,14 @@ Bullet::~Bullet()
 }
 
 
-void Bullet::next()
+void Bullet::doNext()
 {
 	// bullet is moving twice a speed
 	for (int i = 0 ; i< 2 ;i ++ )
 	{
-		pos.draw(' ');
-		pos.move(direction);
+		this->pos.draw(' ');
+		this->pos.move(direction);
+		this->pos.draw('*');
 	}
 }
 

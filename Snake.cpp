@@ -28,8 +28,10 @@ void Snake::handleKey(int key)
 	{
 		body->setDirection(keyDirection);
 	}
-
-	// TODO :[NOT NOW] handle others keys that can be pressed (fire) 
+	else if (key == getShottingKey())
+	{
+		shoot();
+	}
 }
 
 
@@ -43,6 +45,11 @@ void Snake::move()
 		body->move();
 		printSnake();
 	}
+}
+
+void Snake::shoot()
+{
+	gun.shoot(body->getNextPoint(), body->getDirection());
 }
 
 void Snake::wonStage()
@@ -61,11 +68,18 @@ void Snake::setArrowKeys(const char* keys)
 	arrowKeys[1] = keys[1];
 	arrowKeys[2] = keys[2];
 	arrowKeys[3] = keys[3];
+	arrowKeys[4] = keys[4];
+}
+
+void Snake::doNext()
+{
+	move();
+	gun.doNext();
 }
 
 int Snake::getKeyDirection(char key)
 {
-	for (int i = 0; i < KEYS_SIZE; i++)
+	for (int i = 0; i < KEYS_SIZE - 1; i++)
 	{
 		if (key == arrowKeys[i])
 			return i;

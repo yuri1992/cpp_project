@@ -18,6 +18,7 @@ void Gun::shoot(const Point& pt, int direction)
 	{
 		Bullet bul = Bullet(pt, direction);
 		bullets.push_back(bul);
+		ammo--;
 	}
 }
 
@@ -38,9 +39,10 @@ void Gun::reset()
 }
 
 
-void Gun::next()
+void Gun::doNext()
 {
-	for (Bullet bt : bullets) {
-		bt.next();
+	for (auto& bt : bullets) {
+
+			bt.doNext();
 	}
 }

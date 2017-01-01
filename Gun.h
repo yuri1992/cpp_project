@@ -13,7 +13,7 @@ public:
 	void shoot(const Point& pt, int direction);
 	void cleanBullets();
 	void reset();
-	void next();
+	void doNext();
 
 	//
 

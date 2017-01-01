@@ -10,7 +10,7 @@ class Bullet
 public:
 	Bullet(const Point& pt, int direction);
 	~Bullet();
-	void next();
+	void doNext();
 	void remove();
 };
 #endif

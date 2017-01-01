@@ -11,7 +11,7 @@ class Snake
 {
 	enum
 	{
-		KEYS_SIZE = 4
+		KEYS_SIZE = 5
 	};
 	Gun gun;
 	BoardManager* theBoard;
@@ -27,9 +27,10 @@ public:
 	void goToPoint(const Point& pt, int direction);
 	void resetSnake(const Point& pt, int direction, int size);
 	void move();
-	void shot();
+	void shoot();
 	void wonStage();
 	bool isWinGame() const { return points == GameSettings::POINT_TO_WIN_THE_GAME; };
+	void doNext();
 
 	// getter and setters to SnakeBody (proxy)
 	int getKeyDirection(char key);
@@ -39,6 +40,7 @@ public:
 	void setSnakeSize(int size) { body->setCurrentSize(size); }
 
 	// getters and setters
+	int getShottingKey() { return arrowKeys[4]; }
 	int getPoints() const { return points; }
 	void setBoardManager(BoardManager* _theBoard) { theBoard = _theBoard; }
 	void setArrowKeys(const char* keys);

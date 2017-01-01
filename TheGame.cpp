@@ -12,8 +12,17 @@ TheGame::TheGame()
 
 	// initialize Two Snakes on screen
 	snakes = new Snake*[2];
-	snakes[0] = new Snake(YELLOW, GameSettings::SANKE_ONE_BODY_FILL, boardManager, "imjlz", Point(10, 9), DIRECTION_RIGHT);
-	snakes[1] = new Snake(LIGHTBLUE, GameSettings::SANKE_TWO_BODY_FILL, boardManager, "wxadn", Point(70, 9), DIRECTION_LEFT);
+	snakes[0] = new Snake(YELLOW,
+	                      GameSettings::SANKE_ONE_BODY_FILL,
+	                      boardManager,
+	                      "imjln",
+	                      Point(10, 9), DIRECTION_RIGHT);
+
+	snakes[1] = new Snake(LIGHTBLUE,
+	                      GameSettings::SANKE_TWO_BODY_FILL,
+	                      boardManager,
+	                      "wxadz",
+	                      Point(70, 9), DIRECTION_LEFT);
 }
 
 TheGame::~TheGame()
@@ -107,9 +116,9 @@ void TheGame::_handleGameKeyPress()
 		if (step++ % GameSettings::STEPS_FOR_NEW_NUMBER == 0)
 			boardManager->setNextNumber();
 
+		snakes[0]->doNext();
+		snakes[1]->doNext();
 
-		snakes[0]->move();
-		snakes[1]->move();
 		Sleep(200);
 	}
 }
