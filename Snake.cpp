@@ -1,11 +1,13 @@
 #include "Snake.h"
-#include "TheGame.h"
+#include "BoardManager.h"
+#include "Point.h"
 
-Snake::Snake(Color color, char bodyChar, BoardManager* theBoard,
+Snake::Snake(Color color, char bodyChar, BoardManager* boardManager,
              const char* keys, Point startPoint, Direction dir = DIRECTION_UP)
 {
-	setBoardManager(theBoard);
+	setBoardManager(boardManager);
 	setArrowKeys(keys);
+	gun.setBoard(boardManager);
 	body = new SnakeBody(dir, bodyChar, color, startPoint);
 }
 
@@ -39,8 +41,8 @@ void Snake::move()
 {
 	if (_isNextStepValid())
 	{
-		theBoard->removeCell(body->getBody()[body->getCurrentSize() - 1 ]);
-		theBoard->printCell(body->getBody()[body->getCurrentSize() - 1 ]);
+		theBoard->removeCell(body->getBody()[body->getCurrentSize() - 1]);
+		theBoard->printCell(body->getBody()[body->getCurrentSize() - 1]);
 
 		body->move();
 		printSnake();
@@ -57,8 +59,12 @@ void Snake::wonStage()
 	theBoard->removeCell(body->getBody()[body->getCurrentSize() - 1]);
 	theBoard->printCell(body->getBody()[body->getCurrentSize() - 1]);
 
-	body->increaseSnakeBody();	
-	printSnake();
+	body->increaseSnakeBody();
+
+	if (status == Status::REGULAR)
+	{
+		printSnake();
+	}
 	points++;
 }
 
@@ -71,10 +77,27 @@ void Snake::setArrowKeys(const char* keys)
 	arrowKeys[4] = keys[4];
 }
 
+void Snake::resetGun()
+{
+	gun.reset();
+}
+
 void Snake::doNext()
 {
-	move();
+	if (status == Status::HIT && steps == GameSettings::RELIVE_AFTER_STEPS)
+	{
+		status = Status::REGULAR;
+		steps = 0;
+	}
+
+	if (status == Status::REGULAR)
+		move();
+	else
+		steps++;
+
 	gun.doNext();
+
+	theBoard->printAmmo();
 }
 
 int Snake::getKeyDirection(char key)
@@ -106,12 +129,22 @@ void Snake::resetSnake(const Point& pt, int direction, int size)
 	setSnakeSize(size);
 }
 
+void Snake::gotHit()
+{
+	Point* snakeBody = body->getBody();
+	int snakeSize = body->getCurrentSize();
+	for (int i = 0; i < snakeSize; i++)
+	{
+		theBoard->removeCell(snakeBody[i]);
+		theBoard->printCell(snakeBody[i]);
+	}
+	status = Status::HIT;
+	steps = 0;
+}
+
 bool Snake::_isNextStepValid()
 {
 	Point nextPoint = body->getNextPoint();
-
-	if (theBoard->isWall(nextPoint))
-		return false;
 
 	if (theBoard->isOccupatiedBySanke(nextPoint))
 		return false;

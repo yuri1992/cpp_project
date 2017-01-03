@@ -67,3 +67,4 @@ void SnakeBody::clean()
 	for (int i = 0; i < currentSize; i++)
 		this->body[i].draw(' ');
 }
+

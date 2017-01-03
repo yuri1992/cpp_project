@@ -3,7 +3,6 @@
 #include "BoardManager.h"
 
 
-
 void Point::move()
 {
 	int dir = rand() % 4;

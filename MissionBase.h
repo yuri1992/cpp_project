@@ -2,7 +2,6 @@
 #define _MISSION_BASE_H_
 #include <string>
 
-using namespace std;
 class MissionBase
 {
 
@@ -22,13 +21,13 @@ class MissionBase
 
 	static bool isPrime(int number);
 	int currentMission;
-	string currentMissionText;
+	std::string currentMissionText;
 
 public:
 	MissionBase();
 	~MissionBase();
-	
-	string getMissionText() const;
+
+	std::string getMissionText() const;
 	bool isSolved(int number);
 	int generateNextNumber();
 	int nextMission();

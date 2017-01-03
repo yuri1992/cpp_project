@@ -2,10 +2,7 @@
 #define _THESNAKESGAME_H_
 
 #include "Screen.h"
-#include "Snake.h"
 #include "BoardManager.h"
-#include "MissionBase.h"
-
 
 class TheGame
 {
@@ -35,24 +32,17 @@ class TheGame
 
 	int step = 0;
 	Game status = STARTED;
-	Snake** snakes;
 	BoardManager* boardManager;
-	MissionBase mission;
 public:
 	TheGame();
 	~TheGame();
 	void printScreen() const;
 	void run();
-		
+
 	bool isStageSolved();
 
-	// Getter and Setters
-	Snake** getSnakes() const { return snakes; }
-	void setSnakes(Snake** snakes) { this->snakes = snakes; }
 	BoardManager* getBoardManager() const { return boardManager; }
 	void setBoardManager1(BoardManager* board_manager) { boardManager = board_manager; }
-	MissionBase getMission() const { return mission; }
-	void setMission(const MissionBase& mission) { this->mission = mission; }
 private:
 	void _showPauseMenu()
 	{
@@ -82,7 +72,6 @@ private:
 
 	void _restartGame();
 	void _resumeGame();
-	void printScore() const;
 	void _nextStage();
 	void _restartStage();
 	void _newGame();

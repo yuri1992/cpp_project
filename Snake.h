@@ -2,49 +2,62 @@
 #define _SNAKE_H_
 
 #include "Point.h"
-#include "SnakeBody.h"
-#include "BoardManager.h"
 #include "GameSettings.h"
+#include "SnakeBody.h"
 #include "Gun.h"
+
+class BoardManager;
 
 class Snake
 {
 	enum
 	{
-		KEYS_SIZE = 5
+		KEYS_SIZE = 5,
 	};
+	enum Status
+	{
+		REGULAR = 0,
+		HIT = 1,
+	};
+
 	Gun gun;
-	BoardManager* theBoard;
+	BoardManager* theBoard = nullptr;
 	SnakeBody* body;
+	Status status = Status::REGULAR;
 	char arrowKeys[KEYS_SIZE];
+	int steps = 0;
 	int points = 0;
 public:
-	Snake(Color color, char bodyChar, BoardManager* theBoard, const char* keys, Point startPoint, Direction dir);
-
+	Snake(Color color, char bodyChar, BoardManager* boardManager, 
+		const char* keys, Point startPoint, Direction dir);
 	void printSnake();
 	void handleKey(int dir);
 	void goToPoint(const Point& pt);
 	void goToPoint(const Point& pt, int direction);
 	void resetSnake(const Point& pt, int direction, int size);
+	void gotHit();
 	void move();
 	void shoot();
 	void wonStage();
-	bool isWinGame() const { return points == GameSettings::POINT_TO_WIN_THE_GAME; };
+	bool isWinGame() const { return points == GameSettings::POINT_TO_WIN_THE_GAME; }
+	void resetGun();
 	void doNext();
 
 	// getter and setters to SnakeBody (proxy)
 	int getKeyDirection(char key);
 	Point getNextStep() const { return body->getNextPoint(); }
 	Color getColor() const { return body->getColor(); }
-	void setSnakeDirection(int direction) { body->setDirection(direction); };
+	void setSnakeDirection(int direction) { body->setDirection(direction); }
+	int getAmmo() { return gun.getAmmo(); };
 	void setSnakeSize(int size) { body->setCurrentSize(size); }
 
 	// getters and setters
 	int getShottingKey() { return arrowKeys[4]; }
 	int getPoints() const { return points; }
+	void setPoints(int point) { points = point; }
 	void setBoardManager(BoardManager* _theBoard) { theBoard = _theBoard; }
 	void setArrowKeys(const char* keys);
-	void setPoints(int point) { points = point; }
+	
 
 private:
 	bool _isNextStepValid();

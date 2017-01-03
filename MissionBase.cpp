@@ -1,5 +1,6 @@
 #include <cmath>
 #include "MissionBase.h"
+#include <string>
 
 using namespace std;
 

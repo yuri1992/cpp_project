@@ -1,17 +1,15 @@
 #ifndef _BOARD_MANAGER_H_
 #define _BOARD_MANAGER_H_
 
-#include "Point.h"
-#include <map>
-#include "MissionBase.h"
-#include "GameSettings.h"
-#include "Screen.h"
 #include <unordered_map>
+#include "Point.h"
+#include "Snake.h"
+#include "MissionBase.h"
 
 using namespace std;
 
-
-namespace std {
+namespace std
+{
 	template <>
 	struct hash<Point>
 	{
@@ -24,8 +22,7 @@ namespace std {
 			return (h1 ^ (h2 << 1));
 		}
 	};
-
-}
+};
 
 enum
 {
@@ -35,27 +32,30 @@ enum
 
 class BoardManager
 {
-	///Snake** snakes;
 	MissionBase* mission;
+	Snake** snakes;
+
 	std::unordered_map<Point, int> pointToNumber;
 	std::unordered_map<int, Point> numberToPoint;
 	char board[ROWS][COLS + 1]; // this is the actual board we play on, i.e. changes on board are done here
 public:
-	BoardManager(MissionBase* mission);
+	BoardManager();
 	void resetBoard();
 
 	void printBoard();
 	void cleanBoard();
+	void printScore() const;
+	void printAmmo() const;
 	void printBoardWithoutSnakePath();
 	void printCell(int row, int col, Color color = Color::LIGHTGREY);
 	void printCell(const Point& pt, Color color = Color::LIGHTGREY);
 	void printCellWithoutSnake(int row, int col, Color color = Color::LIGHTGREY);
+	char getCell(const Point& pt) { return board[pt.getY()][pt.getX()]; };
 	void setCell(int row, int col, char ch) { board[row][col] = ch; }
 	void setCell(const Point& pt, char ch) { board[pt.getY()][pt.getX()] = ch; }
 	void removeCell(int row, int col) { board[row][col] = ' '; }
 	void removeCell(const Point& p) { removeCell(p.getY(), p.getX()); }
 
-	bool isWall(const Point& p) { return board[p.getY()][p.getX()] == '+'; }
 	bool isOccupatiedBySanke(const Point& p);
 
 	bool isValidNumberCell(int row, int col, int number);
@@ -65,19 +65,20 @@ public:
 	void setNextNumber();
 
 	void removeNumberfromBoard(int number);
-	void removeNumberByPoint(const Point& pt);
+	bool removeNumberByPoint(const Point& pt);
 	void prepareNextStage();
 	void blinkPoint(int number, const Point& pt);
 	bool findSolveOnBoard();
 	int getNumberOfNumbers();
 
 	// getters setters
-	void setBoard();
+	Snake* getSnake(int index) { return snakes[index]; }
 	std::unordered_map<Point, int> getPointToNumber() const { return pointToNumber; }
 	void setPointToNumber(const std::unordered_map<Point, int>& point_to_number) { pointToNumber = point_to_number; }
 	std::unordered_map<int, Point> getNumberToPoint() const { return numberToPoint; }
 	void setNumberToPoint(const std::unordered_map<int, Point>& number_to_point) { numberToPoint = number_to_point; }
 	void setMission(MissionBase* _mission) { mission = _mission; }
+	MissionBase* getMission() { return mission; }
 };
 
 #endif

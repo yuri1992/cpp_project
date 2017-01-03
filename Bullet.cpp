@@ -1,31 +1,42 @@
 #include "Bullet.h"
+#include "BoardManager.h"
 
-Bullet::Bullet(const Point& pt, int direction)
+
+Bullet::Bullet(const Point& pt, int direction, BoardManager* board)
 {
 	this->pos = pt;
 	this->direction = direction;
+	this->boardManager = board;
 }
 
 
 Bullet::~Bullet()
 {
+
 }
 
-
-void Bullet::doNext()
+Point Bullet::getNextPoint()
 {
-	// bullet is moving twice a speed
-	for (int i = 0 ; i< 2 ;i ++ )
-	{
-		this->pos.draw(' ');
-		this->pos.move(direction);
-		this->pos.draw('*');
-	}
+	Point ptNext = pos;
+	ptNext.move(direction);
+	return ptNext;
+}
+
+Point& Bullet::doNext()
+{
+	boardManager->removeCell(pos);
+	boardManager->printCell(pos);
+
+	this->pos.move(direction);
+
+	boardManager->setCell(pos, GUN_CHAR);
+	boardManager->printCell(pos, RED);
+	return pos;
 }
 
 
 void Bullet::remove()
 {
-	pos.draw(' ');
-	// clean board;
+	boardManager->removeCell(pos);
+	boardManager->printCell(pos);
 }

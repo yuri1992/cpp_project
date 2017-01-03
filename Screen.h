@@ -18,6 +18,7 @@ public:
 	static void showInformation();
 	static void showMainMenu();
 	static void showPauseMenu();
+	static void updateSnakesAmmo(int point1, int point2);
 	static void printScoreBoard(std::string msg, int point1, int point2);
 	static void printMessageOnBoard(std::string message, Color color = LIGHTGREY);
 };

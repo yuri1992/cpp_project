@@ -105,6 +105,16 @@ void Screen::showPauseMenu()
 		"                                                                                " << endl;
 }
 
+void Screen::updateSnakesAmmo(int point1, int point2)
+{
+	Screen::setTextColor(LIGHTGREY);
+	Screen::setCursor(26, 2);
+	cout << point1 << " ";
+	Screen::setCursor(78, 2);
+	cout << point2 << " ";
+	cout << flush;
+}
+
 void Screen::printScoreBoard(string msg, int point1, int point2)
 {
 	Screen::setTextColor(LIGHTGREY);
@@ -113,15 +123,16 @@ void Screen::printScoreBoard(string msg, int point1, int point2)
 	Screen::setCursor(0, 1);
 	cout << "                                                                                ";
 	Screen::setCursor(0, 2);
-	cout << "  Snake 1 Score: 8                                            Snake 2 Score: 7  ";
+	cout << "  Snake 1 Score: 8 - Gun: 0                           Snake 2 Score: 7 - Gun: 0 ";
 	Screen::setCursor(0, 3);
 	cout << "--------------------------------------------------------------------------------";
 	Screen::setCursor(11, 0);
 	cout << msg;
 	Screen::setCursor(17, 2);
 	cout << point1 << " ";
-	Screen::setCursor(77, 2);
+	Screen::setCursor(69, 2);
 	cout << point2 << " ";
+	updateSnakesAmmo(1, 1);
 	cout << flush;
 }
 

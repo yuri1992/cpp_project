@@ -2,14 +2,28 @@
 #include <iostream>
 #include <string>
 #include <map>
-#include "_board.h"
+#include "Snake.h"
+#include "MissionBase.h"
 
 
-
-BoardManager::BoardManager(MissionBase* mission)
+BoardManager::BoardManager()
 {
-	setBoard();
-	setMission(mission);
+	// initialize Two Snakes on screen
+	snakes = new Snake*[2];
+	snakes[0] = new Snake(YELLOW,
+	                      GameSettings::SANKE_ONE_BODY_FILL,
+	                      this,
+	                      "imjln",
+	                      Point(10, 9), 
+	                      DIRECTION_RIGHT);
+
+	snakes[1] = new Snake(LIGHTBLUE,
+	                      GameSettings::SANKE_TWO_BODY_FILL,
+	                      this,
+	                      "wxadz",
+	                      Point(70, 9), DIRECTION_LEFT);
+	mission = new MissionBase();
+	cleanBoard();
 }
 
 void BoardManager::printBoard()
@@ -35,6 +49,19 @@ void BoardManager::cleanBoard()
 	}
 }
 
+void BoardManager::printScore() const
+{
+	Screen::printScoreBoard(mission->getMissionText(),
+		snakes[0]->getPoints(),
+		snakes[1]->getPoints());
+	printAmmo();
+}
+void BoardManager::printAmmo() const
+{
+	Screen::updateSnakesAmmo(snakes[0]->getAmmo(),
+		snakes[1]->getAmmo());
+}
+
 void BoardManager::printBoardWithoutSnakePath()
 {
 	for (int i = 0; i < ROWS; i++)
@@ -50,7 +77,6 @@ void BoardManager::printBoardWithoutSnakePath()
 
 void BoardManager::printCell(int row, int col, Color color)
 {
-	
 	Screen::setTextColor(color);
 	Screen::setCursor(col, row);
 	std::cout << board[row][col];
@@ -166,7 +192,6 @@ void BoardManager::setNextNumber()
 
 int BoardManager::getNumberInCell(const Point& pt)
 {
-
 	if (pointToNumber.find(pt) != pointToNumber.end())
 	{
 		return pointToNumber.at(pt);
@@ -194,14 +219,15 @@ void BoardManager::removeNumberfromBoard(int number)
 	}
 }
 
-void BoardManager::removeNumberByPoint(const Point& pt)
+bool BoardManager::removeNumberByPoint(const Point& pt)
 {
 	int number = getNumberInCell(pt);
 	if (number)
 	{
 		removeNumberfromBoard(number);
+		return true;
 	}
-
+	return false;
 }
 
 
@@ -219,6 +245,11 @@ void BoardManager::prepareNextStage()
 			}
 		}
 	}
+
+	mission->nextMission();
+
+	snakes[0]->resetGun();
+	snakes[1]->resetGun();
 }
 
 bool BoardManager::findSolveOnBoard()
@@ -240,24 +271,14 @@ int BoardManager::getNumberOfNumbers()
 	return numberToPoint.size();
 }
 
-
 void BoardManager::resetBoard()
 {
 	cleanBoard();
 	numberToPoint.clear();
 	pointToNumber.clear();
-}
 
-void BoardManager::setBoard()
-{
-	for (int i = 0; i < ROWS; i++)
-	{
-		for (int j = 0; j < COLS; j++)
-		{
-			board[i][j] = board_example[i][j];
-		}
-		board[i][COLS] = '\0';
-	}
+	snakes[0]->goToPoint(Point(10, 9), DIRECTION_RIGHT);
+	snakes[1]->goToPoint(Point(70, 9), DIRECTION_LEFT);
 }
 
 void BoardManager::blinkPoint(int number, const Point& pt)

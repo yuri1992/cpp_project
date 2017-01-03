@@ -8,7 +8,9 @@ enum GameSettings
 	POINT_TO_WIN_THE_GAME = 12,
 	SANKE_ONE_BODY_FILL = '@',
 	SANKE_TWO_BODY_FILL = '#',
+	GUN_CHAR = '*',
 	GUN_AMMO_INITIAL = 5,
+	RELIVE_AFTER_STEPS = 25,
 };
 
 #endif
