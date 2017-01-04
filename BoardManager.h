@@ -56,11 +56,13 @@ public:
 	void removeCell(int row, int col) { board[row][col] = ' '; }
 	void removeCell(const Point& p) { removeCell(p.getY(), p.getX()); }
 
+	Snake* getSnakeInCell(const Point& p);
 	bool isOccupatiedBySanke(const Point& p);
 
 	bool isValidNumberCell(int row, int col, int number);
 	void printNumberByPoint(int rand_row, int rand_col, int number, Color color = Color::LIGHTGREY);
 	void printNumberByPoint(const Point& pt, int number, Color color = Color::LIGHTGREY);
+	Point getRandomPosition(int size);
 	int getNumberInCell(const Point& pt);
 	void setNextNumber();
 

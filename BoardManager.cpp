@@ -14,7 +14,7 @@ BoardManager::BoardManager()
 	                      GameSettings::SANKE_ONE_BODY_FILL,
 	                      this,
 	                      "imjln",
-	                      Point(10, 9), 
+	                      Point(10, 9),
 	                      DIRECTION_RIGHT);
 
 	snakes[1] = new Snake(LIGHTBLUE,
@@ -52,14 +52,15 @@ void BoardManager::cleanBoard()
 void BoardManager::printScore() const
 {
 	Screen::printScoreBoard(mission->getMissionText(),
-		snakes[0]->getPoints(),
-		snakes[1]->getPoints());
+	                        snakes[0]->getPoints(),
+	                        snakes[1]->getPoints());
 	printAmmo();
 }
+
 void BoardManager::printAmmo() const
 {
 	Screen::updateSnakesAmmo(snakes[0]->getAmmo(),
-		snakes[1]->getAmmo());
+	                         snakes[1]->getAmmo());
 }
 
 void BoardManager::printBoardWithoutSnakePath()
@@ -104,6 +105,19 @@ int getDigitsNumber(int number)
 		number /= 10;
 	}
 	return res;
+}
+
+Snake* BoardManager::getSnakeInCell(const Point& p)
+{
+	if (board[p.getY()][p.getX()] == GameSettings::SANKE_ONE_BODY_FILL)
+	{
+		return getSnake(0);
+	}
+	else if (board[p.getY()][p.getX()] == GameSettings::SANKE_TWO_BODY_FILL)
+	{
+		return getSnake(1);
+	}
+	return nullptr;
 }
 
 bool BoardManager::isOccupatiedBySanke(const Point& p)
@@ -163,6 +177,30 @@ void BoardManager::printNumberByPoint(int randRow, int randCol, int number, Colo
 void BoardManager::printNumberByPoint(const Point& pt, int number, Color color)
 {
 	printNumberByPoint(pt.getY(), pt.getX(), number, color);
+}
+
+Point BoardManager::getRandomPosition(int size)
+{
+	bool isNumberSet = false;
+	int randRow = 0, randCol =0;
+
+	while (!isNumberSet)
+	{
+		randRow = (rand() % (ROWS - 5)) + 4;
+		// Snake will be stright line	
+		randCol = rand() % (COLS - size);
+		
+		for (int i = 0; i < size; i ++)
+		{
+			if (isOccupatiedBySanke(Point(randRow, randCol + i)))
+			{
+				break;
+			}
+		}
+		// Todo delete the number in those celles
+		isNumberSet = true;
+	}
+	return Point(randCol, randRow);
 }
 
 void BoardManager::setNextNumber()

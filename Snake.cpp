@@ -88,6 +88,8 @@ void Snake::doNext()
 	{
 		status = Status::REGULAR;
 		steps = 0;
+		Point pt = theBoard->getRandomPosition(body->getCurrentSize());
+		goToPoint(pt);
 	}
 
 	if (status == Status::REGULAR)

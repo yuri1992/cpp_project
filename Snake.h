@@ -48,7 +48,8 @@ public:
 	Point getNextStep() const { return body->getNextPoint(); }
 	Color getColor() const { return body->getColor(); }
 	void setSnakeDirection(int direction) { body->setDirection(direction); }
-	int getAmmo() { return gun.getAmmo(); };
+	int getAmmo() { return gun.getAmmo(); }
+	Gun* getGun() { return &gun; };
 	void setSnakeSize(int size) { body->setCurrentSize(size); }
 
 	// getters and setters

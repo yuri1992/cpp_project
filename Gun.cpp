@@ -61,20 +61,20 @@ bool Gun::moveBulletNextPosition(Bullet& bt)
 	char ch = boardManager->getCell(pos);
 	if (ch != ' ')
 	{
-		if (ch == SANKE_ONE_BODY_FILL)
+		Snake* snake = boardManager->getSnakeInCell(pos);
+		if (snake != nullptr)
 		{
-			Snake* snake = boardManager->getSnake(0);
 			snake->gotHit();
-			Screen::printMessageOnBoard("You hitted Snake 1", Color::GREEN);
-			ammo++;
-			return false;
-		}
-		else if (ch == SANKE_TWO_BODY_FILL)
-		{
-			Snake* snake = boardManager->getSnake(1);
-			snake->gotHit();
-			Screen::printMessageOnBoard("You hitted Snake 2", Color::CYAN);
-			ammo++;
+			if (snake->getGun() == this)
+			{
+				Screen::printMessageOnBoard("You hitted Yourself :( 1", Color::GREEN);
+				ammo++;
+			}
+			else
+			{
+				Screen::printMessageOnBoard("Nice Strike! ", Color::GREEN);
+			}
+
 			return false;
 		}
 		else if (boardManager->removeNumberByPoint(pos))
@@ -99,7 +99,8 @@ void Gun::doNext()
 		{
 			destoryBullet(*bt);
 			bt = bullets.erase(bt);
-		} else
+		}
+		else
 		{
 			++bt;
 		}
