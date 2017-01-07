@@ -2,7 +2,6 @@
 #include "GameSettings.h"
 #include "Snake.h"
 #include "BoardManager.h"
-#include <algorithm>
 
 Gun::Gun()
 {
@@ -18,13 +17,20 @@ Gun::~Gun()
 
 void Gun::shoot(const Point& pt, int direction)
 {
+	/*
+	 * Creating new bullet if there any ammo left.
+	 */
 	if (ammo > 0)
 	{
+		// Moving the @pt to next point
 		Point ptNew = pt;
 		ptNew.move(direction);
 
+		// adding bullet the vector.
 		Bullet bul = Bullet(ptNew, direction, boardManager);
 		bullets.push_back(bul);
+
+		// decreaing ammo size.
 		ammo--;
 	}
 }
@@ -47,46 +53,31 @@ void Gun::reset()
 	bullets.clear();
 }
 
-void Gun::destoryBullet(Bullet& bt)
-{
-	bt.remove();
-}
-
 bool Gun::moveBulletNextPosition(Bullet& bt)
 {
 	/*
-	 * return False when bullet hitted something and need to be removed from game
+	 * return True when bullet hitted something and need to be removed from game
 	 */
 	Point pos = bt.getNextPoint();
-	char ch = boardManager->getCell(pos);
-	if (ch != ' ')
+	Snake* snake = boardManager->getSnakeInCell(pos);
+	if (snake != nullptr)
 	{
-		Snake* snake = boardManager->getSnakeInCell(pos);
-		if (snake != nullptr)
+		snake->gotHit();
+		if (snake->getGun() != this)
 		{
-			snake->gotHit();
-			if (snake->getGun() == this)
-			{
-				Screen::printMessageOnBoard("You hitted Yourself :( 1", Color::GREEN);
-				ammo++;
-			}
-			else
-			{
-				Screen::printMessageOnBoard("Nice Strike! ", Color::GREEN);
-			}
-
-			return false;
+			ammo++;
 		}
-		else if (boardManager->removeNumberByPoint(pos))
-		{
-			return false;
-		}
+		return true;
+	}
+	else if (boardManager->removeNumberByPoint(pos))
+	{
+		return true;
 	}
 	else
 	{
 		bt.doNext();
 	}
-	return true;
+	return false;
 }
 
 void Gun::doNext()
@@ -94,10 +85,9 @@ void Gun::doNext()
 	for (auto bt = bullets.begin(); bt != bullets.end();)
 	{
 		// moving the bullet twice
-		bool erase = moveBulletNextPosition(*bt) && moveBulletNextPosition(*bt);
-		if (!erase)
+		if (moveBulletNextPosition(*bt) || moveBulletNextPosition(*bt))
 		{
-			destoryBullet(*bt);
+			bt->remove();
 			bt = bullets.erase(bt);
 		}
 		else

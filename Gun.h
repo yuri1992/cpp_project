@@ -16,10 +16,9 @@ public:
 	~Gun();
 	void shoot(const Point& pt, int direction);
 	void cleanBullets();
-	void reset();
-	void destoryBullet(Bullet& bt);
 	bool moveBulletNextPosition(Bullet& bt);
 	void doNext();
+	void reset();
 
 	void setBoard(BoardManager* boardManager) { this->boardManager = boardManager; }
 	int getAmmo() { return ammo; };

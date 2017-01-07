@@ -190,6 +190,8 @@ Point BoardManager::getRandomPosition(int size)
 		// Snake will be stright line	
 		randCol = rand() % (COLS - size);
 		
+
+		// Validating the the cell are free from the other snake
 		for (int i = 0; i < size; i ++)
 		{
 			if (isOccupatiedBySanke(Point(randRow, randCol + i)))
@@ -197,8 +199,17 @@ Point BoardManager::getRandomPosition(int size)
 				break;
 			}
 		}
-		// Todo delete the number in those celles
-		isNumberSet = true;
+
+		// removing all number in those cells (after validating)
+		for (int i = 0; i < size; i++)
+		{
+			if (removeNumberByPoint(Point(randRow, randCol + i)))
+			{
+				break;
+			}
+		}
+
+		isNumberSet = true;		
 	}
 	return Point(randCol, randRow);
 }
@@ -260,7 +271,7 @@ void BoardManager::removeNumberfromBoard(int number)
 bool BoardManager::removeNumberByPoint(const Point& pt)
 {
 	int number = getNumberInCell(pt);
-	if (number)
+	if (number > -1)
 	{
 		removeNumberfromBoard(number);
 		return true;
@@ -285,7 +296,6 @@ void BoardManager::prepareNextStage()
 	}
 
 	mission->nextMission();
-
 	snakes[0]->resetGun();
 	snakes[1]->resetGun();
 }
@@ -316,7 +326,13 @@ void BoardManager::resetBoard()
 	pointToNumber.clear();
 
 	snakes[0]->goToPoint(Point(10, 9), DIRECTION_RIGHT);
+	snakes[0]->setStatus(SnakeStatus::REGULAR);
+	snakes[0]->resetGun();
+	
+	
 	snakes[1]->goToPoint(Point(70, 9), DIRECTION_LEFT);
+	snakes[1]->setStatus(SnakeStatus::REGULAR);
+	snakes[1]->resetGun();
 }
 
 void BoardManager::blinkPoint(int number, const Point& pt)

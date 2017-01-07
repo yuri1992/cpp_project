@@ -51,7 +51,7 @@ void Snake::move()
 
 void Snake::shoot()
 {
-	gun.shoot(body->getNextPoint(), body->getDirection());
+	gun.shoot(body->getBody()[0], body->getDirection());
 }
 
 void Snake::wonStage()
@@ -61,7 +61,7 @@ void Snake::wonStage()
 
 	body->increaseSnakeBody();
 
-	if (status == Status::REGULAR)
+	if (status == SnakeStatus::REGULAR)
 	{
 		printSnake();
 	}
@@ -84,20 +84,20 @@ void Snake::resetGun()
 
 void Snake::doNext()
 {
-	if (status == Status::HIT && steps == GameSettings::RELIVE_AFTER_STEPS)
+	if (status == SnakeStatus::HIT && steps == GameSettings::RELIVE_AFTER_STEPS)
 	{
-		status = Status::REGULAR;
+		status = SnakeStatus::REGULAR;
 		steps = 0;
 		Point pt = theBoard->getRandomPosition(body->getCurrentSize());
 		goToPoint(pt);
 	}
 
-	if (status == Status::REGULAR)
+	gun.doNext();
+
+	if (status == SnakeStatus::REGULAR)
 		move();
 	else
 		steps++;
-
-	gun.doNext();
 
 	theBoard->printAmmo();
 }
@@ -126,6 +126,8 @@ void Snake::goToPoint(const Point& pt, int direction)
 
 void Snake::resetSnake(const Point& pt, int direction, int size)
 {
+	status = SnakeStatus::REGULAR;
+	steps = 0;
 	goToPoint(pt, direction);
 	setPoints(0);
 	setSnakeSize(size);
@@ -140,7 +142,7 @@ void Snake::gotHit()
 		theBoard->removeCell(snakeBody[i]);
 		theBoard->printCell(snakeBody[i]);
 	}
-	status = Status::HIT;
+	status = SnakeStatus::HIT;
 	steps = 0;
 }
 

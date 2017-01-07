@@ -98,6 +98,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BasePlayerBoard.cpp" />
     <ClCompile Include="BoardManager.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Gun.cpp" />
@@ -110,6 +111,7 @@
     <ClCompile Include="TheGame.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BasePlayerBoard.h" />
     <ClInclude Include="BoardManager.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Color.h" />

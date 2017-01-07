@@ -13,6 +13,7 @@ public:
 	Bullet(const Point& pt, int direction, BoardManager* boardManager);
 	~Bullet();
 	Point getNextPoint();
+	Point getPoint() const { return pos; };
 	Point& doNext();
 	void remove();
 	friend bool operator==(Bullet const& lhs, Bullet const& rhs)

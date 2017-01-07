@@ -8,28 +8,30 @@
 
 class BoardManager;
 
+enum SnakeStatus
+{
+	REGULAR = 0,
+	HIT = 1,
+};
+
 class Snake
 {
 	enum
 	{
 		KEYS_SIZE = 5,
 	};
-	enum Status
-	{
-		REGULAR = 0,
-		HIT = 1,
-	};
+
 
 	Gun gun;
 	BoardManager* theBoard = nullptr;
 	SnakeBody* body;
-	Status status = Status::REGULAR;
+	SnakeStatus status = SnakeStatus::REGULAR;
 	char arrowKeys[KEYS_SIZE];
 	int steps = 0;
 	int points = 0;
 public:
-	Snake(Color color, char bodyChar, BoardManager* boardManager, 
-		const char* keys, Point startPoint, Direction dir);
+	Snake(Color color, char bodyChar, BoardManager* boardManager,
+	      const char* keys, Point startPoint, Direction dir);
 	void printSnake();
 	void handleKey(int dir);
 	void goToPoint(const Point& pt);
@@ -54,11 +56,15 @@ public:
 
 	// getters and setters
 	int getShottingKey() { return arrowKeys[4]; }
+	void setStatus(SnakeStatus st) { status = st; }
+	SnakeStatus getStatus() { return status; }
+	void setSteps(int st) { steps = st; }
+	int getSteps() { return steps; }
 	int getPoints() const { return points; }
 	void setPoints(int point) { points = point; }
 	void setBoardManager(BoardManager* _theBoard) { theBoard = _theBoard; }
 	void setArrowKeys(const char* keys);
-	
+
 
 private:
 	bool _isNextStepValid();
