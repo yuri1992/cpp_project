@@ -101,6 +101,7 @@
     <ClCompile Include="BasePlayerBoard.cpp" />
     <ClCompile Include="BoardManager.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="CalculatorQuestion.cpp" />
     <ClCompile Include="Gun.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MissionBase.cpp" />
@@ -114,6 +115,7 @@
     <ClInclude Include="BasePlayerBoard.h" />
     <ClInclude Include="BoardManager.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="CalculatorQuestion.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="GameSettings.h" />
