@@ -12,17 +12,6 @@ Snake::Snake(Color color, char symbol, BoardManager* theBoard,
 	gun.setBoard(theBoard);
 }
 
-//void Snake::print()
-//{
-////	Point* ptrSnakeBody = getBody();
-////	char ch = getBodyChar();
-////	for (int i = 0; i < getSnakeSize(); i ++)
-////	{
-////		theBoard->setCell(ptrSnakeBody[i], ch);
-////		theBoard->printCell(ptrSnakeBody[i], getColor());
-////	}
-//}
-
 void Snake::handleKey(int key)
 {
 	int keyDirection = this->getKeyDirection(key);
@@ -110,10 +99,12 @@ int Snake::getKeyDirection(char key)
 	return -1;
 }
 
+
 void Snake::goToPoint(const Point& pt)
 {
 	remove();
 	setPosition(pt);
+	print();
 }
 
 void Snake::goToPoint(const Point& pt, int direction)
@@ -139,7 +130,7 @@ void Snake::setPosition(const Point& newPosition)
 		for (unsigned i = 0; ++i < pos.size(); )
 		{	
 			pos[i] = pos[i-1];
-			pos[i].move(getInvertDirection());
+			pos[i] = pos[i].next(getInvertDirection());
 		}
 		
 	}
@@ -162,11 +153,12 @@ void Snake::increaseSnakeBody()
 	move();
 }
 
-bool Snake::_isNextStepValid() const
+bool Snake::_isNextStepValid()
 {
 	Point nextPoint = getNextPosition();
 
-	if (getBoard()->isOccupatiedBySanke(nextPoint))
+	BoardManager* theBoard = getBoard();
+	if (theBoard->isOccupatiedBySanke(nextPoint))
 		return false;
 
 	return true;

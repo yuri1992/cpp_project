@@ -6,6 +6,7 @@
 #include "MissionBase.h"
 #include "FlyingRow.h"
 #include "FlyingCol.h"
+#include "NumberEater.h"
 
 
 BoardManager::BoardManager()
@@ -26,13 +27,14 @@ BoardManager::BoardManager()
 	                      Point(70, 9), DIRECTION_LEFT);
 
 	bots = new BasePlayerBoard*[5];
+	//bots[0] = new NumberEater(DIRECTION_DOWN, Point(55, 11), this);
 	bots[0] = new FlyingRow(DIRECTION_RIGHT, Point(30, 23), this);
 	bots[1] = new FlyingRow(DIRECTION_LEFT, Point(50, 15), this, false);
 	bots[2] = new FlyingCol(DIRECTION_UP, Point(45, 23), this, false);
 	bots[3] = new FlyingCol(DIRECTION_DOWN, Point(55, 15), this);
+	bots[4] = new NumberEater(DIRECTION_DOWN, Point(55, 11), this);
 
 	mission = new MissionBase();
-	cleanBoard();
 }
 
 void BoardManager::printBoard()
@@ -231,7 +233,8 @@ void BoardManager::setNextNumber()
 
 	while (!isNumberSet)
 	{
-		if (numberToPoint.find(number) != numberToPoint.end())
+		auto it = numberToPoint.find(number);
+		if (it != numberToPoint.end())
 		{
 			number = mission->generateNextNumber();
 		}
@@ -250,7 +253,7 @@ void BoardManager::setNextNumber()
 
 void BoardManager::next()
 {
-	for (int i = 0; i < 4; i ++)
+	for (int i = 0; i < 5; i ++)
 	{
 		bots[i]->doNext();
 	}
@@ -329,6 +332,19 @@ bool BoardManager::findSolveOnBoard()
 		}
 	}
 	return hasSolotion;
+}
+
+vector<Point> BoardManager::getAllSolution()
+{
+	vector<Point> sol;
+	for (auto const& x : numberToPoint)
+	{
+		if (mission->isSolved(x.first))
+		{
+			sol.push_back(x.second);
+		}
+	}
+	return sol;
 }
 
 int BoardManager::getNumberOfNumbers()

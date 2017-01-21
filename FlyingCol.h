@@ -5,7 +5,6 @@
 
 class FlyingCol : public BasePlayerBoard
 {
-
 public:
 
 	FlyingCol(int direction, const Point& pt, BoardManager* theBoard)
@@ -14,7 +13,7 @@ public:
 	}
 
 	FlyingCol(int direction, const Point& pt, BoardManager* theBoard, bool _isWallWalker)
-		: BasePlayerBoard(direction, pt, theBoard, FLYING_COL, LIGHTGREEN)
+		: FlyingCol(direction, pt, theBoard)
 	{
 		setIsWallWalker(_isWallWalker);
 	};

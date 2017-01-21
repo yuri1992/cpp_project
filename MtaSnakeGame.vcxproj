@@ -101,11 +101,13 @@
     <ClCompile Include="BasePlayerBoard.cpp" />
     <ClCompile Include="BoardManager.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="CalculatorQuestion.cpp" />
     <ClCompile Include="FlyingCol.cpp" />
     <ClCompile Include="FlyingRow.cpp" />
     <ClCompile Include="Gun.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MissionBase.cpp" />
+    <ClCompile Include="NumberEater.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="Snake.cpp" />
@@ -115,6 +117,7 @@
     <ClInclude Include="BasePlayerBoard.h" />
     <ClInclude Include="BoardManager.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="CalculatorQuestion.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="FlyingCol.h" />
@@ -122,6 +125,7 @@
     <ClInclude Include="GameSettings.h" />
     <ClInclude Include="Gun.h" />
     <ClInclude Include="MissionBase.h" />
+    <ClInclude Include="NumberEater.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Snake.h" />

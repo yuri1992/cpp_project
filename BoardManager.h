@@ -5,6 +5,7 @@
 #include "Point.h"
 #include "Snake.h"
 #include "MissionBase.h"
+#include "FlyingRow.h"
 
 using namespace std;
 
@@ -66,7 +67,6 @@ public:
 	Point getRandomPosition(int size);
 	int getNumberInCell(const Point& pt);
 	void setNextNumber();
-
 	void next();
 
 	void removeNumberfromBoard(int number);
@@ -74,6 +74,7 @@ public:
 	void prepareNextStage();
 	void blinkPoint(int number, const Point& pt);
 	bool findSolveOnBoard();
+	vector<Point> getAllSolution();
 	int getNumberOfNumbers();
 
 	// getters setters

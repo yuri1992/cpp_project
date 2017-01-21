@@ -54,10 +54,19 @@ public:
 		cout.flush();
 	}
 
+	double distance(const Point& pt) const
+	{
+		return sqrt(pow((x - pt.getX()), 2) + pow((y - pt.getY()), 2));
+	}
+
 	void move();
 
 	void move(int direction);
 
+	bool isEmpty() const
+	{
+		return x == -1 && y == -1;
+	}
 	Point next(int direction)
 	{
 		Point next = *this;

@@ -5,21 +5,22 @@
 
 class FlyingRow : public BasePlayerBoard
 {
-	
 public:
 
 	FlyingRow(int direction, const Point& pt, BoardManager* theBoard)
 		: BasePlayerBoard(direction, pt, theBoard, FLYING_ROW, LIGHTMAGENTA)
 	{
+		setSpeed(2);
 	}
 
 	FlyingRow(int direction, const Point& pt, BoardManager* theBoard, bool _isWallWalker)
-		: BasePlayerBoard(direction, pt, theBoard, FLYING_ROW, LIGHTMAGENTA)
+		: FlyingRow(direction, pt, theBoard)
 	{
 		setIsWallWalker(_isWallWalker);
 	};
 	~FlyingRow();
 	void destroy() override;
 	void doNext() override;
+	void _doNext();
 };
 #endif

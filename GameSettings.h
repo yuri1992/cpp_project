@@ -11,6 +11,7 @@ enum GameSettings
 	GUN_CHAR = '*',
 	FLYING_ROW = '!',
 	FLYING_COL = '$',
+	NUMBER_EATER = '%',
 	GUN_AMMO_INITIAL = 5,
 	RELIVE_AFTER_STEPS = 25,
 	SNAKE_START_SIZE = 3

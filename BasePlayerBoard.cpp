@@ -3,30 +3,21 @@
 #include "BoardManager.h"
 
 
-BasePlayerBoard::BasePlayerBoard(int direction, const Point& pt, BoardManager* theBoard)
+BasePlayerBoard::BasePlayerBoard(int direction, const Point& pt, BoardManager* theBoard) : direction(direction), theBoard(theBoard)
 {
-	setDirection(direction);
-	setBoard(theBoard);
-	setPosition(pt);
+	BasePlayerBoard::setPosition(pt);
 }
 
-BasePlayerBoard::BasePlayerBoard(int direction, const Point& pt,
-                                 BoardManager* theBoard,
-                                 char symbol)
+BasePlayerBoard::BasePlayerBoard(int direction, const Point& pt, BoardManager* theBoard, char symbol)
+	: direction(direction), symbol(symbol), theBoard(theBoard)
 {
-	setDirection(direction);
-	setBoard(theBoard);
-	setSymbol(symbol);
-	setPosition(pt);
+	BasePlayerBoard::setPosition(pt);
 }
 
 BasePlayerBoard::BasePlayerBoard(int direction, const Point& pt, BoardManager* theBoard, char symbol, Color color)
+	: direction(direction), symbol(symbol), color(color), theBoard(theBoard)
 {
-	setDirection(direction);
-	setBoard(theBoard);
-	setSymbol(symbol);
-	setPosition(pt);
-	setColor(color);
+	BasePlayerBoard::setPosition(pt);
 }
 
 BasePlayerBoard::~BasePlayerBoard()
@@ -68,33 +59,44 @@ Point BasePlayerBoard::getNextPosition() const
 
 void BasePlayerBoard::move()
 {
-	if (!getIsWallWalker())
+//	if (!getIsWallWalker())
+//	{
+//		Point pt = getPosition();
+//		if (pt.isBoundry(getDirection()))
+//		{
+//			setDirection(getInvertDirection());
+//		}
+//	}
+
+	if (pos.size() > 0)
 	{
-		Point pt = getPosition();
-		if (pt.isBoundry(getDirection()))
+		for (unsigned i = pos.size(); --i > 0;)
 		{
-			setDirection(getInvertDirection());
+			pos[i] = pos[i - 1];
 		}
 	}
 
-	for (unsigned i = pos.size(); --i > 0;)
-	{
-		pos[i] = pos[i - 1];
-	}
-	pos[0].move(getDirection());
+	int direction = getDirection();
+	pos[0] = pos[0].next(direction);
 }
 
 int BasePlayerBoard::getInvertDirection() const
 {
 	int dir = getDirection();
+
 	if (dir == DIRECTION_UP)
 		return DIRECTION_DOWN;
 	else if (dir == DIRECTION_DOWN)
 		return DIRECTION_UP;
 	else if (dir == DIRECTION_LEFT)
 		return DIRECTION_RIGHT;
-	else
-		return DIRECTION_LEFT;
+
+	return DIRECTION_LEFT;
+}
+
+BoardManager* BasePlayerBoard::getBoard()
+{
+	return theBoard;
 }
 
 void BasePlayerBoard::setPosition(const Point& newPosition)

@@ -35,7 +35,6 @@ public:
 	void resetGun();
 
 	void handleKey(int dir);
-
 	void goToPoint(const Point& pt);
 	void goToPoint(const Point& pt, int direction);
 	void resetSnake(const Point& pt, int direction, int size);
@@ -68,7 +67,7 @@ public:
 	void setSnakeSize(int size) { pos.resize(size); }
 
 private:
-	bool _isNextStepValid() const;
+	bool _isNextStepValid();
 };
 
 #endif

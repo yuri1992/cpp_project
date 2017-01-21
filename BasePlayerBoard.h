@@ -26,6 +26,7 @@ public:
 	virtual void remove();
 	virtual vector<Point> getPositionVector() const { return pos; }
 	virtual Point getPosition() const;
+	virtual void setPosition(const Point& pos);
 	virtual Point getNextPosition() const;
 	virtual void destroy() = 0;
 	virtual void doNext() = 0;
@@ -38,14 +39,16 @@ public:
 	void setSpeed(int speed) { this->speed = speed; }
 	int getDirection() const { return direction; }
 	int getInvertDirection() const;
-	void setDirection(int direction) { this->direction = direction; }
+	void setDirection(int _direction)
+	{
+		this->direction = _direction;
+	}
 	char getSymbol() const { return symbol; }
-	void setSymbol(char symbol) { this->symbol = symbol; }
+	void setSymbol(char _symbol) { this->symbol = _symbol; }
 	Color getColor() const { return color; }
-	void setColor(Color color) { this->color = color; }
-	BoardManager* getBoard() const { return theBoard; }
-	void setBoard(BoardManager* theBoard) { this->theBoard = theBoard; }
-	virtual void setPosition(const Point& pos);
+	void setColor(Color _color) { this->color = _color; }
+	BoardManager* getBoard();
+	void setBoard(BoardManager* _theBoard) { this->theBoard = _theBoard; }
 };
 
 #endif
