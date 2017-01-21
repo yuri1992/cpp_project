@@ -121,10 +121,9 @@ void CalculatorQuestion::generateNumbers(bool op2First)
 		nums[3] = ansAfterOp2 = workOperatorOn2Nums(op2, ansAfterOp1, nums[2]);
 	}
 }
-
-char* CalculatorQuestion::getOperatorChar(int givenOp)
+string CalculatorQuestion::getOperatorChar(int givenOp)
 {
-	char* ans;
+	string ans;
 	switch (givenOp)
 	{
 	case PLUS:

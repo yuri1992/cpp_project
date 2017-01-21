@@ -27,7 +27,7 @@ class CalculatorQuestion
 	int workOperatorOn2Nums(int givenOperator, int firstNum, int secondNum);
 	bool isSecondOperatorFirst();
 	void generateNumbers(bool);
-	char* getOperatorChar(int givenOp);
+	string getOperatorChar(int givenOp);
 	int pickHiddenIndex();
 public:
 
