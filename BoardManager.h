@@ -38,7 +38,7 @@ class BoardManager
 
 	std::unordered_map<Point, int> pointToNumber;
 	std::unordered_map<int, Point> numberToPoint;
-	char board[ROWS][COLS + 1]; // this is the actual board we play on, i.e. changes on board are done here
+	char board[ROWS][COLS + 1]; // this is the actual board we play on, i.e. changes on board are done here//
 public:
 	BoardManager();
 	void resetBoard();

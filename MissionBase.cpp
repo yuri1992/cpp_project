@@ -36,7 +36,6 @@ bool MissionBase::isSolved(int number)
 	int tempCurrentMission = 0;
 	bool answer = false;
 
-
 	switch (currentMission)
 	{
 	case MissionStatus::PRIME_NUM:
@@ -57,6 +56,9 @@ bool MissionBase::isSolved(int number)
 		break;
 	case MissionStatus::POW_2_OF_13:
 		answer = (number == 169);
+		break;
+	case MissionStatus::CALCULATOR:
+		answer = number == calcQuestion->getAnswer();
 		break;
 	default:
 		return false;
@@ -97,7 +99,9 @@ int MissionBase::generateNextNumber()
 
 int MissionBase::nextMission()
 {
-	currentMission = rand() % 6;
+	currentMission = rand() % 7;
+	//HERE TEST CALC
+	//currentMission = 6; 
 	switch (currentMission)
 	{
 	case MissionStatus::PRIME_NUM:
@@ -117,6 +121,11 @@ int MissionBase::nextMission()
 		break;
 	case MissionStatus::POW_2_OF_13:
 		currentMissionText = "collect the number 13^2";
+		break;
+	case MissionStatus::CALCULATOR:
+		if (calcQuestion != nullptr) delete calcQuestion;
+		calcQuestion = new CalculatorQuestion();
+		currentMissionText = calcQuestion->getFunctionString();
 		break;
 	default:
 		currentMissionText = "....";

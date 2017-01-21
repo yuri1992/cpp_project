@@ -1,7 +1,7 @@
 #ifndef _MISSION_BASE_H_
 #define _MISSION_BASE_H_
 #include <string>
-
+#include "CalculatorQuestion.h"
 class MissionBase
 {
 
@@ -16,9 +16,11 @@ class MissionBase
 		MULTI_OF_7 = 2, //7,14,21..
 		NATURAL_SQRT = 3,   //has a natural sqrt:  4,9,16,25,36....
 		DIV_BY_7_REMAIN_3 = 4,  //divided by 7 leaves remainder of 3: 3,10,17,....
-		POW_2_OF_13=5   //1 number: collect 13^2 = 169 (last num)..
-	};
+		POW_2_OF_13=5,   //1 number: collect 13^2 = 169 (last num)..
+		CALCULATOR=6
 
+	};
+	CalculatorQuestion* calcQuestion = nullptr;
 	static bool isPrime(int number);
 	int currentMission;
 	std::string currentMissionText;
