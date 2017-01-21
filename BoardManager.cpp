@@ -4,6 +4,8 @@
 #include <map>
 #include "Snake.h"
 #include "MissionBase.h"
+#include "FlyingRow.h"
+#include "FlyingCol.h"
 
 
 BoardManager::BoardManager()
@@ -22,6 +24,13 @@ BoardManager::BoardManager()
 	                      this,
 	                      "wxadz",
 	                      Point(70, 9), DIRECTION_LEFT);
+
+	bots = new BasePlayerBoard*[5];
+	bots[0] = new FlyingRow(DIRECTION_RIGHT, Point(30, 23), this);
+	bots[1] = new FlyingRow(DIRECTION_LEFT, Point(50, 15), this, false);
+	bots[2] = new FlyingCol(DIRECTION_UP, Point(45, 23), this, false);
+	bots[3] = new FlyingCol(DIRECTION_DOWN, Point(55, 15), this);
+
 	mission = new MissionBase();
 	cleanBoard();
 }
@@ -182,14 +191,14 @@ void BoardManager::printNumberByPoint(const Point& pt, int number, Color color)
 Point BoardManager::getRandomPosition(int size)
 {
 	bool isNumberSet = false;
-	int randRow = 0, randCol =0;
+	int randRow = 0, randCol = 0;
 
 	while (!isNumberSet)
 	{
 		randRow = (rand() % (ROWS - 5)) + 4;
 		// Snake will be stright line	
 		randCol = rand() % (COLS - size);
-		
+
 
 		// Validating the the cell are free from the other snake
 		for (int i = 0; i < size; i ++)
@@ -209,7 +218,7 @@ Point BoardManager::getRandomPosition(int size)
 			}
 		}
 
-		isNumberSet = true;		
+		isNumberSet = true;
 	}
 	return Point(randCol, randRow);
 }
@@ -236,6 +245,14 @@ void BoardManager::setNextNumber()
 				break;
 			}
 		}
+	}
+}
+
+void BoardManager::next()
+{
+	for (int i = 0; i < 4; i ++)
+	{
+		bots[i]->doNext();
 	}
 }
 
@@ -328,8 +345,8 @@ void BoardManager::resetBoard()
 	snakes[0]->goToPoint(Point(10, 9), DIRECTION_RIGHT);
 	snakes[0]->setStatus(SnakeStatus::REGULAR);
 	snakes[0]->resetGun();
-	
-	
+
+
 	snakes[1]->goToPoint(Point(70, 9), DIRECTION_LEFT);
 	snakes[1]->setStatus(SnakeStatus::REGULAR);
 	snakes[1]->resetGun();

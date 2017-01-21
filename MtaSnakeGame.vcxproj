@@ -101,13 +101,14 @@
     <ClCompile Include="BasePlayerBoard.cpp" />
     <ClCompile Include="BoardManager.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="FlyingCol.cpp" />
+    <ClCompile Include="FlyingRow.cpp" />
     <ClCompile Include="Gun.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MissionBase.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="Snake.cpp" />
-    <ClCompile Include="SnakeBody.cpp" />
     <ClCompile Include="TheGame.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -116,13 +117,14 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="config.h" />
+    <ClInclude Include="FlyingCol.h" />
+    <ClInclude Include="FlyingRow.h" />
     <ClInclude Include="GameSettings.h" />
     <ClInclude Include="Gun.h" />
     <ClInclude Include="MissionBase.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Snake.h" />
-    <ClInclude Include="SnakeBody.h" />
     <ClInclude Include="TheGame.h" />
     <ClInclude Include="_board.h" />
   </ItemGroup>

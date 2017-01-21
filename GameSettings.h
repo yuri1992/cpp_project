@@ -9,8 +9,19 @@ enum GameSettings
 	SANKE_ONE_BODY_FILL = '@',
 	SANKE_TWO_BODY_FILL = '#',
 	GUN_CHAR = '*',
+	FLYING_ROW = '!',
+	FLYING_COL = '$',
 	GUN_AMMO_INITIAL = 5,
 	RELIVE_AFTER_STEPS = 25,
+	SNAKE_START_SIZE = 3
+};
+
+enum Direction
+{
+	DIRECTION_UP = 0,
+	DIRECTION_DOWN = 1,
+	DIRECTION_LEFT = 2,
+	DIRECTION_RIGHT = 3
 };
 
 #endif

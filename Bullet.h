@@ -2,23 +2,24 @@
 #define _BULLET_
 
 #include "Point.h"
+#include "BasePlayerBoard.h"
+#include "GameSettings.h"
 class BoardManager;
 
-class Bullet
+class Bullet : public BasePlayerBoard
 {
-	int direction;
-	BoardManager* boardManager;
-	Point pos;
+	Color color = RED;
 public:
-	Bullet(const Point& pt, int direction, BoardManager* boardManager);
+	Bullet(int direction, const Point& pt, BoardManager* theBoard)
+		: BasePlayerBoard(direction, pt, theBoard, GUN_CHAR, RED) {};
 	~Bullet();
-	Point getNextPoint();
-	Point getPoint() const { return pos; };
-	Point& doNext();
-	void remove();
+	void doNext() override;
+	void destroy() override;
+
+
 	friend bool operator==(Bullet const& lhs, Bullet const& rhs)
 	{
-		return lhs.direction == rhs.direction && lhs.pos == rhs.pos;
+		return lhs.getDirection() == rhs.getDirection() && lhs.getPosition() == rhs.getPosition();
 	}
 };
 #endif

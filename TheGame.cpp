@@ -29,7 +29,7 @@ void TheGame::run()
 	{
 		if (status == Game::RUNNING)
 		{
-			_handleGameKeyPress();
+ 			_handleGameKeyPress();
 		}
 		else
 		{
@@ -98,7 +98,8 @@ void TheGame::_handleGameKeyPress()
 
 		playerOne->doNext();
 		playerTwo->doNext();
-
+		boardManager->next();
+	
 		Sleep(200);
 	}
 }
@@ -114,7 +115,7 @@ bool TheGame::isStageSolved()
 	for (i = 0; i < 2; i++)
 	{
 		Snake* snake = boardManager->getSnake(i);
-		pt = snake->getNextStep();
+		pt = snake->getNextPosition();
 		n = boardManager->getNumberInCell(pt);
 
 		if (n >= 0)
@@ -138,14 +139,14 @@ bool TheGame::isStageSolved()
 				if (i == 1)
 				{
 					Snake* otherPlayer = boardManager->getSnake(0);
-					boardManager->removeNumberByPoint(otherPlayer->getNextStep());
+					boardManager->removeNumberByPoint(otherPlayer->getNextPosition());
 					otherPlayer->wonStage();
 					Screen::printMessageOnBoard("Snake 2 is WRONG: +1 point for snake 1", Color::YELLOW);
 				}
 				else
 				{
 					Snake* otherPlayer = boardManager->getSnake(1);
-					boardManager->removeNumberByPoint(otherPlayer->getNextStep());
+					boardManager->removeNumberByPoint(otherPlayer->getNextPosition());
 					otherPlayer->wonStage();
 					Screen::printMessageOnBoard("Snake 1 is WRONG: +1 point for snake 2", Color::LIGHTBLUE);
 				}

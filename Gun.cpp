@@ -27,7 +27,7 @@ void Gun::shoot(const Point& pt, int direction)
 		ptNew.move(direction);
 
 		// adding bullet the vector.
-		Bullet bul = Bullet(ptNew, direction, boardManager);
+		Bullet bul = Bullet(direction, ptNew, boardManager);
 		bullets.push_back(bul);
 
 		// decreaing ammo size.
@@ -58,7 +58,7 @@ bool Gun::moveBulletNextPosition(Bullet& bt)
 	/*
 	 * return True when bullet hitted something and need to be removed from game
 	 */
-	Point pos = bt.getNextPoint();
+	Point pos = bt.getNextPosition();
 	Snake* snake = boardManager->getSnakeInCell(pos);
 	if (snake != nullptr)
 	{

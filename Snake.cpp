@@ -2,25 +2,26 @@
 #include "BoardManager.h"
 #include "Point.h"
 
-Snake::Snake(Color color, char bodyChar, BoardManager* boardManager,
-             const char* keys, Point startPoint, Direction dir = DIRECTION_UP)
+Snake::Snake(Color color, char symbol, BoardManager* theBoard,
+             const char* keys, Point startPoint, Direction direction = DIRECTION_UP)
+	: BasePlayerBoard(direction, startPoint, theBoard, symbol, color)
 {
-	setBoardManager(boardManager);
+	pos.resize(SNAKE_START_SIZE);
+	Snake::setPosition(startPoint);
 	setArrowKeys(keys);
-	gun.setBoard(boardManager);
-	body = new SnakeBody(dir, bodyChar, color, startPoint);
+	gun.setBoard(theBoard);
 }
 
-void Snake::printSnake()
-{
-	Point* ptrSnakeBody = body->getBody();
-	char ch = body->getBodyChar();
-	for (int i = 0; i < body->getCurrentSize(); i ++)
-	{
-		theBoard->setCell(ptrSnakeBody[i], ch);
-		theBoard->printCell(ptrSnakeBody[i], body->getColor());
-	}
-}
+//void Snake::print()
+//{
+////	Point* ptrSnakeBody = getBody();
+////	char ch = getBodyChar();
+////	for (int i = 0; i < getSnakeSize(); i ++)
+////	{
+////		theBoard->setCell(ptrSnakeBody[i], ch);
+////		theBoard->printCell(ptrSnakeBody[i], getColor());
+////	}
+//}
 
 void Snake::handleKey(int key)
 {
@@ -28,42 +29,27 @@ void Snake::handleKey(int key)
 
 	if (keyDirection != -1)
 	{
-		body->setDirection(keyDirection);
+		setDirection(keyDirection);
 	}
-	else if (key == getShottingKey())
+	else if (status == SnakeStatus::REGULAR && key == getShottingKey())
 	{
 		shoot();
 	}
 }
 
 
-void Snake::move()
-{
-	if (_isNextStepValid())
-	{
-		theBoard->removeCell(body->getBody()[body->getCurrentSize() - 1]);
-		theBoard->printCell(body->getBody()[body->getCurrentSize() - 1]);
-
-		body->move();
-		printSnake();
-	}
-}
-
 void Snake::shoot()
 {
-	gun.shoot(body->getBody()[0], body->getDirection());
+	gun.shoot(getPosition(), getDirection());
 }
 
 void Snake::wonStage()
 {
-	theBoard->removeCell(body->getBody()[body->getCurrentSize() - 1]);
-	theBoard->printCell(body->getBody()[body->getCurrentSize() - 1]);
-
-	body->increaseSnakeBody();
+	increaseSnakeBody();
 
 	if (status == SnakeStatus::REGULAR)
 	{
-		printSnake();
+		print();
 	}
 	points++;
 }
@@ -84,20 +70,32 @@ void Snake::resetGun()
 
 void Snake::doNext()
 {
-	if (status == SnakeStatus::HIT && steps == GameSettings::RELIVE_AFTER_STEPS)
+	BoardManager* theBoard = getBoard();
+
+	if (status == SnakeStatus::HIT &&
+		steps == GameSettings::RELIVE_AFTER_STEPS)
 	{
 		status = SnakeStatus::REGULAR;
 		steps = 0;
-		Point pt = theBoard->getRandomPosition(body->getCurrentSize());
+		Point pt = theBoard->getRandomPosition(getSnakeSize());
 		goToPoint(pt);
 	}
 
 	gun.doNext();
 
 	if (status == SnakeStatus::REGULAR)
-		move();
+	{
+		if (_isNextStepValid())
+		{
+			remove();
+			move();
+			print();
+		}
+	}
 	else
+	{
 		steps++;
+	}
 
 	theBoard->printAmmo();
 }
@@ -114,14 +112,14 @@ int Snake::getKeyDirection(char key)
 
 void Snake::goToPoint(const Point& pt)
 {
-	body->clean();
-	body->setPosition(pt);
+	remove();
+	setPosition(pt);
 }
 
 void Snake::goToPoint(const Point& pt, int direction)
 {
+	setDirection(direction);
 	goToPoint(pt);
-	setSnakeDirection(direction);
 }
 
 void Snake::resetSnake(const Point& pt, int direction, int size)
@@ -133,24 +131,42 @@ void Snake::resetSnake(const Point& pt, int direction, int size)
 	setSnakeSize(size);
 }
 
+void Snake::setPosition(const Point& newPosition)
+{
+	if (pos.size() > 0)
+	{
+		pos[0] = newPosition;
+		for (unsigned i = 0; ++i < pos.size(); )
+		{	
+			pos[i] = pos[i-1];
+			pos[i].move(getInvertDirection());
+		}
+		
+	}
+	else
+	{
+		pos.push_back(newPosition);
+	}
+}
+
 void Snake::gotHit()
 {
-	Point* snakeBody = body->getBody();
-	int snakeSize = body->getCurrentSize();
-	for (int i = 0; i < snakeSize; i++)
-	{
-		theBoard->removeCell(snakeBody[i]);
-		theBoard->printCell(snakeBody[i]);
-	}
+	remove();
 	status = SnakeStatus::HIT;
 	steps = 0;
 }
 
-bool Snake::_isNextStepValid()
+void Snake::increaseSnakeBody()
 {
-	Point nextPoint = body->getNextPoint();
+	pos.push_back(pos.back());
+	move();
+}
 
-	if (theBoard->isOccupatiedBySanke(nextPoint))
+bool Snake::_isNextStepValid() const
+{
+	Point nextPoint = getNextPosition();
+
+	if (getBoard()->isOccupatiedBySanke(nextPoint))
 		return false;
 
 	return true;

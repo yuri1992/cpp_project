@@ -3,7 +3,6 @@
 
 #include "Point.h"
 #include "GameSettings.h"
-#include "SnakeBody.h"
 #include "Gun.h"
 
 class BoardManager;
@@ -14,17 +13,14 @@ enum SnakeStatus
 	HIT = 1,
 };
 
-class Snake
+class Snake : public BasePlayerBoard
 {
 	enum
 	{
 		KEYS_SIZE = 5,
 	};
 
-
 	Gun gun;
-	BoardManager* theBoard = nullptr;
-	SnakeBody* body;
 	SnakeStatus status = SnakeStatus::REGULAR;
 	char arrowKeys[KEYS_SIZE];
 	int steps = 0;
@@ -32,42 +28,47 @@ class Snake
 public:
 	Snake(Color color, char bodyChar, BoardManager* boardManager,
 	      const char* keys, Point startPoint, Direction dir);
-	void printSnake();
+
+	void doNext() override;
+	void destroy() override {};
+	void shoot();
+	void resetGun();
+
 	void handleKey(int dir);
+
 	void goToPoint(const Point& pt);
 	void goToPoint(const Point& pt, int direction);
 	void resetSnake(const Point& pt, int direction, int size);
+	void setPosition(const Point& newPosition) override;
 	void gotHit();
-	void move();
-	void shoot();
+	void increaseSnakeBody();
 	void wonStage();
 	bool isWinGame() const { return points == GameSettings::POINT_TO_WIN_THE_GAME; }
-	void resetGun();
-	void doNext();
 
-	// getter and setters to SnakeBody (proxy)
 	int getKeyDirection(char key);
-	Point getNextStep() const { return body->getNextPoint(); }
-	Color getColor() const { return body->getColor(); }
-	void setSnakeDirection(int direction) { body->setDirection(direction); }
-	int getAmmo() { return gun.getAmmo(); }
-	Gun* getGun() { return &gun; };
-	void setSnakeSize(int size) { body->setCurrentSize(size); }
 
 	// getters and setters
+	int getAmmo() { return gun.getAmmo(); }
+	Gun* getGun() { return &gun; };
 	int getShottingKey() { return arrowKeys[4]; }
+
+	int getSnakeSize() const { return int(pos.size()); }
+
 	void setStatus(SnakeStatus st) { status = st; }
-	SnakeStatus getStatus() { return status; }
+	SnakeStatus getStatus() const { return status; }
+
 	void setSteps(int st) { steps = st; }
-	int getSteps() { return steps; }
+	int getSteps() const { return steps; }
+
 	int getPoints() const { return points; }
 	void setPoints(int point) { points = point; }
-	void setBoardManager(BoardManager* _theBoard) { theBoard = _theBoard; }
+
 	void setArrowKeys(const char* keys);
 
+	void setSnakeSize(int size) { pos.resize(size); }
 
 private:
-	bool _isNextStepValid();
+	bool _isNextStepValid() const;
 };
 
 #endif

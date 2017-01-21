@@ -2,41 +2,19 @@
 #include "BoardManager.h"
 
 
-Bullet::Bullet(const Point& pt, int direction, BoardManager* board)
-{
-	this->pos = pt;
-	this->direction = direction;
-	this->boardManager = board;
-}
-
-
 Bullet::~Bullet()
 {
 
 }
+	
 
-Point Bullet::getNextPoint()
+void Bullet::doNext()
 {
-	Point ptNext = pos;
-	ptNext.move(direction);
-	return ptNext;
+	remove();
+	move();
+	print();
 }
 
-Point& Bullet::doNext()
+void Bullet::destroy()
 {
-	boardManager->removeCell(pos);
-	boardManager->printCell(pos);
-
-	this->pos.move(direction);
-
-	boardManager->setCell(pos, GUN_CHAR);
-	boardManager->printCell(pos, RED);
-	return pos;
-}
-
-
-void Bullet::remove()
-{
-	boardManager->removeCell(pos);
-	boardManager->printCell(pos);
 }

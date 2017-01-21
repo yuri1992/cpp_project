@@ -12,6 +12,8 @@ class Point
 	int x = 1, y = 1;
 public:
 	Point();
+	Point(const Point& pt);
+	bool isBoundry(int dir);
 
 	Point(int x, int y)
 	{

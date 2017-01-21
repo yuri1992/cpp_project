@@ -34,6 +34,7 @@ class BoardManager
 {
 	MissionBase* mission;
 	Snake** snakes;
+	BasePlayerBoard** bots;
 
 	std::unordered_map<Point, int> pointToNumber;
 	std::unordered_map<int, Point> numberToPoint;
@@ -65,6 +66,8 @@ public:
 	Point getRandomPosition(int size);
 	int getNumberInCell(const Point& pt);
 	void setNextNumber();
+
+	void next();
 
 	void removeNumberfromBoard(int number);
 	bool removeNumberByPoint(const Point& pt);
