@@ -13,8 +13,8 @@ void NumberEater::destroy()
 
 bool NumberEater::seekSulotion()
 {
-	BoardManager* theBoard = getBoard();
-	vector<Point> solutionsPts = theBoard->getAllSolution();
+	BoardManager* _theBoard = getBoard();
+	vector<Point> solutionsPts = _theBoard->getAllSolution();
 
 	if (solutionsPts.empty())
 		return false;
@@ -59,8 +59,8 @@ void NumberEater::_doNext()
 	if (seekSulotion())
 	{
 		remove();
-		BoardManager* theBoard = getBoard();
-		Snake* snake = theBoard->getSnakeInCell(getNextPosition());
+		BoardManager* _theBoard = getBoard();
+		Snake* snake = _theBoard->getSnakeInCell(getNextPosition());
 
 		if (snake != nullptr)
 		{
@@ -69,7 +69,7 @@ void NumberEater::_doNext()
 		else
 		{
 			// Removing Number is the position
-			theBoard->removeNumberByPoint(getNextPosition());
+			_theBoard->removeNumberByPoint(getNextPosition());
 		}
 
 		move();

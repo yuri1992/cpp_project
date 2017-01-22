@@ -16,5 +16,6 @@ public:
 	bool seekSulotion();
 	void _doNext();
 	void doNext() override;
+	string type() override { return "numbereater"; };
 };
 #endif

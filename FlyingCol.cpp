@@ -9,21 +9,32 @@ FlyingCol::~FlyingCol()
 
 void FlyingCol::destroy()
 {
+	remove();
+	pos.clear();
 }
 
 void FlyingCol::doNext()
 {
 	BoardManager* _theBoard = getBoard();
-	Snake* snake = _theBoard->getSnakeInCell(getNextPosition());
+	Point pt = getNextPosition();
+	BasePlayerBoard* playerInterceted = _theBoard->getPlayerAtPoint(pt);
 
-	if (snake != nullptr)
+	if (playerInterceted != nullptr)
 	{
-		snake->gotHit();
+		string type = playerInterceted->type();
+		if (type == "snake")
+		{
+			playerInterceted->destroy();
+		}
+		else
+		{
+			return;
+		}
 	}
 	else
 	{
 		// Removing Number is the position
-		_theBoard->removeNumberByPoint(getNextPosition());
+		_theBoard->removeNumberByPoint(pt);
 	}
 
 	remove();

@@ -21,7 +21,7 @@ Point::Point(const Point& pt)
 	y = pt.getY();
 }
 
-bool Point::isBoundry(int dir)
+bool Point::isBoundry(int dir) const
 {
 	switch (dir)
 	{

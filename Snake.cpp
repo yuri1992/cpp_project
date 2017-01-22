@@ -9,7 +9,12 @@ Snake::Snake(Color color, char symbol, BoardManager* theBoard,
 	pos.resize(SNAKE_START_SIZE);
 	Snake::setPosition(startPoint);
 	setArrowKeys(keys);
-	gun.setBoard(theBoard);
+	gun = new Gun(theBoard);
+}
+
+Snake::~Snake()
+{
+	delete gun;
 }
 
 void Snake::handleKey(int key)
@@ -29,7 +34,7 @@ void Snake::handleKey(int key)
 
 void Snake::shoot()
 {
-	gun.shoot(getPosition(), getDirection());
+	gun->shoot(getPosition(), getDirection());
 }
 
 void Snake::wonStage()
@@ -54,23 +59,24 @@ void Snake::setArrowKeys(const char* keys)
 
 void Snake::resetGun()
 {
-	gun.reset();
+	gun->reset();
 }
 
 void Snake::doNext()
 {
-	BoardManager* theBoard = getBoard();
+	BoardManager* _theBoard = getBoard();
 
 	if (status == SnakeStatus::HIT &&
 		steps == GameSettings::RELIVE_AFTER_STEPS)
 	{
+		Point pt = _theBoard->getRandomPosition(getSnakeSize());
 		status = SnakeStatus::REGULAR;
 		steps = 0;
-		Point pt = theBoard->getRandomPosition(getSnakeSize());
+		setSnakeSize(SNAKE_START_SIZE + points);
 		goToPoint(pt);
 	}
 
-	gun.doNext();
+	//gun->doNext();
 
 	if (status == SnakeStatus::REGULAR)
 	{
@@ -86,7 +92,12 @@ void Snake::doNext()
 		steps++;
 	}
 
-	theBoard->printAmmo();
+	_theBoard->printAmmo();
+}
+
+void Snake::destroy()
+{
+	gotHit();
 }
 
 int Snake::getKeyDirection(char key)
@@ -124,25 +135,18 @@ void Snake::resetSnake(const Point& pt, int direction, int size)
 
 void Snake::setPosition(const Point& newPosition)
 {
-	if (pos.size() > 0)
+	pos[0] = newPosition;
+	for (unsigned i = 0; ++i < pos.size();)
 	{
-		pos[0] = newPosition;
-		for (unsigned i = 0; ++i < pos.size(); )
-		{	
-			pos[i] = pos[i-1];
-			pos[i] = pos[i].next(getInvertDirection());
-		}
-		
-	}
-	else
-	{
-		pos.push_back(newPosition);
+		pos[i] = pos[i - 1];
+		pos[i] = pos[i].next(getInvertDirection());
 	}
 }
 
 void Snake::gotHit()
 {
 	remove();
+	pos.clear();
 	status = SnakeStatus::HIT;
 	steps = 0;
 }
@@ -157,8 +161,8 @@ bool Snake::_isNextStepValid()
 {
 	Point nextPoint = getNextPosition();
 
-	BoardManager* theBoard = getBoard();
-	if (theBoard->isOccupatiedBySanke(nextPoint))
+	BoardManager* _theBoard = getBoard();
+	if (_theBoard->isOccupatiedBySanke(nextPoint))
 		return false;
 
 	return true;

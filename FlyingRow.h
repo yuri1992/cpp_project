@@ -11,6 +11,7 @@ public:
 		: BasePlayerBoard(direction, pt, theBoard, FLYING_ROW, LIGHTMAGENTA)
 	{
 		setSpeed(2);
+		setIsBulletproof(true);
 	}
 
 	FlyingRow(int direction, const Point& pt, BoardManager* theBoard, bool _isWallWalker)
@@ -22,5 +23,6 @@ public:
 	void destroy() override;
 	void doNext() override;
 	void _doNext();
+	string type() override { return "flyingrow"; };
 };
 #endif

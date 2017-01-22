@@ -14,6 +14,7 @@ public:
 		: BasePlayerBoard(direction, pt, theBoard, GUN_CHAR, RED) {};
 	~Bullet();
 	void doNext() override;
+	string type() override { return "bullet"; };
 	void destroy() override;
 
 

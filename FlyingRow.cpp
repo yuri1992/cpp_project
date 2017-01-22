@@ -12,7 +12,7 @@ void FlyingRow::destroy()
 
 void FlyingRow::doNext()
 {
-	for (int i = 0; i< getSpeed(); i++)
+	for (int i = 0; i < getSpeed(); i++)
 	{
 		_doNext();
 	}
@@ -21,16 +21,25 @@ void FlyingRow::doNext()
 void FlyingRow::_doNext()
 {
 	BoardManager* _theBoard = getBoard();
-	Snake* snake = _theBoard->getSnakeInCell(getNextPosition());
+	Point pt = getNextPosition();
+	BasePlayerBoard* playerInterceted = _theBoard->getPlayerAtPoint(pt);
 
-	if (snake != nullptr)
+	if (playerInterceted != nullptr)
 	{
-		snake->gotHit();
+		if (playerInterceted->type() == "snake")
+		{
+			Snake* snake = static_cast<Snake*>(playerInterceted);
+			snake->gotHit();
+		}
+		else
+		{
+			return;
+		}
 	}
 	else
 	{
 		// Removing Number is the position
-		_theBoard->removeNumberByPoint(getNextPosition());
+		_theBoard->removeNumberByPoint(pt);
 	}
 
 	remove();

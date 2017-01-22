@@ -3,19 +3,19 @@
 #include "BoardManager.h"
 
 
-BasePlayerBoard::BasePlayerBoard(int direction, const Point& pt, BoardManager* theBoard) : direction(direction), theBoard(theBoard)
+BasePlayerBoard::BasePlayerBoard(int dir, const Point& pt, BoardManager* _theBoard) : direction(dir), theBoard(_theBoard)
 {
 	BasePlayerBoard::setPosition(pt);
 }
 
-BasePlayerBoard::BasePlayerBoard(int direction, const Point& pt, BoardManager* theBoard, char symbol)
-	: direction(direction), symbol(symbol), theBoard(theBoard)
+BasePlayerBoard::BasePlayerBoard(int dir, const Point& pt, BoardManager* _theBoard, char _symbol)
+	: direction(dir), symbol(_symbol), theBoard(_theBoard)
 {
 	BasePlayerBoard::setPosition(pt);
 }
 
-BasePlayerBoard::BasePlayerBoard(int direction, const Point& pt, BoardManager* theBoard, char symbol, Color color)
-	: direction(direction), symbol(symbol), color(color), theBoard(theBoard)
+BasePlayerBoard::BasePlayerBoard(int dir, const Point& pt, BoardManager* _theBoard, char _symbol, Color _color)
+	: direction(dir), symbol(_symbol), color(_color), theBoard(_theBoard)
 {
 	BasePlayerBoard::setPosition(pt);
 }
@@ -57,16 +57,27 @@ Point BasePlayerBoard::getNextPosition() const
 	return pt.next(direction);
 }
 
+bool BasePlayerBoard::interceptPoint(const Point& interceptPt) const
+{
+	for (auto posPt : pos)
+	{
+		if (posPt == interceptPt)
+			return true;
+	};
+	return false;
+}
+
 void BasePlayerBoard::move()
 {
-//	if (!getIsWallWalker())
-//	{
-//		Point pt = getPosition();
-//		if (pt.isBoundry(getDirection()))
-//		{
-//			setDirection(getInvertDirection());
-//		}
-//	}
+	int dir = getDirection();
+	if (!getIsWallWalker())
+	{
+		Point pt = getPosition();
+		if (pt.isBoundry(dir))
+		{
+			setDirection(getInvertDirection());
+		}
+	}
 
 	if (pos.size() > 0)
 	{
@@ -76,8 +87,8 @@ void BasePlayerBoard::move()
 		}
 	}
 
-	int direction = getDirection();
-	pos[0] = pos[0].next(direction);
+	
+	pos[0].move(dir);
 }
 
 int BasePlayerBoard::getInvertDirection() const

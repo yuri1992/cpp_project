@@ -17,4 +17,6 @@ void Bullet::doNext()
 
 void Bullet::destroy()
 {
+	remove();
+	pos.empty();
 }

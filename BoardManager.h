@@ -18,15 +18,17 @@ namespace std
 		{
 			using std::size_t;
 			using std::hash;
-			size_t h1 = std::hash<double>()(k.getX());
-			size_t h2 = std::hash<double>()(k.getY());
-			return (h1 ^ (h2 << 1));
+//			size_t h1 = std::hash<int>()(k.getX());
+//			size_t h2 = std::hash<int>()(k.getY());
+//			return (h1 ^ (h2 << 1));
+			return (53 + std::hash<int>()(k.getX()) * 53 + std::hash<int>()(k.getY()));
 		}
 	};
 };
 
 enum
 {
+	BOTS_PLAYER = 5,
 	ROWS = 24,
 	COLS = 80
 };
@@ -42,6 +44,7 @@ class BoardManager
 	char board[ROWS][COLS + 1]; // this is the actual board we play on, i.e. changes on board are done here//
 public:
 	BoardManager();
+	~BoardManager();
 	void resetBoard();
 
 	void printBoard();
@@ -58,6 +61,7 @@ public:
 	void removeCell(int row, int col) { board[row][col] = ' '; }
 	void removeCell(const Point& p) { removeCell(p.getY(), p.getX()); }
 
+	BasePlayerBoard* getPlayerAtPoint(const Point& p) const;
 	Snake* getSnakeInCell(const Point& p);
 	bool isOccupatiedBySanke(const Point& p);
 
@@ -68,6 +72,8 @@ public:
 	int getNumberInCell(const Point& pt);
 	void setNextNumber();
 	void next();
+	bool isGameWon();
+	void handleKey(char key);
 
 	void removeNumberfromBoard(int number);
 	bool removeNumberByPoint(const Point& pt);
@@ -75,16 +81,12 @@ public:
 	void blinkPoint(int number, const Point& pt);
 	bool findSolveOnBoard();
 	vector<Point> getAllSolution();
-	int getNumberOfNumbers();
+	int getNumberAmountOnBoard() const;
 
 	// getters setters
-	Snake* getSnake(int index) { return snakes[index]; }
-	std::unordered_map<Point, int> getPointToNumber() const { return pointToNumber; }
-	void setPointToNumber(const std::unordered_map<Point, int>& point_to_number) { pointToNumber = point_to_number; }
-	std::unordered_map<int, Point> getNumberToPoint() const { return numberToPoint; }
-	void setNumberToPoint(const std::unordered_map<int, Point>& number_to_point) { numberToPoint = number_to_point; }
+	Snake* getSnake(int index) const { return snakes[index]; }
 	void setMission(MissionBase* _mission) { mission = _mission; }
-	MissionBase* getMission() { return mission; }
+	MissionBase* getMission() const { return mission; }
 };
 
 #endif

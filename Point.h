@@ -13,7 +13,7 @@ class Point
 public:
 	Point();
 	Point(const Point& pt);
-	bool isBoundry(int dir);
+	bool isBoundry(int dir) const;
 
 	Point(int x, int y)
 	{

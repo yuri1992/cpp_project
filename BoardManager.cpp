@@ -28,13 +28,29 @@ BoardManager::BoardManager()
 
 	bots = new BasePlayerBoard*[5];
 	//bots[0] = new NumberEater(DIRECTION_DOWN, Point(55, 11), this);
-	bots[0] = new FlyingRow(DIRECTION_RIGHT, Point(30, 23), this);
-	bots[1] = new FlyingRow(DIRECTION_LEFT, Point(50, 15), this, false);
-	bots[2] = new FlyingCol(DIRECTION_UP, Point(45, 23), this, false);
-	bots[3] = new FlyingCol(DIRECTION_DOWN, Point(55, 15), this);
-	bots[4] = new NumberEater(DIRECTION_DOWN, Point(55, 11), this);
+	bots[0] = new FlyingCol(DIRECTION_UP, Point(45, 23), this);
+	bots[1] = new FlyingCol(DIRECTION_DOWN, Point(55, 15), this);
+	bots[2] = new FlyingRow(DIRECTION_LEFT, Point(50, 15), this, false);
+	bots[3] = new FlyingRow(DIRECTION_RIGHT, Point(30, 23), this);
+	bots[4] = new NumberEater(DIRECTION_DOWN, Point(10, 19), this);
 
 	mission = new MissionBase();
+}
+
+BoardManager::~BoardManager()
+{
+	delete snakes[0];
+	delete snakes[1];
+	delete snakes;
+
+	delete bots[0];
+	delete bots[1];
+	delete bots[2];
+	delete bots[3];
+	delete bots[4];
+	delete bots;
+
+	delete mission;
 }
 
 void BoardManager::printBoard()
@@ -118,22 +134,49 @@ int getDigitsNumber(int number)
 	return res;
 }
 
+BasePlayerBoard* BoardManager::getPlayerAtPoint(const Point& p) const
+{
+	for (int i = 0; i < BOTS_PLAYER; i++)
+	{
+		if (bots[i]->interceptPoint(p))
+		{
+			return bots[i];
+		}
+	}
+
+	for (int i = 0; i < 2; i++)
+	{
+		if (snakes[i]->interceptPoint(p))
+		{
+			return snakes[i];
+		}
+	}
+	return nullptr;
+}
+
 Snake* BoardManager::getSnakeInCell(const Point& p)
 {
-	if (board[p.getY()][p.getX()] == GameSettings::SANKE_ONE_BODY_FILL)
+
+	for (int i = 0; i < 2; i++)
 	{
-		return getSnake(0);
-	}
-	else if (board[p.getY()][p.getX()] == GameSettings::SANKE_TWO_BODY_FILL)
-	{
-		return getSnake(1);
+		if (snakes[i]->interceptPoint(p))
+		{
+			return snakes[i];
+		}
 	}
 	return nullptr;
 }
 
 bool BoardManager::isOccupatiedBySanke(const Point& p)
 {
-	return board[p.getY()][p.getX()] == GameSettings::SANKE_ONE_BODY_FILL || board[p.getY()][p.getX()] == GameSettings::SANKE_TWO_BODY_FILL;
+	for (int i = 0; i < 2; i++)
+	{
+		if (snakes[i]->interceptPoint(p))
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 bool BoardManager::isValidNumberCell(int row, int col, int number)
@@ -214,15 +257,13 @@ Point BoardManager::getRandomPosition(int size)
 		// removing all number in those cells (after validating)
 		for (int i = 0; i < size; i++)
 		{
-			if (removeNumberByPoint(Point(randRow, randCol + i)))
-			{
-				break;
-			}
+			removeNumberByPoint(Point(randRow, randCol + i));
 		}
 
 		isNumberSet = true;
 	}
-	return Point(randCol, randRow);
+	Point point = Point(randCol, randRow);
+	return point;
 }
 
 void BoardManager::setNextNumber()
@@ -253,9 +294,33 @@ void BoardManager::setNextNumber()
 
 void BoardManager::next()
 {
-	for (int i = 0; i < 5; i ++)
+	for (int i = 0; i < 2; i++)
+	{
+		snakes[i]->doNext();
+	}
+	for (int i = 0; i < BOTS_PLAYER; i ++)
 	{
 		bots[i]->doNext();
+	}
+}
+
+bool BoardManager::isGameWon()
+{
+	for (int i = 0; i < 2; i++)
+	{
+		if (snakes[i]->isWinGame())
+		{
+			Screen::printMessageOnBoard("Won The game!!");
+			return true;
+		}
+	}
+	return false;
+}
+void BoardManager::handleKey(char key)
+{
+	for (int i = 0; i < 2; i++)
+	{
+		snakes[i]->handleKey(key);
 	}
 }
 
@@ -305,7 +370,7 @@ void BoardManager::prepareNextStage()
 	int numberToLeaveOnBoard = numberToPoint.size() / 2;
 	while (numberToPoint.size() > 0 && numberToLeaveOnBoard < numberToPoint.size())
 	{
-		for (auto const& x : numberToPoint)
+		for (auto x : numberToPoint)
 		{
 			if (rand() % 2 == 0)
 			{
@@ -323,7 +388,7 @@ void BoardManager::prepareNextStage()
 bool BoardManager::findSolveOnBoard()
 {
 	bool hasSolotion = false;
-	for (auto const& x : numberToPoint)
+	for (auto x : numberToPoint)
 	{
 		if (mission->isSolved(x.first))
 		{
@@ -337,7 +402,7 @@ bool BoardManager::findSolveOnBoard()
 vector<Point> BoardManager::getAllSolution()
 {
 	vector<Point> sol;
-	for (auto const& x : numberToPoint)
+	for (auto x : numberToPoint)
 	{
 		if (mission->isSolved(x.first))
 		{
@@ -347,7 +412,7 @@ vector<Point> BoardManager::getAllSolution()
 	return sol;
 }
 
-int BoardManager::getNumberOfNumbers()
+int BoardManager::getNumberAmountOnBoard() const
 {
 	return numberToPoint.size();
 }

@@ -4,12 +4,12 @@
 TheGame::TheGame()
 {
 	// initialize Board
-	boardManager = new BoardManager();
+	theBoard = new BoardManager();
 }
 
 TheGame::~TheGame()
 {
-	delete boardManager;
+	delete theBoard;
 }
 
 void TheGame::printScreen() const
@@ -45,8 +45,6 @@ void TheGame::_handleGameKeyPress()
 	if (status == Game::RUNNING)
 	{
 		char key;
-		Snake* playerOne = boardManager->getSnake(0);
-		Snake* playerTwo = boardManager->getSnake(1);
 		if (_kbhit())
 		{
 			key = _getch();
@@ -56,21 +54,13 @@ void TheGame::_handleGameKeyPress()
 				_pause();
 				return;
 			}
-			playerOne->handleKey(key);
-			playerTwo->handleKey(key);
+			theBoard->handleKey(key);
 		}
 
 		if (isStageSolved())
 		{
-			if (playerOne->isWinGame())
+			if (theBoard->isGameWon())
 			{
-				Screen::printMessageOnBoard("Snake 1 Won The game!!", playerOne->getColor());
-				_finishGame();
-				return;
-			}
-			else if (playerTwo->isWinGame())
-			{
-				Screen::printMessageOnBoard("Snake 2 Won The game!!", playerTwo->getColor());
 				_finishGame();
 				return;
 			}
@@ -81,9 +71,9 @@ void TheGame::_handleGameKeyPress()
 			}
 		}
 
-		if (boardManager->getNumberOfNumbers() == GameSettings::MAX_NUMBER_ON_BOARD)
+		if (theBoard->getNumberAmountOnBoard() == GameSettings::MAX_NUMBER_ON_BOARD)
 		{
-			if (!boardManager->findSolveOnBoard())
+			if (!theBoard->findSolveOnBoard())
 				Screen::printMessageOnBoard("Sorry, we do not have solution on the board");
 			else
 				Screen::printMessageOnBoard("Nice try, We are to continue to next Stage");
@@ -92,13 +82,10 @@ void TheGame::_handleGameKeyPress()
 
 		if (step++ % GameSettings::STEPS_FOR_NEW_NUMBER == 0)
 		{
-			boardManager->setNextNumber();
+			theBoard->setNextNumber();
 		}
 
-
-		playerOne->doNext();
-		playerTwo->doNext();
-		boardManager->next();
+		theBoard->next();
 
 		Sleep(200);
 	}
@@ -114,17 +101,17 @@ bool TheGame::isStageSolved()
 
 	for (i = 0; i < 2; i++)
 	{
-		Snake* snake = boardManager->getSnake(i);
+		Snake* snake = theBoard->getSnake(i);
 		if (snake->getStatus() == SnakeStatus::REGULAR)
 		{
 			pt = snake->getNextPosition();
-			n = boardManager->getNumberInCell(pt);
+			n = theBoard->getNumberInCell(pt);
 			if (n >= 0)
 			{
-				boardManager->removeNumberfromBoard(n);
-				if (boardManager->getMission()->isSolved(n))
+				theBoard->removeNumberfromBoard(n);
+				if (theBoard->getMission()->isSolved(n))
 				{
-					//boardManager->removeNumberfromBoard(n);
+					//theBoard->removeNumberfromBoard(n);
 					snake->wonStage();
 					if (i == 0)
 					{
@@ -139,15 +126,15 @@ bool TheGame::isStageSolved()
 				{
 					if (i == 1)
 					{
-						Snake* otherPlayer = boardManager->getSnake(0);
-						boardManager->removeNumberByPoint(otherPlayer->getNextPosition());
+						Snake* otherPlayer = theBoard->getSnake(0);
+						theBoard->removeNumberByPoint(otherPlayer->getNextPosition());
 						otherPlayer->wonStage();
 						Screen::printMessageOnBoard("Snake 2 is WRONG: +1 point for snake 1", Color::YELLOW);
 					}
 					else
 					{
-						Snake* otherPlayer = boardManager->getSnake(1);
-						boardManager->removeNumberByPoint(otherPlayer->getNextPosition());
+						Snake* otherPlayer = theBoard->getSnake(1);
+						theBoard->removeNumberByPoint(otherPlayer->getNextPosition());
 						otherPlayer->wonStage();
 						Screen::printMessageOnBoard("Snake 1 is WRONG: +1 point for snake 2", Color::LIGHTBLUE);
 					}
@@ -232,14 +219,14 @@ void TheGame::_resumeGame()
 {
 	status = Game::RUNNING;
 	Screen::clearScreen();
-	boardManager->printBoard();
-	boardManager->printScore();
+	theBoard->printBoard();
+	theBoard->printScore();
 }
 
 void TheGame::_restartStage()
 {
-	boardManager->resetBoard();
-	boardManager->printScore();
+	theBoard->resetBoard();
+	theBoard->printScore();
 	status = Game::RUNNING;
 }
 
@@ -248,11 +235,11 @@ void TheGame::_nextStage()
 	if (status == Game::PAUSE)
 	{
 		Screen::clearScreen();
-		boardManager->resetBoard();
+		theBoard->resetBoard();
 	}
 
-	boardManager->prepareNextStage();
-	boardManager->printScore();
+	theBoard->prepareNextStage();
+	theBoard->printScore();
 
 	status = Game::RUNNING;
 }
@@ -261,9 +248,9 @@ void TheGame::_nextStage()
 void TheGame::_newGame()
 {
 	Screen::clearScreen();
-	boardManager->resetBoard();
-	boardManager->getSnake(0)->setSnakeSize(3);
-	boardManager->getSnake(1)->setSnakeSize(3);
-	boardManager->printScore();
+	theBoard->resetBoard();
+	theBoard->getSnake(0)->setSnakeSize(3);
+	theBoard->getSnake(1)->setSnakeSize(3);
+	theBoard->printScore();
 	status = Game::RUNNING;
 }

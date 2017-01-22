@@ -3,10 +3,8 @@
 #include "Snake.h"
 #include "BoardManager.h"
 
-Gun::Gun()
+Gun::Gun(BoardManager* the_board): ammo(GUN_AMMO_INITIAL), theBoard(the_board)
 {
-	ammo = GUN_AMMO_INITIAL;
-	this->boardManager = nullptr;
 	bullets.clear();
 }
 
@@ -27,7 +25,7 @@ void Gun::shoot(const Point& pt, int direction)
 		ptNew.move(direction);
 
 		// adding bullet the vector.
-		Bullet bul = Bullet(direction, ptNew, boardManager);
+		Bullet bul = Bullet(direction, ptNew, theBoard);
 		bullets.push_back(bul);
 
 		// decreaing ammo size.
@@ -59,17 +57,28 @@ bool Gun::moveBulletNextPosition(Bullet& bt)
 	 * return True when bullet hitted something and need to be removed from game
 	 */
 	Point pos = bt.getNextPosition();
-	Snake* snake = boardManager->getSnakeInCell(pos);
-	if (snake != nullptr)
+	BasePlayerBoard* playerInterceted = theBoard->getPlayerAtPoint(pos);
+	if (playerInterceted != nullptr)
 	{
-		snake->gotHit();
-		if (snake->getGun() != this)
+		if (!playerInterceted->getIsBulletproof())
 		{
-			ammo++;
+			if (playerInterceted->type() == "snake")
+			{
+				Snake* snake = static_cast<Snake*>(playerInterceted);
+				snake->gotHit();
+			}
+			else
+			{
+				playerInterceted->destroy();
+			}
+			return true;
 		}
-		return true;
+		else
+		{
+			return true;
+		}
 	}
-	else if (boardManager->removeNumberByPoint(pos))
+	else if (theBoard->removeNumberByPoint(pos))
 	{
 		return true;
 	}
@@ -79,6 +88,7 @@ bool Gun::moveBulletNextPosition(Bullet& bt)
 	}
 	return false;
 }
+
 
 void Gun::doNext()
 {

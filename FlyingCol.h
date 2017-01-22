@@ -20,5 +20,6 @@ public:
 	~FlyingCol();
 	void destroy() override;
 	void doNext() override;
+	string type() override { return "flyingcol"; };
 };
 #endif

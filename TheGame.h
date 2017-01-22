@@ -32,17 +32,13 @@ class TheGame
 
 	int step = 0;
 	Game status = STARTED;
-	BoardManager* boardManager;
+	BoardManager* theBoard;
 public:
 	TheGame();
 	~TheGame();
 	void printScreen() const;
 	void run();
-
 	bool isStageSolved();
-
-	BoardManager* getBoardManager() const { return boardManager; }
-	void setBoardManager1(BoardManager* board_manager) { boardManager = board_manager; }
 private:
 	void _showPauseMenu()
 	{
