@@ -28,7 +28,7 @@ BoardManager::BoardManager()
 
 	bots = new BasePlayerBoard*[5];
 	//bots[0] = new NumberEater(DIRECTION_DOWN, Point(55, 11), this);
-	bots[0] = new FlyingCol(DIRECTION_UP, Point(45, 23), this);
+	bots[0] = new FlyingCol(DIRECTION_UP, Point(45, 23), this, false);
 	bots[1] = new FlyingCol(DIRECTION_DOWN, Point(55, 15), this);
 	bots[2] = new FlyingRow(DIRECTION_LEFT, Point(50, 15), this, false);
 	bots[3] = new FlyingRow(DIRECTION_RIGHT, Point(30, 23), this);

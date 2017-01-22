@@ -18,9 +18,6 @@ namespace std
 		{
 			using std::size_t;
 			using std::hash;
-//			size_t h1 = std::hash<int>()(k.getX());
-//			size_t h2 = std::hash<int>()(k.getY());
-//			return (h1 ^ (h2 << 1));
 			return (53 + std::hash<int>()(k.getX()) * 53 + std::hash<int>()(k.getY()));
 		}
 	};
@@ -55,10 +52,21 @@ public:
 	void printCell(int row, int col, Color color = Color::LIGHTGREY);
 	void printCell(const Point& pt, Color color = Color::LIGHTGREY);
 	void printCellWithoutSnake(int row, int col, Color color = Color::LIGHTGREY);
-	char getCell(const Point& pt) { return board[pt.getY()][pt.getX()]; };
-	void setCell(int row, int col, char ch) { board[row][col] = ch; }
-	void setCell(const Point& pt, char ch) { board[pt.getY()][pt.getX()] = ch; }
-	void removeCell(int row, int col) { board[row][col] = ' '; }
+	char getCell(const Point& pt) { 
+		return board[pt.getY()][pt.getX()]; 
+	};
+	void setCell(int row, int col, char ch)
+	{
+		board[row][col] = ch;
+	}
+	void setCell(const Point& pt, char ch)
+	{
+		board[pt.getY()][pt.getX()] = ch;
+	}
+	void removeCell(int row, int col)
+	{
+		board[row][col] = ' ';
+	}
 	void removeCell(const Point& p) { removeCell(p.getY(), p.getX()); }
 
 	BasePlayerBoard* getPlayerAtPoint(const Point& p) const;

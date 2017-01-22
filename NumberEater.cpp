@@ -60,11 +60,20 @@ void NumberEater::_doNext()
 	{
 		remove();
 		BoardManager* _theBoard = getBoard();
-		Snake* snake = _theBoard->getSnakeInCell(getNextPosition());
+		Point pt = getNextPosition();
+		BasePlayerBoard* playerInterceted = _theBoard->getPlayerAtPoint(pt);
 
-		if (snake != nullptr)
+		if (playerInterceted != nullptr)
 		{
-			snake->gotHit();
+			if (playerInterceted->type() == "snake")
+			{
+				Snake* snake = static_cast<Snake*>(playerInterceted);
+				snake->gotHit();
+			}
+			else
+			{
+				return;
+			}
 		}
 		else
 		{

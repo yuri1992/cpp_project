@@ -28,7 +28,7 @@ BasePlayerBoard::~BasePlayerBoard()
 
 void BasePlayerBoard::print()
 {
-	for (Point pt : pos)
+	for (const Point& pt : pos)
 	{
 		theBoard->setCell(pt, getSymbol());
 		theBoard->printCell(pt, getColor());
@@ -37,7 +37,7 @@ void BasePlayerBoard::print()
 
 void BasePlayerBoard::remove()
 {
-	for (Point pt : pos)
+	for (const Point& pt : pos)
 	{
 		theBoard->removeCell(pt);
 		theBoard->printCell(pt);
@@ -47,19 +47,28 @@ void BasePlayerBoard::remove()
 Point BasePlayerBoard::getPosition() const
 {
 	// head of each played should be in the 0 place of pos vector
-	return pos[0];
+
+	if (pos.size() > 0)
+	{
+		return pos[0];
+	}
+	return Point(-1, -1);
 }
 
 Point BasePlayerBoard::getNextPosition() const
 {
 	// Return the next point of the head point at [0]
-	Point pt = pos[0];
-	return pt.next(direction);
+	if (pos.size() > 0)
+	{
+		Point pt = pos[0];
+		return pt.next(direction);
+	}
+	return Point(-1, -1);
 }
 
 bool BasePlayerBoard::interceptPoint(const Point& interceptPt) const
 {
-	for (auto posPt : pos)
+	for (const Point& posPt : pos)
 	{
 		if (posPt == interceptPt)
 			return true;
@@ -85,10 +94,8 @@ void BasePlayerBoard::move()
 		{
 			pos[i] = pos[i - 1];
 		}
+		pos[0].move(dir);
 	}
-
-	
-	pos[0].move(dir);
 }
 
 int BasePlayerBoard::getInvertDirection() const

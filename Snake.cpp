@@ -76,7 +76,7 @@ void Snake::doNext()
 		goToPoint(pt);
 	}
 
-	//gun->doNext();
+	gun->doNext();
 
 	if (status == SnakeStatus::REGULAR)
 	{
@@ -153,8 +153,11 @@ void Snake::gotHit()
 
 void Snake::increaseSnakeBody()
 {
-	pos.push_back(pos.back());
-	move();
+	if (pos.size() > 0)
+	{
+		pos.push_back(pos.back());
+		move();
+	}
 }
 
 bool Snake::_isNextStepValid()

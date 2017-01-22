@@ -21,10 +21,10 @@ void FlyingCol::doNext()
 
 	if (playerInterceted != nullptr)
 	{
-		string type = playerInterceted->type();
-		if (type == "snake")
+		if (playerInterceted->type() == "snake")
 		{
-			playerInterceted->destroy();
+			Snake* snake = static_cast<Snake*>(playerInterceted);
+			snake->gotHit();
 		}
 		else
 		{

@@ -25,30 +25,30 @@ bool Point::isBoundry(int dir) const
 {
 	switch (dir)
 	{
-	case 0: // UP
+	case DIRECTION_UP: // UP
 		
-		if (y - 1 < 4)
+		if (y == 5)
 		{
 			return true;
 		}
 		break;
-	case 1: // DOWN
+	case DIRECTION_DOWN: // DOWN
 		
-		if (y + 1 > 24)
+		if (y == 22)
 		{
 			return true;
 		}
 		break;
-	case 2: // LEFT
+	case DIRECTION_LEFT: // LEFT
 		
-		if (x - 1 < 0)
+		if (x == 1)
 		{
 			return true;
 		}
 		break;
-	case 3: // RIGHT
+	case DIRECTION_RIGHT: // RIGHT
 		
-		if (x + 1 > 79)
+		if (x == 79)
 		{
 			return true;
 		}
@@ -70,7 +70,7 @@ void Point::move(int dir)
 		break;
 	case 1: // DOWN
 		++y;
-		if (y > 24)
+		if (y > 23)
 		{
 			y = 4;
 		}
