@@ -364,6 +364,52 @@ bool BoardManager::removeNumberByPoint(const Point& pt)
 	return false;
 }
 
+bool BoardManager::isStageSolved()
+{
+	/*
+	* return True when stage is completed!! not solved currently
+	*/
+	Point pt;
+	int n, i;
+
+	for (i = 0; i < 2; i++)
+	{
+		Snake* snake = snakes[i];
+
+		if (snake->getStatus() == SnakeStatus::REGULAR)
+		{
+			pt = snake->getNextPosition();
+			n = this->getNumberInCell(pt);
+			if (n >= 0)
+			{
+				this->removeNumberfromBoard(n);
+				if (getMission()->isSolved(n))
+				{
+					snake->wonStage();
+
+					if (i == 0)
+						Screen::printMessageOnBoard("Snake 1 (yellow) is RIGHT! +1 point", Color::YELLOW);
+					else
+						Screen::printMessageOnBoard("Snake 2 (blue) is RIGHT! +1 point", Color::LIGHTBLUE);
+				}
+				else
+				{
+					Snake* otherPlayer = snakes[i == 1 ? 0 : 1];
+					if (i == 1)
+						Screen::printMessageOnBoard("Snake 2 is WRONG: +1 point for snake 1", Color::YELLOW);
+					else
+						Screen::printMessageOnBoard("Snake 1 is WRONG: +1 point for snake 2", Color::LIGHTBLUE);
+					
+					// Removing number from the next point if needed
+					removeNumberByPoint(otherPlayer->getNextPosition());
+					otherPlayer->wonStage();
+				}
+				return true;
+			}
+		}
+	}
+	return false;
+}
 
 void BoardManager::prepareNextStage()
 {

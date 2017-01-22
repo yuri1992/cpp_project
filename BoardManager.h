@@ -85,6 +85,7 @@ public:
 
 	void removeNumberfromBoard(int number);
 	bool removeNumberByPoint(const Point& pt);
+	bool isStageSolved();
 	void prepareNextStage();
 	void blinkPoint(int number, const Point& pt);
 	bool findSolveOnBoard();
