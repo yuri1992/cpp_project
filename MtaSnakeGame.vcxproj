@@ -131,7 +131,6 @@
     <ClInclude Include="_board.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\..\Downloads\KnownIssues_316961101_200831014_.xlsx" />
     <None Include="ClassDiagram.cd" />
     <None Include="README.md" />
   </ItemGroup>
