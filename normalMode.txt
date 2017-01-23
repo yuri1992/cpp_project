@@ -1,7 +1,7 @@
 POW
 collect the number %d^2
 1
-10
+12
 PRM
 Collect a prime number
 0
