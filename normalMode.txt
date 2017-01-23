@@ -1,0 +1,27 @@
+POW
+collect the number %d^2
+1
+10
+PRM
+Collect a prime number
+0
+DIV
+Collect a number that divides by %d
+1
+8
+MUL
+Cellect a number that is multiplication of %d
+1
+6
+SQR
+Collect a number that has a natural square root
+0
+REM
+Collect a number that divided by %d has remainder of %d
+2
+11
+2
+CLC
+<<created dynamically>>
+1
+20

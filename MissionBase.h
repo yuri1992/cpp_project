@@ -1,35 +1,37 @@
 #ifndef _MISSION_BASE_H_
 #define _MISSION_BASE_H_
 #include <string>
+#include <fstream>
+//#include <list>
 #include "CalculatorQuestion.h"
+#include "Mission.h"
+#include <vector>
+const string DIV = "DIV"; //collect a number that divides by X
+const string POW = "POW"; //find pow of x^2
+const string PRM = "PRM"; //find a prime num
+const string MUL = "MUL"; //collect a number that is a multiplication of X
+const string SQR = "SQR"; //collect a number that has a natural square root
+const string REM = "REM"; //collect a number that divided by X has a remiander of Y
+const string CLC = "CLC"; //calculator question- generated randomally
+
+
+
 class MissionBase
 {
 
-	enum
-	{
-		SIZE = 60,
-	};
-
-	enum MissionStatus {
-		PRIME_NUM = 0,   //2,3,5,7,11,13,17...
-		DIVIDED_BY_4 = 1,   //0,4,8,12..
-		MULTI_OF_7 = 2, //7,14,21..
-		NATURAL_SQRT = 3,   //has a natural sqrt:  4,9,16,25,36....
-		DIV_BY_7_REMAIN_3 = 4,  //divided by 7 leaves remainder of 3: 3,10,17,....
-		POW_2_OF_13=5,   //1 number: collect 13^2 = 169 (last num)..
-		CALCULATOR=6
-
-	};
 	CalculatorQuestion* calcQuestion = nullptr;
+
+	vector<Mission> missionVector;
 	static bool isPrime(int number);
 	int currentMission;
-	std::string currentMissionText;
+	string currentMissionText;
+	string currentMissionCode;
 
 public:
 	MissionBase();
 	~MissionBase();
 
-	std::string getMissionText() const;
+	string getMissionText() const;
 	bool isSolved(int number);
 	int generateNextNumber();
 	int nextMission();

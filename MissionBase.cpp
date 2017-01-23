@@ -1,13 +1,46 @@
 #include <cmath>
 #include "MissionBase.h"
-#include <string>
+
 
 using namespace std;
 
 MissionBase::MissionBase()
 {
+	ifstream file;
+	//list<Mission> missionList;
+	//Mission* temp = new Mission();
+	file.open("normalMode.txt");
+	if (file.is_open())
+	{
+		while (!file.eof())
+		{
+			string missionCode, missionText;
+			int numOfVariables;
+			int variables[2] = { 0,0 };
+			file >> missionCode;
+			file.get();
+			getline(file, missionText);
+			file >> numOfVariables;
+			for (int i = 0; i < numOfVariables; ++i)
+			{
+				string tempStringNum;
+				file >> tempStringNum;
+				variables[i] = stoi(tempStringNum);
+
+			}
+			Mission* temp = new Mission(missionCode, missionText, variables);
+			missionVector.push_back(*temp);
+			delete temp;
+		}
+		file.close();
+	}
 	nextMission();
 }
+
+
+
+
+
 
 MissionBase::~MissionBase()
 {
@@ -35,32 +68,43 @@ bool MissionBase::isSolved(int number)
 	double sqrtOfNum;
 	int tempCurrentMission = 0;
 	bool answer = false;
+	int var1 = missionVector.at(currentMission).getVariables()[0];
+	int var2 = missionVector.at(currentMission).getVariables()[1];
 
-	switch (currentMission)
+	if(currentMissionCode == DIV)
 	{
-	case MissionStatus::PRIME_NUM:
+		answer = (number % var1 == 0);
+	}
+
+	else if (currentMissionCode == PRM)
+	{
 		answer = isPrime(number);
-		break;
-	case MissionStatus::DIVIDED_BY_4:
-		answer = (number % 4 == 0);
-		break;
-	case MissionStatus::MULTI_OF_7: //SAME AS DIVIDED BY
-		answer = (number % 7 == 0);
-		break;
-	case MissionStatus::NATURAL_SQRT:
+	}
+
+	else if(currentMissionCode == POW)
+	{
+		answer = (number == var1 ^ 2);
+	}
+	else if (currentMissionCode == MUL)
+	{
+		answer = (number % var1 == 0);
+	}
+	else if (currentMissionCode == SQR)
+	{
 		sqrtOfNum = sqrt(number);
 		answer = (floor(sqrtOfNum) == sqrtOfNum);
-		break;
-	case MissionStatus::DIV_BY_7_REMAIN_3:
-		answer = (number % 7 == 3);
-		break;
-	case MissionStatus::POW_2_OF_13:
-		answer = (number == 169);
-		break;
-	case MissionStatus::CALCULATOR:
+	}
+	else if (currentMissionCode == REM)
+	{
+		answer = (number % var1 == var1);
+	}
+
+	else if (currentMissionCode == CLC)
+	{
 		answer = number == calcQuestion->getAnswer();
-		break;
-	default:
+	}
+	else
+	{
 		return false;
 	}
 	return answer;
@@ -99,37 +143,16 @@ int MissionBase::generateNextNumber()
 
 int MissionBase::nextMission()
 {
-	currentMission = rand() % 7;
-	//HERE TEST CALC
-	//currentMission = 6; 
-	switch (currentMission)
+	currentMission = rand() % missionVector.size();
+	Mission tempMission = missionVector.at(currentMission);
+	currentMissionText = tempMission.getText();
+	currentMissionCode = tempMission.getCode();
+	if ( currentMissionCode == "CLC")
 	{
-	case MissionStatus::PRIME_NUM:
-		currentMissionText = "Collect a prime number";
-		break;
-	case MissionStatus::DIVIDED_BY_4:
-		currentMissionText = "Collect a number that divides by 4";
-		break;
-	case MissionStatus::MULTI_OF_7: //SAME AS DIVIDED BY
-		currentMissionText = "Collect a number that divides by 7";
-		break;
-	case MissionStatus::NATURAL_SQRT:
-		currentMissionText = "Collect a number that has a natural square root";
-		break;
-	case MissionStatus::DIV_BY_7_REMAIN_3:
-		currentMissionText = "Collect a number that divided by 7 has remainder of 3";
-		break;
-	case MissionStatus::POW_2_OF_13:
-		currentMissionText = "collect the number 13^2";
-		break;
-	case MissionStatus::CALCULATOR:
+		int numberDifficulty = tempMission.getVariables()[0];
 		if (calcQuestion != nullptr) delete calcQuestion;
-		calcQuestion = new CalculatorQuestion();
-		currentMissionText = calcQuestion->getFunctionString();
-		break;
-	default:
-		currentMissionText = "....";
+			calcQuestion = new CalculatorQuestion(numberDifficulty);
+			currentMissionText = calcQuestion->getFunctionString();
 	}
-
 	return currentMission;
 }

@@ -104,6 +104,7 @@
     <ClCompile Include="CalculatorQuestion.cpp" />
     <ClCompile Include="Gun.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mission.cpp" />
     <ClCompile Include="MissionBase.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Screen.cpp" />
@@ -120,6 +121,7 @@
     <ClInclude Include="config.h" />
     <ClInclude Include="GameSettings.h" />
     <ClInclude Include="Gun.h" />
+    <ClInclude Include="Mission.h" />
     <ClInclude Include="MissionBase.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Screen.h" />

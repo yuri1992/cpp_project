@@ -12,8 +12,9 @@ bool CalculatorQuestion::isSecondOperatorFirst()
 	return false;
 }
 
-CalculatorQuestion::CalculatorQuestion()
+CalculatorQuestion::CalculatorQuestion(int randomMaxNum)
 {
+	randomMax = randomMaxNum;
 	op1 = rand() % 4; //0,1,2,3
 	op2 = rand() % 4; //0,1,2,3
 	bool op2First = isSecondOperatorFirst();
@@ -47,21 +48,21 @@ void CalculatorQuestion::createNumsXY(int op, int& x, int& y)
 {
 	if (op == DIVIDE)
 	{
-		x = (rand() % 50) + 1;
-		y = (rand() % 50) + 1;
+		x = (rand() % (randomMax*2)) + 1;
+		y = (rand() % (randomMax*2)) + 1;
 		//if the first number is prime so for the divide ill get eighter 1 or the number itself... to keep it from doing unnecessary randoms
 		if (isPrime(x))
 			y = (rand() % 2 == 0) ? 1 : x;
 		else
 		{
 			while (x % y != 0)
-				y = rand() % 20 + 1;
+				y = rand() % (randomMax) + 1;
 		}
 	}
 	else
 	{
-		x = rand() % 60 + 1;
-		y = rand() % 60 + 1;
+		x = rand() % (randomMax*3) + 1;
+		y = rand() % (randomMax*3) + 1;
 	}
 }
 
@@ -98,7 +99,7 @@ void CalculatorQuestion::generateNumbers(bool op2First)
 	{
 		createNumsXY(op2, nums[1], nums[2]);
 		ansAfterOp2 = workOperatorOn2Nums(op2, nums[1], nums[2]);
-		nums[0] = op1 == DIVIDE ? ansAfterOp2 * 3 : rand() % 60 + 1;
+		nums[0] = op1 == DIVIDE ? ansAfterOp2 * 3 : rand() % (randomMax*3) + 1;
 		nums[3] = ansAfterOp1 = workOperatorOn2Nums(op1, nums[0], ansAfterOp2);
 	}
 
@@ -106,7 +107,7 @@ void CalculatorQuestion::generateNumbers(bool op2First)
 	{
 		createNumsXY(op1, nums[0], nums[1]);
 		ansAfterOp1 = workOperatorOn2Nums(op1, nums[0], nums[1]);
-		nums[2] = rand() % 30 + 1;
+		nums[2] = rand() % (randomMax) + 1;
 		if (op2 == DIVIDE)
 		{
 			//if the first number is prime so for the divide ill get eighter 1 or the number itself... to keep it from doing unnecessary randoms
@@ -115,7 +116,7 @@ void CalculatorQuestion::generateNumbers(bool op2First)
 			else
 			{
 				while (ansAfterOp1 % nums[2] != 0)
-					nums[2] = rand() % 20 + 1;
+					nums[2] = rand() % (randomMax) + 1;
 			}
 		}
 		nums[3] = ansAfterOp2 = workOperatorOn2Nums(op2, ansAfterOp1, nums[2]);

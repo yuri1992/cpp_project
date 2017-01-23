@@ -1,0 +1,23 @@
+POW
+collect the number %d^2
+1
+3
+PRM
+Collect a prime number (divides by itself and by 1)
+0
+MUL
+Cellect a number that is multiplication of %d
+1
+5
+SQR
+Collect a number that has a natural square root, like:4,9,16,25..
+0
+REM
+Collect a number that divided by %d has remainder of %d
+2
+5
+3
+CLC
+<<created dynamically>>
+1
+7

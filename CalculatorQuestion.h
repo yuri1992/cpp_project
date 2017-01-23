@@ -21,6 +21,7 @@ class CalculatorQuestion
 	int ansAfterOp2, ansAfterOp1;
 	int nums[4];
 	int hiddenAnswerIndex;
+	int randomMax;
 	int answer;
 	static bool isPrime(int);
 	void createNumsXY(int op, int& x, int& y);
@@ -31,7 +32,7 @@ class CalculatorQuestion
 	int pickHiddenIndex();
 public:
 
-	CalculatorQuestion();
+	CalculatorQuestion(int randomMaxNum);
 	//void recreateQuestion();
 	int getAnswer() { return answer; };
 	string getFunctionString();
