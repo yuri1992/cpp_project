@@ -106,6 +106,7 @@
     <ClCompile Include="FlyingRow.cpp" />
     <ClCompile Include="Gun.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mission.cpp" />
     <ClCompile Include="MissionBase.cpp" />
     <ClCompile Include="NumberEater.cpp" />
     <ClCompile Include="Point.cpp" />
@@ -124,6 +125,7 @@
     <ClInclude Include="FlyingRow.h" />
     <ClInclude Include="GameSettings.h" />
     <ClInclude Include="Gun.h" />
+    <ClInclude Include="Mission.h" />
     <ClInclude Include="MissionBase.h" />
     <ClInclude Include="NumberEater.h" />
     <ClInclude Include="Point.h" />
@@ -133,7 +135,6 @@
     <ClInclude Include="_board.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\..\Downloads\KnownIssues_316961101_200831014_.xlsx" />
     <None Include="ClassDiagram.cd" />
     <None Include="README.md" />
   </ItemGroup>
