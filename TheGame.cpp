@@ -143,6 +143,9 @@ void TheGame::_handleMenuKeyPress()
 			case NUM_6:
 				_restartGame();
 				break;
+			case NUM_7:
+				_playReplay();
+				break;
 			default: break;
 			}
 		}
@@ -173,6 +176,14 @@ void TheGame::_restartStage()
 	theBoard->resetBoard();
 	theBoard->printScore();
 	status = Game::RUNNING;
+}
+
+void TheGame::_playReplay()
+{
+	status = Game::PAUSE;
+	Screen::clearScreen();
+	theBoard->playReply();
+	printScreen();
 }
 
 void TheGame::_nextStage()

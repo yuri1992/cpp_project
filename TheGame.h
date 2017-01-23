@@ -70,6 +70,7 @@ private:
 	void _resumeGame();
 	void _nextStage();
 	void _restartStage();
+	void _playReplay();
 	void _newGame();
 
 	void _finishGame()

@@ -1,6 +1,6 @@
 #include "BoardManager.h"
 #include <iostream>
-#include <string>
+
 #include <map>
 #include "Snake.h"
 #include "MissionBase.h"
@@ -8,6 +8,7 @@
 #include "FlyingCol.h"
 #include "NumberEater.h"
 
+string REPLY_FILE_NAME = "reply.bin";
 
 BoardManager::BoardManager()
 {
@@ -35,6 +36,9 @@ BoardManager::BoardManager()
 	bots[4] = new NumberEater(DIRECTION_DOWN, Point(10, 19), this);
 
 	mission = new MissionBase();
+
+	// open file to write the reply
+	rep_file.open(REPLY_FILE_NAME, ios_base::in | ios_base::out | ios_base::trunc);
 }
 
 BoardManager::~BoardManager()
@@ -51,6 +55,8 @@ BoardManager::~BoardManager()
 	delete bots;
 
 	delete mission;
+
+	rep_file.close();
 }
 
 void BoardManager::printBoard()
@@ -103,11 +109,14 @@ void BoardManager::printBoardWithoutSnakePath()
 }
 
 
-void BoardManager::printCell(int row, int col, Color color)
+void BoardManager::printCell(int row, int col, Color color, string str)
 {
 	Screen::setTextColor(color);
 	Screen::setCursor(col, row);
-	std::cout << board[row][col];
+	if (!str.empty())
+		std::cout << str;
+	else
+		std::cout << board[row][col];
 	std::cout.flush();
 }
 
@@ -156,7 +165,6 @@ BasePlayerBoard* BoardManager::getPlayerAtPoint(const Point& p) const
 
 Snake* BoardManager::getSnakeInCell(const Point& p)
 {
-
 	for (int i = 0; i < 2; i++)
 	{
 		if (snakes[i]->interceptPoint(p))
@@ -292,16 +300,47 @@ void BoardManager::setNextNumber()
 	}
 }
 
+void BoardManager::playReply()
+{
+	string line;
+	rep_file.seekg(0);
+	this->printScore();
+	while (rep_file.is_open() && !rep_file.eof())
+	{
+		for (int i = 4; i < ROWS; i++)
+		{
+			for (int j = 0; j < COLS; j++)
+			{
+				getline(rep_file, line);
+				printCell(i, j, Color::LIGHTGREY, line);
+			}
+		}
+	}
+}
+
+void BoardManager::saveReply()
+{
+	for (int i = 4; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			rep_file << board[i][j] << endl;
+		}
+	}
+}
+
 void BoardManager::next()
 {
 	for (int i = 0; i < 2; i++)
 	{
 		snakes[i]->doNext();
+		
 	}
 	for (int i = 0; i < BOTS_PLAYER; i ++)
 	{
 		bots[i]->doNext();
 	}
+	saveReply();
 }
 
 bool BoardManager::isGameWon()
@@ -316,6 +355,7 @@ bool BoardManager::isGameWon()
 	}
 	return false;
 }
+
 void BoardManager::handleKey(char key)
 {
 	for (int i = 0; i < 2; i++)
@@ -399,7 +439,7 @@ bool BoardManager::isStageSolved()
 						Screen::printMessageOnBoard("Snake 2 is WRONG: +1 point for snake 1", Color::YELLOW);
 					else
 						Screen::printMessageOnBoard("Snake 1 is WRONG: +1 point for snake 2", Color::LIGHTBLUE);
-					
+
 					// Removing number from the next point if needed
 					removeNumberByPoint(otherPlayer->getNextPosition());
 					otherPlayer->wonStage();
@@ -429,6 +469,8 @@ void BoardManager::prepareNextStage()
 	mission->nextMission();
 	snakes[0]->resetGun();
 	snakes[1]->resetGun();
+
+	rep_file.open(REPLY_FILE_NAME, std::ofstream::trunc);
 }
 
 bool BoardManager::findSolveOnBoard()

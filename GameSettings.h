@@ -1,5 +1,8 @@
 #ifndef _GAME_SETTINGS_
 #define _GAME_SETTINGS_
+#include <string>
+
+
 
 enum GameSettings
 {
@@ -14,7 +17,7 @@ enum GameSettings
 	NUMBER_EATER = '%',
 	GUN_AMMO_INITIAL = 5,
 	RELIVE_AFTER_STEPS = 25,
-	SNAKE_START_SIZE = 3
+	SNAKE_START_SIZE = 3,
 };
 
 enum Direction

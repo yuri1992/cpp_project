@@ -102,7 +102,7 @@ void Screen::showPauseMenu()
 		"                               (4) Restart stage                                " << endl <<
 		"                               (5) Start new stage                              " << endl <<
 		"                               (6) Restart game.                                " << endl <<
-		"                                                                                " << endl;
+		"                               (7) Play Replay.                                 " << endl;
 }
 
 void Screen::updateSnakesAmmo(int point1, int point2)

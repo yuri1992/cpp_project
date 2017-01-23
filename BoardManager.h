@@ -6,6 +6,7 @@
 #include "Snake.h"
 #include "MissionBase.h"
 #include "FlyingRow.h"
+#include <fstream>
 
 using namespace std;
 
@@ -36,6 +37,8 @@ class BoardManager
 	Snake** snakes;
 	BasePlayerBoard** bots;
 
+	fstream rep_file;
+
 	std::unordered_map<Point, int> pointToNumber;
 	std::unordered_map<int, Point> numberToPoint;
 	char board[ROWS][COLS + 1]; // this is the actual board we play on, i.e. changes on board are done here//
@@ -49,7 +52,7 @@ public:
 	void printScore() const;
 	void printAmmo() const;
 	void printBoardWithoutSnakePath();
-	void printCell(int row, int col, Color color = Color::LIGHTGREY);
+	void printCell(int row, int col, Color color = Color::LIGHTGREY, string str="");
 	void printCell(const Point& pt, Color color = Color::LIGHTGREY);
 	void printCellWithoutSnake(int row, int col, Color color = Color::LIGHTGREY);
 	char getCell(const Point& pt) { 
@@ -79,6 +82,8 @@ public:
 	Point getRandomPosition(int size);
 	int getNumberInCell(const Point& pt);
 	void setNextNumber();
+	void playReply();
+	void saveReply();
 	void next();
 	bool isGameWon();
 	void handleKey(char key);
