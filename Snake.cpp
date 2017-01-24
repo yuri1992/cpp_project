@@ -135,7 +135,14 @@ void Snake::resetSnake(const Point& pt, int direction, int size)
 
 void Snake::setPosition(const Point& newPosition)
 {
-	pos[0] = newPosition;
+	if (pos.size() > 0)
+	{
+		pos[0] = newPosition;
+	} else
+	{
+		pos.push_back(newPosition);
+	}
+	
 	for (unsigned i = 0; ++i < pos.size();)
 	{
 		pos[i] = pos[i - 1];
@@ -163,10 +170,19 @@ void Snake::increaseSnakeBody()
 bool Snake::_isNextStepValid()
 {
 	Point nextPoint = getNextPosition();
-
 	BoardManager* _theBoard = getBoard();
-	if (_theBoard->isOccupatiedBySanke(nextPoint))
-		return false;
+	BasePlayerBoard* playerInterceted = _theBoard->getPlayerAtPoint(nextPoint);
+
+	if (playerInterceted != nullptr)
+	{
+		if (playerInterceted->type() == "snake")
+		{
+			return false;
+		} else if (playerInterceted->type() == "numbereater")
+		{
+			this->gotHit();
+		}
+	}
 
 	return true;
 }

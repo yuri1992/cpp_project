@@ -71,12 +71,9 @@ bool Gun::moveBulletNextPosition(Bullet& bt)
 			{
 				playerInterceted->destroy();
 			}
-			return true;
+			
 		}
-		else
-		{
-			return true;
-		}
+		return true;
 	}
 	else if (theBoard->removeNumberByPoint(pos))
 	{

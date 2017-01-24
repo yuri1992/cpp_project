@@ -15,6 +15,11 @@ void FlyingCol::destroy()
 
 void FlyingCol::doNext()
 {
+	if (pos.size() == 0)
+	{
+		return;
+	}
+
 	BoardManager* _theBoard = getBoard();
 	Point pt = getNextPosition();
 	BasePlayerBoard* playerInterceted = _theBoard->getPlayerAtPoint(pt);
@@ -26,7 +31,7 @@ void FlyingCol::doNext()
 			Snake* snake = static_cast<Snake*>(playerInterceted);
 			snake->gotHit();
 		}
-		else
+		else if (playerInterceted->type() == "bullet")
 		{
 			return;
 		}

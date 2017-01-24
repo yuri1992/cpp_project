@@ -9,6 +9,8 @@ NumberEater::~NumberEater()
 
 void NumberEater::destroy()
 {
+	remove();
+	pos.clear();
 }
 
 bool NumberEater::seekSulotion()
@@ -70,7 +72,7 @@ void NumberEater::_doNext()
 				Snake* snake = static_cast<Snake*>(playerInterceted);
 				snake->gotHit();
 			}
-			else
+			else if (playerInterceted->type() == "bullet")
 			{
 				return;
 			}
@@ -88,6 +90,10 @@ void NumberEater::_doNext()
 
 void NumberEater::doNext()
 {
+	if (pos.size() == 0 )
+	{
+		return;
+	}
 	for (int i=0; i< getSpeed(); i++)
 	{
 		_doNext();

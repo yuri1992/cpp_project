@@ -8,10 +8,16 @@ FlyingRow::~FlyingRow()
 
 void FlyingRow::destroy()
 {
+	remove();
+	pos.clear();
 }
 
 void FlyingRow::doNext()
 {
+	if (pos.size() == 0)
+	{
+		return;
+	}
 	for (int i = 0; i < getSpeed(); i++)
 	{
 		_doNext();
@@ -31,7 +37,7 @@ void FlyingRow::_doNext()
 			Snake* snake = static_cast<Snake*>(playerInterceted);
 			snake->gotHit();
 		}
-		else
+		else if (playerInterceted->type() == "bullet")
 		{
 			return;
 		}
