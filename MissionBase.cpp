@@ -83,7 +83,7 @@ bool MissionBase::isSolved(int number)
 
 	else if(currentMissionCode == POW)
 	{
-		answer = (number == var1 ^ 2);
+		answer = (number == pow(var1,2));
 	}
 	else if (currentMissionCode == MUL)
 	{
