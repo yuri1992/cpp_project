@@ -467,8 +467,11 @@ void BoardManager::prepareNextStage()
 	}
 
 	mission->nextMission();
-	snakes[0]->resetGun();
-	snakes[1]->resetGun();
+	for (int i = 0; i < 2; i++)
+	{
+		snakes[i]->resetGun();
+	}
+
 
 	rep_file.open(REPLY_FILE_NAME, std::ofstream::trunc);
 }
@@ -519,6 +522,11 @@ void BoardManager::resetBoard()
 	snakes[1]->goToPoint(Point(70, 9), DIRECTION_LEFT);
 	snakes[1]->setStatus(SnakeStatus::REGULAR);
 	snakes[1]->resetGun();
+
+	for (int i = 0; i < BOTS_PLAYER; i++)
+	{
+		bots[i]->reset();
+	}
 }
 
 void BoardManager::blinkPoint(int number, const Point& pt)

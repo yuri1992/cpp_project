@@ -6,23 +6,26 @@
 BasePlayerBoard::BasePlayerBoard(int dir, const Point& pt, BoardManager* _theBoard) : direction(dir), theBoard(_theBoard)
 {
 	BasePlayerBoard::setPosition(pt);
+	startPt = new Point(pt);
 }
 
 BasePlayerBoard::BasePlayerBoard(int dir, const Point& pt, BoardManager* _theBoard, char _symbol)
 	: direction(dir), symbol(_symbol), theBoard(_theBoard)
 {
 	BasePlayerBoard::setPosition(pt);
+	startPt = new Point(pt);
 }
 
 BasePlayerBoard::BasePlayerBoard(int dir, const Point& pt, BoardManager* _theBoard, char _symbol, Color _color)
 	: direction(dir), symbol(_symbol), color(_color), theBoard(_theBoard)
 {
 	BasePlayerBoard::setPosition(pt);
+	startPt = new Point(pt);
 }
 
 BasePlayerBoard::~BasePlayerBoard()
 {
-	// Todo : create decent cotr
+	
 }
 
 
@@ -33,6 +36,19 @@ void BasePlayerBoard::print()
 		theBoard->setCell(pt, getSymbol());
 		theBoard->printCell(pt, getColor());
 	}
+}
+
+void BasePlayerBoard::reset()
+{
+	if (pos.size() > 0)
+	{
+		pos[0] = Point(*startPt);
+	}
+	else
+	{
+		pos.push_back(Point(*startPt));
+	}
+
 }
 
 void BasePlayerBoard::remove()

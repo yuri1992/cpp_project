@@ -20,11 +20,13 @@ private:
 	char symbol;
 	Color color;
 	BoardManager* theBoard;
+	Point *startPt;
 protected:
 	vector<Point> pos;
 public:
 
 	virtual void print();
+	void reset();
 	virtual void remove();
 	virtual vector<Point> getPositionVector() const { return pos; }
 	virtual Point getPosition() const;
