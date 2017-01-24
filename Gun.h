@@ -26,4 +26,4 @@ public:
 	int getAmmo() { return ammo; };
 };
 
-#endif;
+#endif

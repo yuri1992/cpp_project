@@ -1,19 +1,18 @@
 #include "Screen.h"
-#include "Color.h"
 #include <string>
 
 using namespace std;
 
 #ifndef WINDOWS
-// monkey patch the functions that not supported by linux 
-	void Screen::gotoxy(int x, int y) {}
-	int  Screen::_getch(void) { return 0; }
-	int  Screen::_kbhit(void) { return 0; }
-	void Screen::Sleep(unsigned long) {}
+	// monkey patch the functions that not supported by linux
+	void gotoxy(int x, int y) {}
+	int  _getch(void) { return 0; }
+	int  _kbhit(void) { return 0; }
+	void Sleep(unsigned long) {}
+	void Screen::setCursor(int x, int y) {}
 	void Screen::setTextColor(Color color) {}
 	void Screen::hideCursor() {}
 	void Screen::clearScreen() {}
-	void Screen::clear_screen() {}
 #else
 void Screen::setCursor(int x, int y)
 {

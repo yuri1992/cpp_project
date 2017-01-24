@@ -3,8 +3,7 @@ using namespace std;
 
 #include "TheGame.h"
 
-int main()
-{
-	TheGame game = TheGame();
-	game.run();
+int main() {
+    TheGame game = TheGame();
+    game.run();
 }

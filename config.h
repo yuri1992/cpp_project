@@ -5,15 +5,19 @@
 #define WINDOWS
 // make sure to always submit a readme file in English, with student names and ids
 // if you put the above #define WINDOWS in comment for compilation in MAMA - remind us in the readme file that we need to take it out of comment!
+
+    #ifndef WINDOWS
+
+    int _getch(void);
+    int _kbhit(void);
+    void Sleep(unsigned long);
+    void _itoa_s(unsigned int, char s[], unsigned int, int);
+
+    #else
+    #include <stdlib.h>
+    #include <conio.h>
+    #include <windows.h>
+    #endif
+
 #endif
 
-#ifndef WINDOWS	
-int _getch(void);
-int _kbhit(void);
-void Sleep(unsigned long);
-void _itoa_s(unsigned int, char s[], unsigned int, int);
-#else
-#include <stdlib.h>
-#include <conio.h>
-#include <windows.h>
-#endif

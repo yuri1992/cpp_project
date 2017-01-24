@@ -2,6 +2,7 @@
 #define _POINT_H_
 
 #include <iostream>
+#include <math.h>
 #include "Screen.h"
 
 using namespace std;
